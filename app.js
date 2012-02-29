@@ -11,7 +11,9 @@ var application_root = __dirname,
 var app = module.exports = express.createServer();
 
 // database
-mongoose.connect('mongodb://localhost/namp');
+mongoose.connect('mongodb://localhost/namp', function(err) {
+    if (err) throw err;
+});
 
 // config
 app.configure(function(){
