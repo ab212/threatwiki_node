@@ -2,6 +2,7 @@ var application_root = __dirname,
   routes = require("./routes"),
   model = require("./model"),
   express = require("express"),
+  path = require("path"),
   soc_actions = require("./actions/soc_actions"),
   location_actions = require("./actions/location_actions"),
   datapoint_actions = require("./actions/datapoint_actions"),
@@ -16,7 +17,8 @@ mongoose.connect('mongodb://localhost/namp', function(err) {
 });
 
 // config
-app.configure(function(){
+// we're not using jade right now, we could go back to it at another time
+app.configure(function () {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
@@ -44,7 +46,7 @@ var TagModel = model.TagModel;
 app.get('/', routes.index);
 
 // import socActions
-var socActions = soc_actions.load_socActions(app);
+var socActions = soc_actions.load_socActions(app, SocModel);
 var locationActions = location_actions.load_locationActions(app);
 var datapointActions = datapoint_actions.load_datapointActions(app);
 var tagActions = tag_actions.load_tagActions(app);
