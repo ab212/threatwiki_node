@@ -62,7 +62,7 @@ function load_socActions(app, socmodel_inc){
   });
 
   // delete by id
-  app.delete('/api/socs/:id', function (req, res){
+  app.delete('/api/soc/:id', function (req, res){
     return SocModel.findById(req.params.id, function (err, soc1) {
       return soc1.remove(function (err) {
         if (!err) {

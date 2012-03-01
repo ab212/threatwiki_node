@@ -61,7 +61,7 @@ function load_locationActions(app){
   });
 
   // delete by id
-  app.delete('/api/locations/:id', function (req, res){
+  app.delete('/api/location/:id', function (req, res){
     return LocationModel.findById(req.params.id, function (err, location1) {
       return location1.remove(function (err) {
         if (!err) {

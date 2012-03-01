@@ -61,7 +61,7 @@ function load_tagActions(app){
   });
 
   // delete by id
-  app.delete('/api/tags/:id', function (req, res){
+  app.delete('/api/tag/:id', function (req, res){
     return TagModel.findById(req.params.id, function (err, tag1) {
       return tag1.remove(function (err) {
         if (!err) {

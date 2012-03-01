@@ -61,7 +61,7 @@ function load_datapointActions(app){
   });
 
   // delete by id
-  app.delete('/api/datapoints/:id', function (req, res){
+  app.delete('/api/datapoint/:id', function (req, res){
     return DataPointModel.findById(req.params.id, function (err, datapoint1) {
       return datapoint1.remove(function (err) {
         if (!err) {
