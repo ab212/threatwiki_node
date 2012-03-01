@@ -48,7 +48,7 @@ function load_tagActions(app){
   app.put('/api/tag/:id', function (req, res){
     return TagModel.findById(req.params.id, function (err, tag1) {
       tag1.title = req.body.title;
-      tag2.description = req.body.description;
+      tag1.description = req.body.description;
       return tag1.save(function (err) {
         if (!err) {
           console.log("updated");

@@ -48,7 +48,7 @@ function load_datapointActions(app){
   app.put('/api/datapoint/:id', function (req, res){
     return DataPointModel.findById(req.params.id, function (err, datapoint1) {
       datapoint1.title = req.body.title;
-      datapoint2.description = req.body.description;
+      datapoint1.description = req.body.description;
       return datapoint1.save(function (err) {
         if (!err) {
           console.log("updated");

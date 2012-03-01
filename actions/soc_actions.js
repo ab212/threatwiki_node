@@ -49,7 +49,7 @@ function load_socActions(app, socmodel_inc){
   app.put('/api/soc/:id', function (req, res){
     return SocModel.findById(req.params.id, function (err, soc1) {
       soc1.title = req.body.title;
-      soc2.description = req.body.description;
+      soc1.description = req.body.description;
       return soc1.save(function (err) {
         if (!err) {
           console.log("updated");
