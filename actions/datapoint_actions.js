@@ -1,6 +1,7 @@
 var express = require("express");
 
-function load_datapointActions(app){
+function load_datapointActions(app, datapointmodel) {
+  var DataPointModel = datapointmodel;
   // retrieve all
   app.get('/api/datapoint', function (req, res){
     return DataPointModel.find(function (err, datapoints) {

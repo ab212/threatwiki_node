@@ -27,12 +27,16 @@
 
       <hr/>
       <div id="post_form">
-		<span style="font-weight:bold">New SOC</span>
-        <form id="soc_form">
+		<span style="font-weight:bold">New Datapoint</span>
+        <form id="datapoint_form">
+          SOC<br/>
+          <select id="soc_list"></select><br/>
           Title<br/>
           <input type="text" name="title"/><br />
           Description:<br />
-          <textarea rows="4" cols="60" name="description"></textarea>
+          <textarea rows="4" cols="60" name="description"></textarea><br/>
+          Tags:<br/>
+          <select multiple id="tag_list"></select><br/>
         </form>
         <div class="post-div">
           <input type="submit" value="$.post()" id="post" />
@@ -52,28 +56,31 @@
       <span style="font-weight:bold">Data</span>
       <div id="result" style="margin:0.5em"></div>
 
-    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
       <script type="text/javascript">
-      // $.post()
-      $("#post").click(function() {
-        jQuery.post("/api/soc", $("#soc_form").serialize(), function (data, textStatus, jqXHR) {
-          console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+      $(document).ready(function() {
+        // get socs
+        var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
+          $("#result").append("Loaded SOCs");
+          $.each(socs, function(key, value) {
+            $('#soc_list')
+            .append($("<option></option>")
+            .attr("value",value.title)
+            .text(value.title));
+          });
         });
-        $("#status").html("posted");
-        //$('#result').html("");
-        $('#result').html($("#soc_form").serialize());
-	  });
-	  // $.get()
-      $("#get").click(function() {
-        var data = jQuery.get("/api/soc/", function (data, textStatus, jqXHR) {
-          console.log("Get resposne:");
-          console.dir(data);
-          console.log(textStatus);
-          console.dir(jqXHR);
-          $('#result').html(data);
+        // get tags
+        var tags = jQuery.get("/api/tag/", function (tags, textStatus, jqXHR) {
+          $("#result").append("<br/>Loaded Tags");
+          $.each(tags, function(key, value) {
+            $('#tag_list')
+            .append($("<option></option>")
+            .attr("value",value.title)
+            .text(value.title));
+          });
         });
         $("#status").html("received");
-	  });
+      });
     </script>
   </body>
 </html>
