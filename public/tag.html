@@ -60,17 +60,16 @@
           console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
         });
         $("#status").html("posted");
-        //$('#result').html("");
         $('#result').html($("#tag_form").serialize());
 	  });
 	  // $.get()
       $("#get").click(function() {
-        var data = jQuery.get("/api/tag/", function (data, textStatus, jqXHR) {
+        var tags = jQuery.get("/api/tag/", function (tags, textStatus, jqXHR) {
           console.log("Get resposne:");
-          console.dir(data);
+          console.dir(tags);
           console.log(textStatus);
           console.dir(jqXHR);
-          $('#result').html(data);
+          $("#result").html(JSON.stringify(tags));
         });
         $("#status").html("received");
 	  });

@@ -1,12 +1,12 @@
 var express = require("express");
 
-function load_socActions(app, socmodel_inc){
-  var SocModel = socmodel_inc;
+function load_socActions(app, socmodel) {
+  var SocModel = socmodel;
   // retrieve all
   app.get('/api/soc', function (req, res){
     return SocModel.find(function (err, socs) {
       if (!err) {
-        return res.send(socs);
+        return res.json(socs);
       } else {
         return console.log(err);
       }

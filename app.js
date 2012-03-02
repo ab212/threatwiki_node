@@ -47,9 +47,9 @@ app.get('/', routes.index);
 
 // import socActions
 var socActions = soc_actions.load_socActions(app, SocModel);
-var locationActions = location_actions.load_locationActions(app);
-var datapointActions = datapoint_actions.load_datapointActions(app);
-var tagActions = tag_actions.load_tagActions(app);
+var locationActions = location_actions.load_locationActions(app, LocationModel);
+var datapointActions = datapoint_actions.load_datapointActions(app, DataPointModel);
+var tagActions = tag_actions.load_tagActions(app, TagModel);
 
 // server listen
 app.listen(3000);

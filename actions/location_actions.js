@@ -1,6 +1,7 @@
 var express = require("express");
 
-function load_locationActions(app){
+function load_locationActions(app, locationmodel) {
+  var LocationModel = locationmodel;
   // retrieve all
   app.get('/api/location', function (req, res){
     return LocationModel.find(function (err, locations) {
@@ -35,14 +36,14 @@ function load_locationActions(app){
       longitude: req.body.longitude
     });
 
-    location.save(function (err) {
+    location1.save(function (err) {
       if (!err) {
         return console.log("created");
       } else {
         return console.log(err);
       }
     });
-    return res.send(location);
+    return res.send(location1);
   });
 
   // update

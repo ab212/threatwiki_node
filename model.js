@@ -30,8 +30,17 @@ function createModel() {
     , modified: { type: Date, default: Date.now }
   });
 
+  // model definitions
   var SocModel = mongoose.model('Soc', Soc);
+  var DataPointModel = mongoose.model('DataPoint', DataPoint);
+  var LocationModel = mongoose.model('Location', Location);
+  var TagModel = mongoose.model('Tag', Tag);
+
+  // model exports
   exports.SocModel = SocModel;
+  exports.DataPointModel = DataPointModel;
+  exports.LocationModel = LocationModel;
+  exports.TagModel = TagModel;
 }
 
 exports.createModel = createModel;

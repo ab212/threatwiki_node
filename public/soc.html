@@ -60,17 +60,16 @@
           console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
         });
         $("#status").html("posted");
-        //$('#result').html("");
         $('#result').html($("#soc_form").serialize());
 	  });
 	  // $.get()
       $("#get").click(function() {
-        var data = jQuery.get("/api/soc/", function (data, textStatus, jqXHR) {
+        var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
           console.log("Get resposne:");
-          console.dir(data);
+          console.dir(socs);
           console.log(textStatus);
           console.dir(jqXHR);
-          $('#result').html(data);
+          $("#result").html(JSON.stringify(socs));
         });
         $("#status").html("received");
 	  });

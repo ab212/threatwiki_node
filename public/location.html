@@ -62,17 +62,16 @@
           console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
         });
         $("#status").html("posted");
-        //$('#result').html("");
         $('#result').html($("#location_form").serialize());
 	  });
 	  // $.get()
       $("#get").click(function() {
-        var data = jQuery.get("/api/location/", function (data, textStatus, jqXHR) {
+        var locations = jQuery.get("/api/location/", function (locations, textStatus, jqXHR) {
           console.log("Get resposne:");
-          console.dir(data);
+          console.dir(locations);
           console.log(textStatus);
           console.dir(jqXHR);
-          $('#result').html(data);
+          $("#result").html(JSON.stringify(locations));
         });
         $("#status").html("received");
 	  });

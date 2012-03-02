@@ -1,6 +1,7 @@
 var express = require("express");
 
-function load_tagActions(app){
+function load_tagActions(app, tagmodel) {
+  var TagModel = tagmodel;
   // retrieve all
   app.get('/api/tag', function (req, res){
     return TagModel.find(function (err, tags) {
@@ -34,14 +35,14 @@ function load_tagActions(app){
       description: req.body.description
     });
 
-    tag.save(function (err) {
+    tag1.save(function (err) {
       if (!err) {
         return console.log("created");
       } else {
         return console.log(err);
       }
     });
-    return res.send(tag);
+    return res.send(tag1);
   });
 
   // update
