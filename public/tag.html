@@ -27,8 +27,8 @@
 
       <hr/>
       <div id="post_form">
-		<span style="font-weight:bold">New SOC</span>
-        <form id="soc_form">
+		<span style="font-weight:bold">New Tag</span>
+        <form id="tag_form">
           Title<br/>
           <input type="text" name="title"/><br />
           Description:<br />
@@ -56,16 +56,16 @@
       <script type="text/javascript">
       // $.post()
       $("#post").click(function() {
-        jQuery.post("/api/soc", $("#soc_form").serialize(), function (data, textStatus, jqXHR) {
+        jQuery.post("/api/tag", $("#tag_form").serialize(), function (data, textStatus, jqXHR) {
           console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
         });
         $("#status").html("posted");
         //$('#result').html("");
-        $('#result').html($("#soc_form").serialize());
+        $('#result').html($("#tag_form").serialize());
 	  });
 	  // $.get()
       $("#get").click(function() {
-        var data = jQuery.get("/api/soc/", function (data, textStatus, jqXHR) {
+        var data = jQuery.get("/api/tag/", function (data, textStatus, jqXHR) {
           console.log("Get resposne:");
           console.dir(data);
           console.log(textStatus);

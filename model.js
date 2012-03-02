@@ -11,10 +11,10 @@ function createModel() {
   var DataPoint = new Schema({
       title: { type: String, required: true }
     , description: { type: String, required: true }
-    , modified: { type: Date, default: Date.now }
     , location: [Location]
     , tag: [Tag]
     , soc: [Soc]
+    , modified: { type: Date, default: Date.now }
   });
 
   var Location = new Schema({

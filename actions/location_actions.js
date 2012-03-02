@@ -31,7 +31,8 @@ function load_locationActions(app){
 
     location1 = new LocationModel({
       title: req.body.title,
-      description: req.body.description
+      latitude: req.body.latitude,
+      longitude: req.body.longitude
     });
 
     location.save(function (err) {
@@ -48,7 +49,8 @@ function load_locationActions(app){
   app.put('/api/location/:id', function (req, res){
     return LocationModel.findById(req.params.id, function (err, location1) {
       location1.title = req.body.title;
-      location1.description = req.body.description;
+      location1.latitude = req.body.latitude;
+      location1.longitude = req.body.longitude;
       return location1.save(function (err) {
         if (!err) {
           console.log("updated");

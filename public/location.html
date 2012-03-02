@@ -27,12 +27,14 @@
 
       <hr/>
       <div id="post_form">
-		<span style="font-weight:bold">New SOC</span>
-        <form id="soc_form">
+		<span style="font-weight:bold">New Location</span>
+        <form id="location_form">
           Title<br/>
           <input type="text" name="title"/><br />
-          Description:<br />
-          <textarea rows="4" cols="60" name="description"></textarea>
+          Latitude:<br />
+          <input type="text" name="latitude"/><br />
+          Longitude:<br />
+          <input type="text" name="longitude"/><br />
         </form>
         <div class="post-div">
           <input type="submit" value="$.post()" id="post" />
@@ -56,16 +58,16 @@
       <script type="text/javascript">
       // $.post()
       $("#post").click(function() {
-        jQuery.post("/api/soc", $("#soc_form").serialize(), function (data, textStatus, jqXHR) {
+        jQuery.post("/api/location", $("#location_form").serialize(), function (data, textStatus, jqXHR) {
           console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
         });
         $("#status").html("posted");
         //$('#result').html("");
-        $('#result').html($("#soc_form").serialize());
+        $('#result').html($("#location_form").serialize());
 	  });
 	  // $.get()
       $("#get").click(function() {
-        var data = jQuery.get("/api/soc/", function (data, textStatus, jqXHR) {
+        var data = jQuery.get("/api/location/", function (data, textStatus, jqXHR) {
           console.log("Get resposne:");
           console.dir(data);
           console.log(textStatus);
