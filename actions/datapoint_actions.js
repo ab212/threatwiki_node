@@ -3,7 +3,7 @@ var express = require("express");
 function load_datapointActions(app, datapointmodel) {
   var DataPointModel = datapointmodel;
   // retrieve all
-  app.get('/api/datapoint', function (req, res){
+  app.get('/api/datapoint', function (req, res) {
     return DataPointModel.find(function (err, datapoints) {
       if (!err) {
         return res.send(datapoints);
@@ -14,7 +14,7 @@ function load_datapointActions(app, datapointmodel) {
   });
 
   // retrieve by id
-  app.get('/api/datapoint/:id', function (req, res){
+  app.get('/api/datapoint/:id', function (req, res) {
     return DataPointModel.findById(req.params.id, function (err, datapoint1) {
       if (!err) {
         return res.send(datapoint1);
@@ -25,28 +25,31 @@ function load_datapointActions(app, datapointmodel) {
   });
 
   // create
-  app.post('/api/datapoint', function (req, res){
+  app.post('/api/datapoint', function (req, res) {
     var datapoint1;
     console.log("POST: ");
     console.log(req.body);
 
     datapoint1 = new DataPointModel({
       title: req.body.title,
-      description: req.body.description
+      description: req.body.description,
+      tag: req.body.tag_list,
+      location: req.body.location_list,
+      soc: req.body.soc_list
     });
 
-    datapoint.save(function (err) {
+    datapoint1.save(function (err) {
       if (!err) {
         return console.log("created");
       } else {
         return console.log(err);
       }
     });
-    return res.send(datapoint);
+    return res.send(datapoint1);
   });
 
   // update
-  app.put('/api/datapoint/:id', function (req, res){
+  app.put('/api/datapoint/:id', function (req, res) {
     return DataPointModel.findById(req.params.id, function (err, datapoint1) {
       datapoint1.title = req.body.title;
       datapoint1.description = req.body.description;
@@ -62,7 +65,7 @@ function load_datapointActions(app, datapointmodel) {
   });
 
   // delete by id
-  app.delete('/api/datapoint/:id', function (req, res){
+  app.get('/api/datapoint/delete/:id', function (req, res) {
     return DataPointModel.findById(req.params.id, function (err, datapoint1) {
       return datapoint1.remove(function (err) {
         if (!err) {

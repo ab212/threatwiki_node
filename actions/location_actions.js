@@ -3,7 +3,7 @@ var express = require("express");
 function load_locationActions(app, locationmodel) {
   var LocationModel = locationmodel;
   // retrieve all
-  app.get('/api/location', function (req, res){
+  app.get('/api/location', function (req, res) {
     return LocationModel.find(function (err, locations) {
       if (!err) {
         return res.send(locations);
@@ -14,7 +14,7 @@ function load_locationActions(app, locationmodel) {
   });
 
   // retrieve by id
-  app.get('/api/location/:id', function (req, res){
+  app.get('/api/location/:id', function (req, res) {
     return LocationModel.findById(req.params.id, function (err, location1) {
       if (!err) {
         return res.send(location1);
@@ -25,7 +25,7 @@ function load_locationActions(app, locationmodel) {
   });
 
   // create
-  app.post('/api/location', function (req, res){
+  app.post('/api/location', function (req, res) {
     var location1;
     console.log("POST: ");
     console.log(req.body);
@@ -47,7 +47,7 @@ function load_locationActions(app, locationmodel) {
   });
 
   // update
-  app.put('/api/location/:id', function (req, res){
+  app.put('/api/location/:id', function (req, res) {
     return LocationModel.findById(req.params.id, function (err, location1) {
       location1.title = req.body.title;
       location1.latitude = req.body.latitude;
@@ -64,7 +64,7 @@ function load_locationActions(app, locationmodel) {
   });
 
   // delete by id
-  app.delete('/api/location/:id', function (req, res){
+  app.get('/api/location/delete/:id', function (req, res) {
     return LocationModel.findById(req.params.id, function (err, location1) {
       return location1.remove(function (err) {
         if (!err) {

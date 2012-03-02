@@ -52,6 +52,12 @@
       <span style="font-weight:bold">Data</span>
       <div id="result" style="margin:0.5em"></div>
 
+      <hr/>
+      <span style="font-weight:bold">Poorly Consumed Data</span>
+      <div id="consumed" style="margin:0.5em">
+        <table id="consumed_table"></table>
+      </div>
+
     <script type="text/javascript" src="js/jquery.min.js"></script>
       <script type="text/javascript">
       // $.post()
@@ -64,14 +70,32 @@
 	  });
 	  // $.get()
       $("#get").click(function() {
+		$("#result").html('');
+		$("#status").html('');
+		$('#consumed_table').html('');
         var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
           console.log("Get resposne:");
           console.dir(socs);
           console.log(textStatus);
           console.dir(jqXHR);
           $("#result").html(JSON.stringify(socs));
+          // return data in tabular format
+          $.each(socs, function(key, value) {
+            $('#consumed_table')
+            .append($("<tr></tr>")
+              .append($("<td></td>")
+                .append($("<a></a>")
+                .attr("href","/api/soc/"+value._id)
+                .text(value.title)))
+              .append($("<td></td>")
+                .append($("<a></a>")
+                .attr("href","/api/soc/delete/"+value._id)
+                .text("delete"))));
+          });
         });
-        $("#status").html("received");
+        $("#status").append("received");
+        // consume JSON
+        $("#status").append("<br/>consumed");
 	  });
     </script>
   </body>

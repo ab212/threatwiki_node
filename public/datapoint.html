@@ -35,6 +35,8 @@
           <input type="text" name="title"/><br />
           Description:<br />
           <textarea rows="4" cols="60" name="description"></textarea><br/>
+          Location:<br/>
+          <select id="location_list"></select><br/>
           Tags:<br/>
           <select multiple id="tag_list"></select><br/>
         </form>
@@ -55,6 +57,12 @@
       <hr/>
       <span style="font-weight:bold">Data</span>
       <div id="result" style="margin:0.5em"></div>
+
+      <hr/>
+      <span style="font-weight:bold">Poorly Consumed Data</span>
+      <div id="consumed" style="margin:0.5em">
+        <table id="consumed_table"></table>
+      </div>
 
     <script src="js/jquery.min.js" type="text/javascript"></script>
       <script type="text/javascript">
@@ -79,8 +87,53 @@
             .text(value.title));
           });
         });
+        // get locations
+        var tags = jQuery.get("/api/location/", function (locations, textStatus, jqXHR) {
+          $("#result").append("<br/>Loaded Locations");
+          $.each(locations, function(key, value) {
+            $('#location_list')
+            .append($("<option></option>")
+            .attr("value",value.title)
+            .text(value.title));
+          });
+        });
         $("#status").html("received");
       });
+      // $.post()
+      $("#post").click(function() {
+        jQuery.post("/api/datapoint", $("#datapoint_form").serialize(), function (data, textStatus, jqXHR) {
+          console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+        });
+        $("#status").html("posted");
+        $('#result').html($("#datapoint_form").serialize());
+	  });
+      // $.get()
+      $("#get").click(function() {
+		$("#result").html('');
+		$("#status").html('');
+		$('#consumed_table').html('');
+        var datapoints = jQuery.get("/api/datapoint/", function (datapoints, textStatus, jqXHR) {
+          console.log("Get resposne:");
+          console.dir(datapoints);
+          console.log(textStatus);
+          console.dir(jqXHR);
+          $("#result").html(JSON.stringify(datapoints));
+          // return data in tabular format
+          $.each(datapoints, function(key, value) {
+            $('#consumed_table')
+            .append($("<tr></tr>")
+              .append($("<td></td>")
+                .append($("<a></a>")
+                .attr("href","/api/datapoint/"+value._id)
+                .text(value.title)))
+              .append($("<td></td>")
+                .append($("<a></a>")
+                .attr("href","/api/datapoint/delete/"+value._id)
+                .text("delete"))));
+          });
+        });
+        $("#status").html("received");
+	  });
     </script>
   </body>
 </html>

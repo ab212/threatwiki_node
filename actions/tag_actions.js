@@ -14,7 +14,7 @@ function load_tagActions(app, tagmodel) {
   });
 
   // retrieve by id
-  app.get('/api/tag/:id', function (req, res){
+  app.get('/api/tag/:id', function (req, res) {
     return TagModel.findById(req.params.id, function (err, tag1) {
       if (!err) {
         return res.send(tag1);
@@ -25,7 +25,7 @@ function load_tagActions(app, tagmodel) {
   });
 
   // create
-  app.post('/api/tag', function (req, res){
+  app.post('/api/tag', function (req, res) {
     var tag1;
     console.log("POST: ");
     console.log(req.body);
@@ -46,7 +46,7 @@ function load_tagActions(app, tagmodel) {
   });
 
   // update
-  app.put('/api/tag/:id', function (req, res){
+  app.put('/api/tag/:id', function (req, res) {
     return TagModel.findById(req.params.id, function (err, tag1) {
       tag1.title = req.body.title;
       tag1.description = req.body.description;
@@ -62,7 +62,7 @@ function load_tagActions(app, tagmodel) {
   });
 
   // delete by id
-  app.delete('/api/tag/:id', function (req, res){
+  app.get('/api/tag/delete/:id', function (req, res) {
     return TagModel.findById(req.params.id, function (err, tag1) {
       return tag1.remove(function (err) {
         if (!err) {

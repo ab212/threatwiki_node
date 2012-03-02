@@ -52,6 +52,12 @@
       <span style="font-weight:bold">Data</span>
       <div id="result" style="margin:0.5em"></div>
 
+      <hr/>
+      <span style="font-weight:bold">Poorly Consumed Data</span>
+      <div id="consumed" style="margin:0.5em">
+        <table id="consumed_table"></table>
+      </div>
+
     <script type="text/javascript" src="js/jquery.min.js"></script>
       <script type="text/javascript">
       // $.post()
@@ -64,12 +70,28 @@
 	  });
 	  // $.get()
       $("#get").click(function() {
+		$("#result").html('');
+		$("#status").html('');
+		$('#consumed_table').html('');
         var tags = jQuery.get("/api/tag/", function (tags, textStatus, jqXHR) {
           console.log("Get resposne:");
           console.dir(tags);
           console.log(textStatus);
           console.dir(jqXHR);
           $("#result").html(JSON.stringify(tags));
+          // return data in tabular format
+          $.each(tags, function(key, value) {
+            $('#consumed_table')
+            .append($("<tr></tr>")
+              .append($("<td></td>")
+                .append($("<a></a>")
+                .attr("href","/api/tag/"+value._id)
+                .text(value.title)))
+              .append($("<td></td>")
+                .append($("<a></a>")
+                .attr("href","/api/tag/delete/"+value._id)
+                .text("delete"))));
+          });
         });
         $("#status").html("received");
 	  });
