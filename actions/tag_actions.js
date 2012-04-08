@@ -32,7 +32,8 @@ function load_tagActions(app, tagmodel) {
 
     tag1 = new TagModel({
       title: req.body.title,
-      description: req.body.description
+      description: req.body.description,
+      soc: req.body.soc
     });
 
     tag1.save(function (err) {
@@ -50,6 +51,7 @@ function load_tagActions(app, tagmodel) {
     return TagModel.findById(req.params.id, function (err, tag1) {
       tag1.title = req.body.title;
       tag1.description = req.body.description;
+      tag1.soc = req.body.soc;
       return tag1.save(function (err) {
         if (!err) {
           console.log("updated");

@@ -4,7 +4,7 @@ var application_root = __dirname,
   express = require("express"),
   path = require("path"),
   soc_actions = require("./actions/soc_actions"),
-  location_actions = require("./actions/location_actions"),
+//  location_actions = require("./actions/location_actions"),
   datapoint_actions = require("./actions/datapoint_actions"),
   tag_actions = require("./actions/tag_actions"),
   mongoose = require('mongoose');
@@ -38,7 +38,7 @@ app.configure('production', function(){
 // create model
 var createModel = model.createModel();
 var SocModel = model.SocModel;
-var LocationModel = model.LocationModel;
+//var LocationModel = model.LocationModel;
 var DataPointModel = model.DataPointModel;
 var TagModel = model.TagModel;
 
@@ -47,7 +47,7 @@ app.get('/', routes.index);
 
 // import socActions
 var socActions = soc_actions.load_socActions(app, SocModel);
-var locationActions = location_actions.load_locationActions(app, LocationModel);
+//var locationActions = location_actions.load_locationActions(app, LocationModel);
 var datapointActions = datapoint_actions.load_datapointActions(app, DataPointModel);
 var tagActions = tag_actions.load_tagActions(app, TagModel);
 

@@ -1,48 +1,50 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 function createModel() {
-  var Soc = new Schema ({
-      title: { type: String, required: true }
-    , description: { type: String, required: false }
-    , modified: { type: Date, default: Date.now }
-  });
 
   var DataPoint = new Schema ({
       title: { type: String, required: true }
     , description: { type: String, required: true }
-    , tag: [Tag]
+    //foreign key
+    , tags     : [{ type: ObjectId, ref: 'Tag' }]   
+     //location is optional
+    , latitude: { type: String }
+    , longitude: { type: String}
+    , soc: { type: String, required: true }
     , modified: { type: Date, default: Date.now }
-    // foreign keys
-    , soc_id: { type: String, required: true }
-    , location_id: { type: String, required: true }
+       
   });
-
-  var Location = new Schema ({
-      title: { type: String, required: true }
-    , latitude: { type: String, required: true }
-    , longitude: { type: String, required: true }
-    , modified: { type: Date, default: Date.now }
-  });
+  
+  //the SOC collection right now is just being used for when we want to create new SOCs or list the current ones
+  //we also include SOC name directly into data points
+    var Soc = new Schema ({
+        title: { type: String, required: true }
+      , modified: { type: Date, default: Date.now }
+    });
 
   var Tag = new Schema ({
       title: { type: String, required: true }
     , description: { type: String, required: true }
     , modified: { type: Date, default: Date.now }
-    // foreign keys
-    , soc_id: { type: String, required: true }
+    , soc: { type: String, required: true }
+    //location is optional
+    , latitude: { type: String }
+    , longitude: { type: String}
+    //foreign key
+    //, datapoints     : [{ type: ObjectId, ref: 'DataPoint' }]   
+
   });
 
   // model definitions
   var SocModel = mongoose.model('Soc', Soc);
   var DataPointModel = mongoose.model('DataPoint', DataPoint);
-  var LocationModel = mongoose.model('Location', Location);
   var TagModel = mongoose.model('Tag', Tag);
 
   // model exports
   exports.SocModel = SocModel;
   exports.DataPointModel = DataPointModel;
-  exports.LocationModel = LocationModel;
   exports.TagModel = TagModel;
 }
 

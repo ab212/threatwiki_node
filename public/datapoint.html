@@ -30,15 +30,17 @@
 		<span style="font-weight:bold">New Datapoint</span>
         <form id="datapoint_form">
           SOC<br/>
-          <select id="soc_list"></select><br/>
+          <select id="soc" name="soc"></select><br/>
           Title<br/>
           <input type="text" name="title"/><br />
+		Latitude<br/>
+          <input type="text" name="Latitude"/><br />
+		Longitude<br/>
+          <input type="text" name="Longitude"/><br />
           Description:<br />
           <textarea rows="4" cols="60" name="description"></textarea><br/>
-          Location:<br/>
-          <select id="location_list"></select><br/>
-          Tags:<br/>
-          <select multiple id="tag_list"></select><br/>
+           Tags:<br/>
+          <select multiple id="tag_list" name="tag_list"></select><br/>
         </form>
         <div class="post-div">
           <input type="submit" value="$.post()" id="post" />
@@ -71,7 +73,7 @@
         var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
           $("#result").append("Loaded SOCs");
           $.each(socs, function(key, value) {
-            $('#soc_list')
+            $('#soc')
             .append($("<option></option>")
             .attr("value",value.title)
             .text(value.title));
@@ -83,20 +85,11 @@
           $.each(tags, function(key, value) {
             $('#tag_list')
             .append($("<option></option>")
-            .attr("value",value.title)
+            .attr("value",value._id)
             .text(value.title));
           });
         });
-        // get locations
-        var tags = jQuery.get("/api/location/", function (locations, textStatus, jqXHR) {
-          $("#result").append("<br/>Loaded Locations");
-          $.each(locations, function(key, value) {
-            $('#location_list')
-            .append($("<option></option>")
-            .attr("value",value.title)
-            .text(value.title));
-          });
-        });
+    
         $("#status").html("received");
       });
       // $.post()

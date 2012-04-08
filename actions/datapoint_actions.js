@@ -33,9 +33,11 @@ function load_datapointActions(app, datapointmodel) {
     datapoint1 = new DataPointModel({
       title: req.body.title,
       description: req.body.description,
-      tag: req.body.tag_list,
-      location: req.body.location_list,
-      soc: req.body.soc_list
+      soc: req.body.soc,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      tags: req.body.tag_list
+      
     });
 
     datapoint1.save(function (err) {
@@ -53,6 +55,10 @@ function load_datapointActions(app, datapointmodel) {
     return DataPointModel.findById(req.params.id, function (err, datapoint1) {
       datapoint1.title = req.body.title;
       datapoint1.description = req.body.description;
+      soc: req.body.soc,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      tags: req.body.tag_list
       return datapoint1.save(function (err) {
         if (!err) {
           console.log("updated");
