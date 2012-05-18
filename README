@@ -1,3 +1,6 @@
 WIP
 
-ThreatWiki API with a nodejs, express, mongoose, mongo stack
+May 18, 2012 TODOs:
+ - Data is not properly being carried forward from forms to POST
+ - Datapoint model needs tweaks
+ - Update tests
