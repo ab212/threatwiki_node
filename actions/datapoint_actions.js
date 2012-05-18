@@ -55,10 +55,10 @@ function load_datapointActions(app, datapointmodel) {
     return DataPointModel.findById(req.params.id, function (err, datapoint1) {
       datapoint1.title = req.body.title;
       datapoint1.description = req.body.description;
-      soc: req.body.soc,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude,
-      tags: req.body.tag_list
+      soc: req.body.soc
+      //latitude: req.body.latitude,
+      //longitude: req.body.longitude,
+      //tags: req.body.tag_list
       return datapoint1.save(function (err) {
         if (!err) {
           console.log("updated");

@@ -1,0 +1,47 @@
+script(type='text/javascript', src='/javascript/datapoint.js')
+
+div#wrap
+  p Run a console to see JSON data.
+    br/
+  p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
+
+  hr/
+  div#post_form
+    span.bold
+      p New Datapoint
+      div#datapoint_form
+        p SOC
+        select(id="soc", name="soc")
+        p Title
+        input(type="text", name="title")
+        p Latitude
+        input(type="text", name="latitude")
+        p Longitude
+        input(type="text", name="longitude")
+        p Description
+        textarea(name="description", rows="4", cols="60")
+        p Tags
+        select(multiple id="tag_list", name="tag_list")
+        br/
+      div#post-div
+        input(type="submit", value="$.post()", id="post")
+
+  hr/
+  div#get-div
+    input(type="submit", value="$.get()", id="get")
+
+  hr/
+  span.bold
+    p Status
+  div#status
+
+  hr/
+  span.bold
+    p Data
+  div#result
+
+  hr/
+  span.bold
+    p Poorly Consumed Data
+  div#consumed
+    table(id="consumed_table")

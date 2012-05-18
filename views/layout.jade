@@ -1,0 +1,19 @@
+!!!
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/reset.css')
+    link(rel='stylesheet', href='/stylesheets/main.css')
+    link(rel='stylesheet', href='/stylesheets/v1.css')
+
+    script(type='text/javascript', src='/javascript/jquery.min.js')
+
+    #menu
+      ul
+        li
+          a(href='/soc') SOC
+        li
+          a(href='/datapoint') Datapoint
+        li
+          a(href='/tag') Tag
+  body!= body

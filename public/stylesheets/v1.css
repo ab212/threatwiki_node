@@ -1,0 +1,19 @@
+#post_form
+{
+}
+
+.bold
+{
+  font-weight:bold;
+}
+
+#status
+{
+  margin:0.5em;
+  font-weight:bold;
+}
+
+#result,#consumed
+{
+  margin:0.5em;
+}

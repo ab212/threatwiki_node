@@ -1,23 +1,25 @@
-var application_root = __dirname,
-  routes = require("./routes"),
-  model = require("./model"),
-  express = require("express"),
-  path = require("path"),
-  soc_actions = require("./actions/soc_actions"),
-//  location_actions = require("./actions/location_actions"),
-  datapoint_actions = require("./actions/datapoint_actions"),
-  tag_actions = require("./actions/tag_actions"),
-  mongoose = require('mongoose');
+var application_root = __dirname
+  , routes = require("./routes")
+  , model = require("./model")
+  , express = require("express")
+  , mongoose = require('mongoose')
+  , path = require("path")
+
+  // actions
+  , soc_actions = require("./actions/soc_actions")
+  , datapoint_actions = require("./actions/datapoint_actions")
+  , tag_actions = require("./actions/tag_actions")
+  //, location_actions = require("./actions/location_actions")
+;
 
 var app = module.exports = express.createServer();
 
 // database
 mongoose.connect('mongodb://localhost/namp', function(err) {
-    if (err) throw err;
+  if (err) throw err;
 });
 
 // config
-// we're not using jade right now, we could go back to it at another time
 app.configure(function () {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
@@ -44,6 +46,9 @@ var TagModel = model.TagModel;
 
 // routes
 app.get('/', routes.index);
+app.get('/soc', routes.soc);
+app.get('/datapoint', routes.datapoint);
+app.get('/tag', routes.tag);
 
 // import socActions
 var socActions = soc_actions.load_socActions(app, SocModel);
