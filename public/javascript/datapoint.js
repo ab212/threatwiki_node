@@ -1,4 +1,8 @@
 $(document).ready(function() {
+  $(function() {
+    $('#location').autoGeocoder();
+  });
+
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
     $("#result").append("Loaded SOCs");

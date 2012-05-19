@@ -16,7 +16,7 @@ exports.soc = function(req, res){
 exports.datapoint = function(req, res){
   res.render('datapoint', { locals: {
     title: 'Datapoint Manager'
-    , scripts: ['datapoint.js']
+    , scripts: ['datapoint.js', 'jquery.auto-geocoder.js']
   }});
 };
 

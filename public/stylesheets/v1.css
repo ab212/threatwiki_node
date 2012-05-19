@@ -2,11 +2,6 @@
 {
 }
 
-.bold
-{
-  font-weight:bold;
-}
-
 #status
 {
   margin:0.5em;
@@ -16,4 +11,17 @@
 #result,#consumed
 {
   margin:0.5em;
+}
+
+.bold
+{
+  font-weight:bold;
+}
+
+.jquery-auto-geocoder-map
+{
+  margin: 1em 0;
+  float: right;
+  width: 200px;
+  height: 100px;
 }
