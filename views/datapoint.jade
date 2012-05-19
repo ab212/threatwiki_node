@@ -1,5 +1,3 @@
-script(type='text/javascript', src='/javascript/datapoint.js')
-
 div#wrap
   p Run a console to see JSON data.
     br/
@@ -9,22 +7,32 @@ div#wrap
   div#post_form
     span.bold
       p New Datapoint
-      div#datapoint_form
-        p SOC
+      form#datapoint_form
+        label(for="soc") SOC
+        br/
         select(id="soc", name="soc")
-        p Title
+        br/
+        label(for="title") Title
+        br/
         input(type="text", name="title")
-        p Latitude
+        br/
+        label(for="latitude") Latitude
+        br/
         input(type="text", name="latitude")
-        p Longitude
+        br/
+        label(for="longitude") Longitude
+        br/
         input(type="text", name="longitude")
-        p Description
+        br/
+        label(for="description") Description
+        br/
         textarea(name="description", rows="4", cols="60")
-        p Tags
+        br/
+        label(for="tags") Tags
+        br/
         select(multiple id="tag_list", name="tag_list")
         br/
-      div#post-div
-        input(type="submit", value="$.post()", id="post")
+        input(type="submit", value="save")
 
   hr/
   div#get-div
@@ -45,3 +53,6 @@ div#wrap
     p Poorly Consumed Data
   div#consumed
     table(id="consumed_table")
+
+script
+  var datapoint_form = $('#datapoint_form');

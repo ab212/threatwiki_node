@@ -1,11 +1,12 @@
 $(document).ready(function() {
   // $.post()
-  $("#post").click(function() {
-    jQuery.post("/api/soc", $("#soc_form").serialize(), function (data, textStatus, jqXHR) {
+  soc_form.submit(function(){
+    jQuery.post("/api/soc", soc_form.serialize(), function (data, textStatus, jqXHR) {
       console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
     });
     $("#status").html("posted");
-    $('#result').html($("#soc_form").serialize());
+    $('#result').html(soc_form.serialize());
+    return false;
   });
 
   // $.get()

@@ -1,22 +1,26 @@
-script(type='text/javascript', src='/javascript/tag.js')
-
 div#wrap
   p Run a console to see JSON data.
-    br/
   p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
+  p Shift+Ctrl+I for Chromium
 
   hr/
   div#post_form
     span.bold
       p New Tag
-      div#tag_form
-        p Title
+      form#tag_form
+        label(for="soc") SOC
+        br/
+        select(name="soc", id="soc")
+        br/
+        label(for="title") Title
+        br/
         input(type="text", name="title")
-        p Description
+        br/
+        label(for="description") Description
+        br/
         textarea(name="description", rows="4", cols="60")
         br/
-      div#post-div
-        input(type="submit", value="$.post()", id="post")
+        input(type="submit", value="save")
 
   hr/
   div#get-div
@@ -37,3 +41,6 @@ div#wrap
     p Poorly Consumed Data
   div#consumed
     table(id="consumed_table")
+
+script
+  var tag_form = $('#tag_form');

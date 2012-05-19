@@ -1,20 +1,18 @@
-script(type='text/javascript', src='/javascript/soc.js')
-
 div#wrap
   p Run a console to see JSON data.
-    br/
-  p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
+  p Ctrl+Shift+K in Firefox with 'Net' and 'JS' sources enabled
+  p Shift+Ctrl+I for Chromium
 
   hr/
   div#post_form
     span.bold
       p New SOC
-      div#soc_form
-        p Title
+      form#soc_form
+        label(for="title") Title
+        br/
         input(type="text", name="title")
         br/
-      div#post-div
-        input(type="submit", value="$.post()", id="post")
+        input(type="submit", value="save")
 
   hr/
   div#get-div
@@ -35,3 +33,6 @@ div#wrap
     p Poorly Consumed Data
   div#consumed
     table(id="consumed_table")
+
+script
+  var soc_form = $('#soc_form');

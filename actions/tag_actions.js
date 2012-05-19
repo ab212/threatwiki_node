@@ -15,9 +15,21 @@ function load_tagActions(app, tagmodel) {
 
   // retrieve by id
   app.get('/api/tag/:id', function (req, res) {
-    return TagModel.findById(req.params.id, function (err, tag1) {
+    return TagModel.findById(req.params.id, function (err, tag) {
       if (!err) {
-        return res.send(tag1);
+        return res.send(tag);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by soc name
+  app.get('/api/tag/soc/:soc', function (req, res) {
+	console.log('Search by ' + req.params.soc);
+    return TagModel.find({ soc: req.params.soc}, function (err, tag) {
+      if (!err) {
+        return res.send(tag);
       } else {
         return console.log(err);
       }
@@ -26,47 +38,47 @@ function load_tagActions(app, tagmodel) {
 
   // create
   app.post('/api/tag', function (req, res) {
-    var tag1;
+    var tag;
     console.log("POST: ");
     console.log(req.body);
 
-    tag1 = new TagModel({
+    tag = new TagModel({
       title: req.body.title,
       description: req.body.description,
       soc: req.body.soc
     });
 
-    tag1.save(function (err) {
+    tag.save(function (err) {
       if (!err) {
         return console.log("created");
       } else {
         return console.log(err);
       }
     });
-    return res.send(tag1);
+    return res.send(tag);
   });
 
   // update
   app.put('/api/tag/:id', function (req, res) {
-    return TagModel.findById(req.params.id, function (err, tag1) {
-      tag1.title = req.body.title;
-      tag1.description = req.body.description;
-      tag1.soc = req.body.soc;
-      return tag1.save(function (err) {
+    return TagModel.findById(req.params.id, function (err, tag) {
+      tag.title = req.body.title;
+      tag.description = req.body.description;
+      tag.soc = req.body.soc;
+      return tag.save(function (err) {
         if (!err) {
           console.log("updated");
         } else {
           console.log(err);
         }
-        return res.send(tag1);
+        return res.send(tag);
       });
     });
   });
 
   // delete by id
   app.get('/api/tag/delete/:id', function (req, res) {
-    return TagModel.findById(req.params.id, function (err, tag1) {
-      return tag1.remove(function (err) {
+    return TagModel.findById(req.params.id, function (err, tag) {
+      return tag.remove(function (err) {
         if (!err) {
           console.log("removed");
           return res.send('');

@@ -4,12 +4,10 @@ var application_root = __dirname
   , express = require("express")
   , mongoose = require('mongoose')
   , path = require("path")
-
   // actions
   , soc_actions = require("./actions/soc_actions")
   , datapoint_actions = require("./actions/datapoint_actions")
   , tag_actions = require("./actions/tag_actions")
-  //, location_actions = require("./actions/location_actions")
 ;
 
 var app = module.exports = express.createServer();
@@ -28,11 +26,9 @@ app.configure(function () {
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
-
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
-
 app.configure('production', function(){
   app.use(express.errorHandler());
 });
@@ -40,11 +36,14 @@ app.configure('production', function(){
 // create model
 var createModel = model.createModel();
 var SocModel = model.SocModel;
-//var LocationModel = model.LocationModel;
 var DataPointModel = model.DataPointModel;
 var TagModel = model.TagModel;
 
-// routes
+// helpers
+app.helpers({
+});
+
+// get routes
 app.get('/', routes.index);
 app.get('/soc', routes.soc);
 app.get('/datapoint', routes.datapoint);
@@ -52,7 +51,6 @@ app.get('/tag', routes.tag);
 
 // import socActions
 var socActions = soc_actions.load_socActions(app, SocModel);
-//var locationActions = location_actions.load_locationActions(app, LocationModel);
 var datapointActions = datapoint_actions.load_datapointActions(app, DataPointModel);
 var tagActions = tag_actions.load_tagActions(app, TagModel);
 

@@ -3,38 +3,27 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 function createModel() {
-
   var DataPoint = new Schema ({
       title: { type: String, required: true }
     , description: { type: String, required: true }
-    //foreign key
-    , tags     : [{ type: ObjectId, ref: 'Tag' }]   
-     //location is optional
-    , latitude: { type: String }
-    , longitude: { type: String}
+    , latitude: { type: String, required: true }
+    , longitude: { type: String, required: true }
     , soc: { type: String, required: true }
     , modified: { type: Date, default: Date.now }
-       
+    // foreign key
+    , tags     : [{ type: ObjectId, ref: 'Tag' }]   
   });
-  
-  //the SOC collection right now is just being used for when we want to create new SOCs or list the current ones
-  //we also include SOC name directly into data points
-    var Soc = new Schema ({
-        title: { type: String, required: true }
-      , modified: { type: Date, default: Date.now }
+
+  var Soc = new Schema ({
+      title: { type: String, required: true }
+    , modified: { type: Date, default: Date.now }
     });
 
   var Tag = new Schema ({
       title: { type: String, required: true }
-    , description: { type: String, required: true }
+    , description: { type: String, required: false }
     , modified: { type: Date, default: Date.now }
     , soc: { type: String, required: true }
-    //location is optional
-    , latitude: { type: String }
-    , longitude: { type: String}
-    //foreign key
-    //, datapoints     : [{ type: ObjectId, ref: 'DataPoint' }]   
-
   });
 
   // model definitions

@@ -2,21 +2,23 @@ $(document).ready(function() {
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
     $("#result").append("Loaded SOCs");
+    console.log("Loaded SOCs");
     $.each(socs, function(key, value) {
       $('#soc')
-        .append($("<option></option>")
-        .attr("value",value.title)
-        .text(value.title));
+      .append($("<option></option>")
+      .attr("value",value.title)
+      .text(value.title));
     });
   });
 
   // $.post()
-  $("#post").click(function() {
-    jQuery.post("/api/tag", $("#tag_form").serialize(), function (data, textStatus, jqXHR) {
+  tag_form.submit(function(){
+    jQuery.post("/api/tag", tag_form.serialize(), function (data, textStatus, jqXHR) {
       console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
     });
     $("#status").html("posted");
-    $('#result').html($("#tag_form").serialize());
+    $('#result').html(tag_form.serialize());
+    return false;
   });
 
   // $.get()

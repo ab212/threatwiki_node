@@ -1,6 +1,11 @@
 WIP
 
-May 18, 2012 TODOs:
+May 18, 2012:
  - Data is not properly being carried forward from forms to POST
  - Datapoint model needs tweaks
  - Update tests
+
+May 19, 2012:
+ - Update tests
+ - Add failsafes throughout code
+ - Add Geolocation

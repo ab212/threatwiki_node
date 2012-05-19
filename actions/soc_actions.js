@@ -15,9 +15,9 @@ function load_socActions(app, socmodel) {
 
   // retrieve by id
   app.get('/api/soc/:id', function (req, res) {
-    return SocModel.findById(req.params.id, function (err, soc1) {
+    return SocModel.findById(req.params.id, function (err, soc) {
       if (!err) {
-        return res.send(soc1);
+        return res.send(soc);
       } else {
         return console.log(err);
       }
@@ -26,43 +26,43 @@ function load_socActions(app, socmodel) {
 
   // create
   app.post('/api/soc', function (req, res) {
-    var soc1;
+    var soc;
     console.log("POST: ");
     console.log(req.body);
 
-    soc1 = new SocModel({
+    soc = new SocModel({
       title: req.body.title,
     });
 
-    soc1.save(function (err) {
+    soc.save(function (err) {
       if (!err) {
         return console.log("created");
       } else {
         return console.log("!!!Could not Save: " + err);
       }
     });
-    return res.send(soc1);
+    return res.send(soc);
   });
 
   // update
   app.put('/api/soc/:id', function (req, res) {
-    return SocModel.findById(req.params.id, function (err, soc1) {
-      soc1.title = req.body.title;
-      return soc1.save(function (err) {
+    return SocModel.findById(req.params.id, function (err, soc) {
+      soc.title = req.body.title;
+      return soc.save(function (err) {
         if (!err) {
           console.log("updated");
         } else {
           console.log(err);
         }
-        return res.send(soc1);
+        return res.send(soc);
       });
     });
   });
 
   // delete by id
   app.get('/api/soc/delete/:id', function (req, res) {
-    return SocModel.findById(req.params.id, function (err, soc1) {
-      return soc1.remove(function (err) {
+    return SocModel.findById(req.params.id, function (err, soc) {
+      return soc.remove(function (err) {
         if (!err) {
           console.log("removed");
           return res.send('');

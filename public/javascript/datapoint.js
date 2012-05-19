@@ -2,7 +2,8 @@ $(document).ready(function() {
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
     $("#result").append("Loaded SOCs");
-    $.each(socs, function(key, value) {
+    console.log("Loaded SOCs");
+    $.each(socs, function(key, value){
       $('#soc')
       .append($("<option></option>")
       .attr("value",value.title)
@@ -10,26 +11,33 @@ $(document).ready(function() {
     });
   });
 
-  // get tags
-  var tags = jQuery.get("/api/tag/", function (tags, textStatus, jqXHR) {
-    $("#result").append("<br/>Loaded Tags");
-    $.each(tags, function(key, value) {
-      $('#tag_list')
-      .append($("<option></option>")
-      .attr("value",value._id)
-      .text(value.title));
+  // on soc change, refresh tags
+  $("#soc").change(function(){
+	var selected_soc = $("#soc option:selected").val();
+
+    var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
+      $("#result").append("<br/>Loaded Tags");
+      console.log("Loaded Tags");
+      $.each(tags, function(key, value) {
+        $('#tag_list')
+        .empty()
+        .append($("<option></option>")
+        .attr("value",value._id)
+        .text(value.title));
+      });
     });
   });
 
   $("#status").html("received");
 
   // $.post()
-  $("#post").click(function() {
-    jQuery.post("/api/datapoint", $("#datapoint_form").serialize(), function (data, textStatus, jqXHR) {
-      console.log("Post resposne:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+  datapoint_form.submit(function(){
+    jQuery.post("/api/datapoint", datapoint_form.serialize(), function (data, textStatus, jqXHR) {
+      console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
     });
     $("#status").html("posted");
-    $('#result').html($("#datapoint_form").serialize());
+    $('#result').html(datapoint_form.serialize());
+    return false;
   });
 
   // $.get()
