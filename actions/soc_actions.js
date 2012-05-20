@@ -24,6 +24,17 @@ function load_socActions(app, socmodel) {
     });
   });
 
+  // retrieve by title
+  app.get('/api/soc/title/:title', function (req, res) {
+    return SocModel.find({ title: req.params.title}, function (err, soc) {
+      if (!err) {
+        return res.send(soc);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // create
   app.post('/api/soc', function (req, res) {
     var soc;

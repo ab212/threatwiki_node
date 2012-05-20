@@ -15,9 +15,20 @@ function load_datapointActions(app, datapointmodel) {
 
   // retrieve by id
   app.get('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id, function (err, datapoint1) {
+    return DataPointModel.findById(req.params.id, function (err, datapoint) {
       if (!err) {
-        return res.send(datapoint1);
+        return res.send(datapoint);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by date
+  app.get('/api/datapoint/:id', function (req, res) {
+    return DataPointModel.findById(req.params.id, function (err, datapoint) {
+      if (!err) {
+        return res.send(datapoint);
       } else {
         return console.log(err);
       }
@@ -26,54 +37,57 @@ function load_datapointActions(app, datapointmodel) {
 
   // create
   app.post('/api/datapoint', function (req, res) {
-    var datapoint1;
+    var datapoint;
     console.log("POST: ");
     console.log(req.body);
 
-    datapoint1 = new DataPointModel({
+    datapoint = new DataPointModel({
       title: req.body.title,
       description: req.body.description,
       soc: req.body.soc,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       tags: req.body.tag_list
-      
     });
 
-    datapoint1.save(function (err) {
+    datapoint.save(function (err) {
       if (!err) {
         return console.log("created");
       } else {
         return console.log(err);
       }
     });
-    return res.send(datapoint1);
+    return res.send(datapoint);
   });
 
   // update
   app.put('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id, function (err, datapoint1) {
-      datapoint1.title = req.body.title;
-      datapoint1.description = req.body.description;
-      soc: req.body.soc
-      //latitude: req.body.latitude,
-      //longitude: req.body.longitude,
-      //tags: req.body.tag_list
-      return datapoint1.save(function (err) {
+    return DataPointModel.findById(req.params.id, function (err, datapoint) {
+
+      datapoint = new DataPointModel({
+        title: req.body.title,
+        description: req.body.description,
+        soc: req.body.soc,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+        tags: req.body.tag_list
+      });
+
+      return datapoint.save(function (err) {
         if (!err) {
           console.log("updated");
         } else {
           console.log(err);
         }
-        return res.send(datapoint1);
+        return res.send(datapoint);
       });
     });
   });
 
   // delete by id
   app.get('/api/datapoint/delete/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id, function (err, datapoint1) {
-      return datapoint1.remove(function (err) {
+    return DataPointModel.findById(req.params.id, function (err, datapoint) {
+      return datapoint.remove(function (err) {
         if (!err) {
           console.log("removed");
           return res.send('');
