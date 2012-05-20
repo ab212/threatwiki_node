@@ -11,3 +11,13 @@ May 18, 2012:
  - Data is not properly being carried forward from forms to POST
  - Datapoint model needs tweaks
  - Update tests
+
+
+How to use:
+Make sure you have an instance of mongodb running
+node app.js
+In a browser, access
+http://localhost:3000/datapoint
+http://localhost:3000/tag
+or
+http://localhost:3000/datapoint
