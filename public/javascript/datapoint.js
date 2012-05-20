@@ -15,6 +15,32 @@ $(document).ready(function() {
     });
   });
 
+  $(function() {
+      	var selected_soc;
+    
+      var socs2 = jQuery.get("/api/soc/", function (socs2, textStatus, jqXHR) {
+          $.each(socs2, function(key, value){
+              if (key==0){
+              	selected_soc = value.title;
+              	var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
+                     $("#result").append("<br/>Loaded Initial Tags");
+                     console.log("Loaded initial tags");
+                     $.each(tags, function(key, value) {
+                       $('#tag_list')
+                       .append($("<option></option>")
+                       .attr("value",value._id)
+                       .text(value.title));
+                     });
+                   });
+          	} else {
+          	    return true;
+          	}
+            
+          });
+    });
+  });
+  
+
   // on soc change, refresh tags
   $("#soc").change(function(){
 	var selected_soc = $("#soc option:selected").val();
@@ -22,15 +48,17 @@ $(document).ready(function() {
     var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
       $("#result").append("<br/>Loaded Tags");
       console.log("Loaded Tags");
+      //empty list of tags before the foreach, in case there is no tag in that SOC
+      $('#tag_list').empty();
       $.each(tags, function(key, value) {
         $('#tag_list')
-        .empty()
         .append($("<option></option>")
         .attr("value",value._id)
         .text(value.title));
       });
     });
   });
+  
 
   $("#status").html("received");
 
