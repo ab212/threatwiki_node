@@ -10,20 +10,20 @@ exports.index = function(req, res){
 exports.soc = function(req, res){
   res.render('soc', { locals: {
     title: 'SOC Manager'
-    , scripts: ['soc.js']
+    , scripts: ['javascript/soc.js']
   }});
 };
 
 exports.datapoint = function(req, res){
   res.render('datapoint', { locals: {
     title: 'Datapoint Manager'
-    , scripts: ['datapoint.js', 'jquery.auto-geocoder.js']
+    , scripts: ['javascript/datapoint.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', 'javascript/jquery.auto-geocoder.js']
   }});
 };
 
 exports.tag = function(req, res){
   res.render('tag', { locals: {
     title: 'Tag Manager'
-    , scripts: ['tag.js']
+    , scripts: ['javascript/tag.js']
   }});
 };
