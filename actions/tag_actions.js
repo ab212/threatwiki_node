@@ -36,6 +36,19 @@ function load_tagActions(app, tagmodel) {
     });
   });
 
+  // retrieve by tag title
+  app.get('/api/tag/title/:title', function (req, res) {
+	console.log('Search by ' + req.params.title);
+    return TagModel.find({ title: req.params.title}, function (err, tag) {
+      if (!err) {
+        console.log("Tag found: %o", tag);
+        return res.send(tag);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // create
   app.post('/api/tag', function (req, res) {
     var tag;

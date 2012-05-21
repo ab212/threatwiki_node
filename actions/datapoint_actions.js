@@ -1,7 +1,8 @@
 var express = require("express");
 
-function load_datapointActions(app, datapointmodel) {
+function load_datapointActions(app, datapointmodel, tagmodel) {
   var DataPointModel = datapointmodel;
+  var TagModel = tagmodel;
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
     return DataPointModel.find(function (err, datapoints) {
@@ -24,11 +25,32 @@ function load_datapointActions(app, datapointmodel) {
     });
   });
 
-  // retrieve by date
-  app.get('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id, function (err, datapoint) {
+  // retrieve by SOC
+  app.get('/api/datapoint/soc/:soc', function (req, res) {
+    console.log("Search by: " + req.params.soc);
+    return DataPointModel.find({soc: req.params.soc}, function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by tag
+  app.get('/api/datapoint/tag/:tag_title', function (req, res) {
+    // first retrieve tag based on tag_title
+    var tag = TagModel.findOne({ title: req.params.tag_title}, function (err, tag) {
+      if (!err) {
+        console.log("Tag found at " + tag._id);
+        // search datapoint for the tag_id that we just found
+        return DataPointModel.find({tags: tag._id}, function (err, datapoint) {
+          if (!err) {
+            return res.send(datapoint);
+          } else {
+            return console.log(err);
+          }
+        });
       } else {
         return console.log(err);
       }
