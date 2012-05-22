@@ -2,8 +2,10 @@ var application_root = __dirname
   , routes = require("./routes")
   , model = require("./model")
   , express = require("express")
+  , everyauth = require('everyauth')
   , mongoose = require('mongoose')
   , path = require("path")
+  , util = require('util')
   // actions
   , soc_actions = require("./actions/soc_actions")
   , datapoint_actions = require("./actions/datapoint_actions")
@@ -12,16 +14,65 @@ var application_root = __dirname
 
 var app = module.exports = express.createServer();
 
+everyauth.helpExpress(app);
+
 // database
 mongoose.connect('mongodb://localhost/namp', function(err) {
   if (err) throw err;
 });
+
+var usersById = {};
+var nextUserId = 0;
+
+function addUser (source, sourceUser) {
+  var user;
+  if (arguments.length === 1) { // password-based
+    user = sourceUser = source;
+    user.id = ++nextUserId;
+    return usersById[nextUserId] = user;
+  } else { // non-password-based
+    user = usersById[++nextUserId] = {id: nextUserId};
+    user[source] = sourceUser;
+  }
+  return user;
+}
+
+var usersByGoogleId = {};
+
+everyauth.google
+  .appId('619120872838.apps.googleusercontent.com')
+  .appSecret('aAE27lzFLKQi9QX-lFfToDbk')
+  .scope('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile') // What you want access to
+  //TODO: redirect to our own auth-fail page
+  //  .handleAuthCallbackError( function (req, res) {
+  //})
+  .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
+    //var promise = this.Promise();
+    //only allow someone to login with an email that finish by thesentinelproject.org
+    //var splitemail = googleUserMetadata.email.split("@");
+    //var domain = splitemail[1];
+    //if (domain=='thesentinelproject.org'){
+      googleUserMetadata.refreshToken = accessTokenExtra.refresh_token;
+      googleUserMetadata.expiresIn = accessTokenExtra.expires_in;
+      console.log(util.inspect(googleUserMetadata));
+      return usersByGoogleId[googleUserMetadata.id] || (usersByGoogleId[googleUserMetadata.id] = addUser('google', googleUserMetadata));
+    //} else {
+      //can't make that fail gracefully
+      //return promise.fail(new Error('my silly error'));
+    //}
+  })
+  .redirectPath('/');
+
+
 
 // config
 app.configure(function () {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
+  app.use(express.cookieParser()); // ADDED LINE (order matters)
+  app.use(express.session({ 'secret' : 'test' })); // ADDED LINE
+  app.use(everyauth.middleware()); // ADDED LINE
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));

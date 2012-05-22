@@ -1,1 +1,4 @@
-
+- if (!everyauth.loggedIn)
+ a(href='/auth/google', style='border: 0px') login with google apps
+- else
+ p Welcome #{everyauth.google.user.name} with email #{everyauth.google.user.email}!

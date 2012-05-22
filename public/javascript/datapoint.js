@@ -79,7 +79,7 @@ $(document).ready(function() {
     $('#consumed_table').html('');
 
     var datapoints = jQuery.get("/api/datapoint/", function (datapoints, textStatus, jqXHR) {
-      console.log("Get resposne:");
+      console.log("Get response:");
       console.dir(datapoints);
       console.log(textStatus);
       console.dir(jqXHR);
