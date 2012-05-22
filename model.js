@@ -6,8 +6,11 @@ function createModel() {
   var DataPoint = new Schema ({
       title: { type: String, required: true }
     , description: { type: String, required: true }
-    , latitude: { type: String, required: true }
-    , longitude: { type: String, required: true }
+    , Location: {
+        title: { type: String, required: true }
+      , latitude: { type: String, required: true }
+      , longitude: { type: String, required: true }
+      }
     , soc: { type: String, required: true }
     , modified: { type: Date, default: Date.now }
     // foreign key

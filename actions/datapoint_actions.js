@@ -67,8 +67,11 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
       title: req.body.title,
       description: req.body.description,
       soc: req.body.soc,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude,
+      Location: {
+		title: req.body.location,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+	  },
       tags: req.body.tag_list
     });
 
@@ -90,8 +93,11 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
         title: req.body.title,
         description: req.body.description,
         soc: req.body.soc,
-        latitude: req.body.latitude,
-        longitude: req.body.longitude,
+        Location: {
+	  	title: req.body.location,
+          latitude: req.body.latitude,
+          longitude: req.body.longitude,
+	    },
         tags: req.body.tag_list
       });
 
