@@ -1,4 +1,5 @@
 // define new routes here
+util = require('util');
 
 exports.index = function(req, res){
   res.render('index', { locals: {
@@ -9,39 +10,45 @@ exports.index = function(req, res){
 
 exports.soc = function(req, res){
   //only render the page if we are logged in the system
-  if(req.session.auth && req.session.auth.loggedIn){
+  var splitemail = req.session.auth.google.user.email.split("@");
+var domain = splitemail[1];
+  if(req.session.auth && req.session.auth.loggedIn && domain=='thesentinelproject.org'){
     res.render('soc', { locals: {
       title: 'SOC Manager'
       , scripts: ['javascript/soc.js']
     }});
   }else{
-      console.log("The user is NOT logged in");
-      res.redirect('/');
+      //force logout if user doesn't meet conditions to view the page
+      res.redirect('/logout');
   }
 };
 
 exports.datapoint = function(req, res){
+  var splitemail = req.session.auth.google.user.email.split("@");
+var domain = splitemail[1];
   //only render the page if we are logged in the system
-  if(req.session.auth && req.session.auth.loggedIn){
+  if(req.session.auth && req.session.auth.loggedIn && domain=='thesentinelproject.org'){
     res.render('datapoint', { locals: {
       title: 'Datapoint Manager'
       ,  scripts: ['javascript/datapoint.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', 'javascript/jquery.auto-geocoder.js']
     }});
   } else {
-      console.log("The user is NOT logged in");
-      res.redirect('/');
+      //force logout if user doesn't meet conditions to view the page
+      res.redirect('/logout');
   }
 };
 
 exports.tag = function(req, res){
+  var splitemail = req.session.auth.google.user.email.split("@");
+var domain = splitemail[1];
   //only render the page if we are logged in the system
-  if(req.session.auth && req.session.auth.loggedIn){
+  if(req.session.auth && req.session.auth.loggedIn && domain=='thesentinelproject.org'){
     res.render('tag', { locals: {
       title: 'Tag Manager'
       , scripts: ['javascript/tag.js']
     }});
   } else {
-    console.log("The user is NOT logged in");
-    res.redirect('/');
+    //force logout if user doesn't meet conditions to view the page
+    res.redirect('/logout');
   }
 };

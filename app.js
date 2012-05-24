@@ -39,6 +39,8 @@ function addUser (source, sourceUser) {
 
 var usersByGoogleId = {};
 
+
+
 everyauth.google
   .appId('619120872838.apps.googleusercontent.com')
   .appSecret('aAE27lzFLKQi9QX-lFfToDbk')
@@ -47,21 +49,20 @@ everyauth.google
   //  .handleAuthCallbackError( function (req, res) {
   //})
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
-    //var promise = this.Promise();
     //only allow someone to login with an email that finish by thesentinelproject.org
-    //var splitemail = googleUserMetadata.email.split("@");
-    //var domain = splitemail[1];
-    //if (domain=='thesentinelproject.org'){
+    var splitemail = googleUserMetadata.email.split("@");
+    var domain = splitemail[1];
+    if (domain=='thesentinelproject.org'){
       googleUserMetadata.refreshToken = accessTokenExtra.refresh_token;
       googleUserMetadata.expiresIn = accessTokenExtra.expires_in;
       console.log(util.inspect(googleUserMetadata));
       return usersByGoogleId[googleUserMetadata.id] || (usersByGoogleId[googleUserMetadata.id] = addUser('google', googleUserMetadata));
-    //} else {
-      //can't make that fail gracefully
-      //return promise.fail(new Error('my silly error'));
-    //}
+    } else {
+      console.log("Not the sentinel project domain name");
+     return ['Not the sentinel project domain name'];
+    }
   })
-  .redirectPath('/');
+  .redirectPath('/soc'); //where to redirect after we get back from the login screen from google
 
 
 
@@ -70,9 +71,9 @@ app.configure(function () {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
-  app.use(express.cookieParser()); // ADDED LINE (order matters)
-  app.use(express.session({ 'secret' : 'test' })); // ADDED LINE
-  app.use(everyauth.middleware()); // ADDED LINE
+  app.use(express.cookieParser()); 
+  app.use(express.session({ 'secret' : 'not sure what to put here' })); 
+  app.use(everyauth.middleware());
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
