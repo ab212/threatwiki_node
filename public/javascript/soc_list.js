@@ -1,6 +1,6 @@
 $(document).ready(function() {
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
-    console.log("Get resposne:");
+    console.log("Get response:");
     console.dir(socs);
     console.log(textStatus);
     console.dir(jqXHR);
