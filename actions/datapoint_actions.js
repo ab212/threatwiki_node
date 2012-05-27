@@ -27,7 +27,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
 
   // retrieve by SOC
   app.get('/api/datapoint/soc/:soc', function (req, res) {
-    console.log("Search by: " + req.params.soc);
+    console.log("DATAPOINT_ACTIONS:SOC:Search by: " + req.params.soc);
     return DataPointModel.find({soc: req.params.soc}, function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
@@ -51,6 +51,18 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
             return console.log(err);
           }
         });
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by location
+  app.get('/api/datapoint/location/:Location', function (req, res) {
+    console.log("DATAPOINT_ACTIONS:LOCATION:Search by: " + req.params.Location);
+    return DataPointModel.find({'Location.title': req.params.Location}, function (err, datapoint) {
+      if (!err) {
+        return res.send(datapoint);
       } else {
         return console.log(err);
       }
