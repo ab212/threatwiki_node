@@ -107,7 +107,7 @@ app.get('/tag/create', routes.tag.create);
 // import socActions
 var socActions = soc_actions.load_socActions(app, SocModel);
 var datapointActions = datapoint_actions.load_datapointActions(app, DataPointModel, TagModel);
-var tagActions = tag_actions.load_tagActions(app, TagModel);
+var tagActions = tag_actions.load_tagActions(app, TagModel, DataPointModel);
 
 // server listen
 app.listen(3000);

@@ -1,7 +1,10 @@
 var express = require("express");
+var util = require("util");
 
-function load_tagActions(app, tagmodel) {
+function load_tagActions(app, tagmodel,datapointmodel) {
   var TagModel = tagmodel;
+  var DataPointModel = datapointmodel;
+
   // retrieve all
   app.get('/api/tag', function (req, res){
     return TagModel.find(function (err, tags) {
@@ -47,6 +50,26 @@ function load_tagActions(app, tagmodel) {
         return console.log(err);
       }
     });
+  });
+
+  // retrieve all tags inside a datapoint
+  app.get('/api/tag/datapoint/:datapointid', function (req, res) {
+    console.log('TAG_ACTIONS:DatapointId:Search by ' + req.params.datapointid);
+    var datapoint = DataPointModel.findById(req.params.datapointid, function (err, datapoint) {
+      if (!err) {
+         console.log('TAG_ACTIONS:Id:Search by ' + datapoint.tags);
+          return TagModel.find({ _id: {$in: datapoint.tags }}, function (err, tag) {
+            if (!err) {
+              console.log("Tag found: %o", tag);
+              return res.send(tag);
+            } else {
+              return console.log(err);
+            }
+          });
+        } else {
+            return console.log(err);
+        }
+       }); 
   });
 
   // create
