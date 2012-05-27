@@ -91,7 +91,7 @@
 
           var latlng = String(results[0].geometry.location).split(",");
           var latitude = latlng[0].slice(1);
-          var longitude = latlng[1].slice(0, latlng[1].length - 1);
+          var longitude = latlng[1].slice(1, latlng[1].length - 1);
 
           $('#latitude').attr("value",latitude);
           $('#longitude').attr("value",longitude);
