@@ -17,7 +17,5 @@ How to use:
 Make sure you have an instance of mongodb running
 node app.js
 In a browser, access
-http://localhost:3000/datapoint
-http://localhost:3000/tag
-or
-http://localhost:3000/datapoint
+http://localhost:3000
+You will be asked to login with a Google Apps account, you need a @thesentinelproject.org google apps email in order to login
