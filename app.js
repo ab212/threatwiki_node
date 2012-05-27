@@ -98,8 +98,11 @@ app.helpers({
 // get routes
 app.get('/', routes.index);
 app.get('/soc', routes.soc);
+app.get('/soc/create', routes.soc.create);
 app.get('/datapoint', routes.datapoint);
+app.get('/datapoint/create', routes.datapoint.create);
 app.get('/tag', routes.tag);
+app.get('/tag/create', routes.tag.create);
 
 // import socActions
 var socActions = soc_actions.load_socActions(app, SocModel);
