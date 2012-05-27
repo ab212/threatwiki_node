@@ -1,13 +1,15 @@
 $(document).ready(function() {
   var datapoints = jQuery.get("/api/datapoint/", function (datapoints, textStatus, jqXHR) {
-    console.log("Get resposne:");
+    console.log("Get response:");
     console.dir(datapoints);
     console.log(textStatus);
     console.dir(jqXHR);
 
     // return data in tabular format
     $.each(datapoints, function(key, value) {
+
       var d = new Date(value.modified);
+
       $('#datapoint')
       .find('tbody')
       .append($("<tr></tr>")
@@ -26,7 +28,7 @@ $(document).ready(function() {
       .text(value.tags[0])))
       .append($("<td></td>")
       .append($("<a></a>")
-      .text(getMonthText(d.getMonth() + 1) + " " + d.getDay() + ", " + d.getFullYear())))
+      .text(getMonthText(d.getMonth() + 1) + " " + d.getDate() + ", " + d.getFullYear())))
       .append($("<td></td>")
       .append($("<a></a>")
       .attr("href","/api/datapoint/delete/"+value._id)

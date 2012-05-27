@@ -17,7 +17,7 @@ $(document).ready(function() {
       .text(value.title)))
       .append($("<td></td>")
       .append($("<a></a>")
-      .text(getMonthText(d.getMonth() + 1) + " " + d.getDay() + ", " + d.getFullYear())))
+      .text(getMonthText(d.getMonth() + 1) + " " + d.getDate() + ", " + d.getFullYear())))
       .append($("<td></td>")
       .append($("<a></a>")
       .attr("href","/api/soc/delete/"+value._id)
