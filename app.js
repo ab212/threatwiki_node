@@ -14,7 +14,7 @@ var application_root = __dirname
 ;
 
 var app = module.exports = express.createServer();
-
+app.enable("jsonp callback");
 everyauth.helpExpress(app);
 
 // database
