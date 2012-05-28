@@ -28,16 +28,26 @@ function createModel() {
     , modified: { type: Date, default: Date.now }
     , soc: { type: String, required: true }
   });
+  //used for user authentication, can't have more than 1 user with same email
+   var User = new Schema ({
+      name: { type: String, required: true }
+    , email: { type: String, required: true, unique: true }
+    , modified: { type: Date, default: Date.now }
+    , created: { type: Date, default: Date.now }
+  });
 
   // model definitions
   var SocModel = mongoose.model('Soc', Soc);
   var DataPointModel = mongoose.model('DataPoint', DataPoint);
   var TagModel = mongoose.model('Tag', Tag);
+  var UserModel = mongoose.model('User', User);
+
 
   // model exports
   exports.SocModel = SocModel;
   exports.DataPointModel = DataPointModel;
   exports.TagModel = TagModel;
+  exports.UserModel = UserModel;
 }
 
 exports.createModel = createModel;
