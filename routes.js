@@ -1,6 +1,8 @@
 // define new routes here
 util = require('util');
 
+var jQuery = require('jQuery');
+
 exports.index = function(req, res){
   res.render('index', { locals: {
     title: 'Threatwiki'
@@ -13,11 +15,14 @@ exports.soc = function(req, res){
   var splitemail = req.session.auth.google.user.email.split("@");
   var domain = splitemail[1];
   if (req.session.auth && req.session.auth.loggedIn && domain=='thesentinelproject.org'){
-
-  res.render('socList', { locals: {
-      title: 'SOC Manager'
-      , scripts: ['/javascript/utils.js', '/javascript/soc_list.js']
-    }});
+    jQuery.getJSON('http://localhost:3000/api/soc?callback=?', function(socs) {
+      console.log(socs);
+      res.render('socList', { locals: {
+        title: 'SOC Manager'
+        , scripts: ['/javascript/soc_list.js']
+        , socs: socs
+      }});
+    });
   } else {
       //force logout if user doesn't meet conditions to view the page
       res.redirect('/logout');
@@ -44,10 +49,14 @@ exports.datapoint = function(req, res){
 var domain = splitemail[1];
   //only render the page if we are logged in the system
   if(req.session.auth && req.session.auth.loggedIn && domain=='thesentinelproject.org'){
-    res.render('datapointList', { locals: {
-      title: 'Datapoint Manager'
-      , scripts: ['/javascript/utils.js', '/javascript/datapoint_list.js']
-    }});
+    jQuery.getJSON('http://localhost:3000/api/datapoint?callback=?', function(datapoints) {
+      console.log(datapoints);
+      res.render('datapointList', { locals: {
+        title: 'Datapoint Manager'
+        , scripts: ['/javascript/datapoint_list.js']
+        , datapoints: datapoints
+      }});
+    })
   } else {
       //force logout if user doesn't meet conditions to view the page
       res.redirect('/logout');
@@ -74,10 +83,14 @@ exports.tag = function(req, res){
 var domain = splitemail[1];
   //only render the page if we are logged in the system
   if(req.session.auth && req.session.auth.loggedIn && domain=='thesentinelproject.org'){
-    res.render('tagList', { locals: {
-      title: 'Tag Manager'
-      , scripts: ['/javascript/utils.js', '/javascript/tag_list.js']
-    }});
+    jQuery.getJSON('http://localhost:3000/api/tag?callback=?', function(tags) {
+      console.log(tags);
+      res.render('tagList', { locals: {
+        title: 'Tag Manager'
+        , scripts: ['/javascript/tag_list.js']
+        , tags: tags
+      }});
+    })
   } else {
     //force logout if user doesn't meet conditions to view the page
     res.redirect('/logout');

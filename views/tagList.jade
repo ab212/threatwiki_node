@@ -10,4 +10,13 @@ div#wrap
         th modified
         th actions
     tbody
-
+     each tag, i in tags
+        tr(id="row_"+tag._id)
+          td
+            #{tag.title}
+          td
+            #{tag.soc}
+          td
+            #{tag.modified}
+          td 
+            a(href="#", id="delete_"+tag._id) delete

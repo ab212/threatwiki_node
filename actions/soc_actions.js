@@ -76,7 +76,7 @@ function load_socActions(app, socmodel) {
       return soc.remove(function (err) {
         if (!err) {
           console.log("removed");
-          return res.send('');
+          return res.send('done');
         } else {
           console.log(err);
         }

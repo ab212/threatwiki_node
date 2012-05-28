@@ -12,3 +12,17 @@ div#wrap
         th modified
         th actions
     tbody
+     each datapoint, i in datapoints
+        tr(id="row_"+datapoint._id)
+          td
+            #{datapoint.title}
+          td
+            #{datapoint.soc}
+          td
+            #{datapoint.Location.title}
+          td
+            tags
+          td
+            #{datapoint.modified}
+          td 
+            a(href="#", id="delete_"+datapoint._id) delete
