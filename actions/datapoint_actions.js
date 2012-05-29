@@ -5,7 +5,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
   var TagModel = tagmodel;
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
-    return DataPointModel.find(function (err, datapoints) {
+    return DataPointModel.find().populate('tags',['title']).run(function (err, datapoints) {
       if (!err) {
         return res.send(datapoints);
       } else {
@@ -16,7 +16,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
 
   // retrieve by id
   app.get('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id, function (err, datapoint) {
+    return DataPointModel.findById(req.params.id).populate('tags',['title']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
       } else {
@@ -28,7 +28,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
   // retrieve by SOC
   app.get('/api/datapoint/soc/:soc', function (req, res) {
     console.log("DATAPOINT_ACTIONS:SOC:Search by: " + req.params.soc);
-    return DataPointModel.find({soc: req.params.soc}, function (err, datapoint) {
+    return DataPointModel.find({soc: req.params.soc}).populate('tags',['title']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
       } else {
@@ -44,7 +44,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
       if (!err) {
         console.log("Tag found at " + tag._id);
         // search datapoint for the tag_id that we just found
-        return DataPointModel.find({tags: tag._id}, function (err, datapoint) {
+        return DataPointModel.find({tags: tag._id}).populate('tags',['title']).run(function (err, datapoint) {
           if (!err) {
             return res.send(datapoint);
           } else {
@@ -60,7 +60,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
   // retrieve by location
   app.get('/api/datapoint/location/:Location', function (req, res) {
     console.log("DATAPOINT_ACTIONS:LOCATION:Search by: " + req.params.Location);
-    return DataPointModel.find({'Location.title': req.params.Location}, function (err, datapoint) {
+    return DataPointModel.find({'Location.title': req.params.Location}).populate('tags',['title']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
       } else {

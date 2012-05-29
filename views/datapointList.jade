@@ -21,7 +21,8 @@ div#wrap
           td
             #{datapoint.Location.title}
           td
-            tags
+            each tags in datapoint.tags
+              #{tags.title} <br />
           td
             #{datapoint.modified}
           td 
