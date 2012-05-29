@@ -13,6 +13,7 @@ function createModel() {
       }
     , soc: { type: String, required: true }
     , modified: { type: Date, default: Date.now }
+    , created: { type: Date, default: Date.now }
     // foreign key
     , tags     : [{ type: ObjectId, ref: 'Tag' }]   
   });
@@ -20,12 +21,15 @@ function createModel() {
   var Soc = new Schema ({
       title: { type: String, required: true }
     , modified: { type: Date, default: Date.now }
+    , created: { type: Date, default: Date.now }
     });
+
 
   var Tag = new Schema ({
       title: { type: String, required: true }
     , description: { type: String, required: false }
     , modified: { type: Date, default: Date.now }
+    , created: { type: Date, default: Date.now }
     , soc: { type: String, required: true }
   });
   //used for user authentication, can't have more than 1 user with same email
