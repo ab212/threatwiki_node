@@ -7,12 +7,28 @@ div#wrap
   div#post_form
     span.bold
       p New SOC
-      form#soc_form
-        label(for="title") Title
-        br/
-        input(type="text", name="title")
-        br/
-        input(type="submit", value="save")
+      - if (typeof(soc) != 'undefined')
+        form#soc_form_update
+          input(type="text", name="id", value=soc._id)
+          br/
+          label(for="title") Title
+          br/
+          input(type="text", name="title", value=soc.title)
+          br/
+          input(type="submit", value="save")
+      - else
+        form#soc_form
+          br/
+          - if (typeof(soc) != 'undefined')
+            input(type="text", name="id", value=soc._id)
+            br/
+            label(for="title") Title
+            br/
+            input(type="text", name="title", value=soc.title)
+          - else
+            input(type="text", name="title")
+          br/
+          input(type="submit", value="save")
 
   hr/
   div#get-div
@@ -36,3 +52,4 @@ div#wrap
 
 script
   var soc_form = $('#soc_form');
+  var soc_form_update = $('#soc_form_update');

@@ -80,10 +80,10 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
       description: req.body.description,
       soc: req.body.soc,
       Location: {
-		title: req.body.location,
+		    title: req.body.location,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
-	  },
+	    },
       tags: req.body.tag_list
     });
 
@@ -101,17 +101,13 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
   app.put('/api/datapoint/:id', function (req, res) {
     return DataPointModel.findById(req.params.id, function (err, datapoint) {
 
-      datapoint = new DataPointModel({
-        title: req.body.title,
-        description: req.body.description,
-        soc: req.body.soc,
-        Location: {
-	  	title: req.body.location,
-          latitude: req.body.latitude,
-          longitude: req.body.longitude,
-	    },
-        tags: req.body.tag_list
-      });
+      datapoint.title = req.body.title;
+      datapoint.description = req.body.description;
+      datapoint.soc = req.body.soc;
+      datapoint.Location.title = req.body.location;
+      datapoint.Location.latitude = req.body.latitude;
+      datapoint.Location.longitude = req.body.longitude;
+      datapoint.tags = req.body.tags;
 
       return datapoint.save(function (err) {
         if (!err) {
@@ -122,6 +118,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
         return res.send(datapoint);
       });
     });
+    return res.send(datapoint);
   });
 
   // delete by id

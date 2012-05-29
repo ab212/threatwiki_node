@@ -8,38 +8,74 @@ div#wrap
   div#post_form
     span.bold
       p New Datapoint
-      form#datapoint_form
-        label(for="soc") SOC
-        br/
-        select(id="soc", name="soc")
-        br/
-        label(for="title") Title
-        br/
-        input(type="text", name="title")
+      - if (typeof(datapoint) != 'undefined')
+        form#datapoint_form_update
+          input(type="text", name="id", value=datapoint._id)
+          br/
+          label(for="soc") SOC
+          br/
+          select(id="soc", name="soc", value=datapoint.soc)
+          br/
+          label(for="title") Title
+          br/
+          input(type="text", name="title", value=datapoint.title)
 
-        br/
-        label(for="location") Location
-        br/
-        input(id="location", name="location")
+          br/
+          label(for="location") Location
+          br/
+          input(id="location", name="location", value=datapoint.Location.title)
 
-        br/
-        label(for="latitude") Latitude
-        br/
-        input(type="text", id="latitude", name="latitude")
-        br/
-        label(for="longitude") Longitude
-        br/
-        input(type="text", id="longitude", name="longitude")
-        br/
-        label(for="description") Description
-        br/
-        textarea(name="description", rows="4", cols="60")
-        br/
-        label(for="tags") Tags
-        br/
-        select(multiple id="tag_list", name="tag_list")
-        br/
-        input(type="submit", value="save")
+          br/
+          label(for="latitude") Latitude
+          br/
+          input(type="text", id="latitude", name="latitude", value=datapoint.Location.latitude)
+          br/
+          label(for="longitude") Longitude
+          br/
+          input(type="text", id="longitude", name="longitude", value=datapoint.Location.longitude)
+          br/
+          label(for="description") Description
+          br/
+          textarea(name="description", rows="4", cols="60")  #{datapoint.description}
+          br/
+          label(for="tags") Tags
+          br/
+          select(multiple id="tag_list", name="tag_list")
+          br/
+          input(type="submit", value="save")
+      - else
+        form#datapoint_form
+          label(for="soc") SOC
+          br/
+          select(id="soc", name="soc")
+          br/
+          label(for="title") Title
+          br/
+          input(type="text", name="title")
+
+          br/
+          label(for="location") Location
+          br/
+          input(id="location", name="location")
+
+          br/
+          label(for="latitude") Latitude
+          br/
+          input(type="text", id="latitude", name="latitude")
+          br/
+          label(for="longitude") Longitude
+          br/
+          input(type="text", id="longitude", name="longitude")
+          br/
+          label(for="description") Description
+          br/
+          textarea(name="description", rows="4", cols="60")
+          br/
+          label(for="tags") Tags
+          br/
+          select(multiple id="tag_list", name="tag_list")
+          br/
+          input(type="submit", value="save")
 
   hr/
   div#get-div
@@ -63,3 +99,4 @@ div#wrap
 
 script
   var datapoint_form = $('#datapoint_form');
+  var datapoint_form_update = $('#datapoint_form_update');

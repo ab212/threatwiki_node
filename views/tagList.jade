@@ -13,7 +13,7 @@ div#wrap
      each tag, i in tags
         tr(id="row_"+tag._id)
           td
-            #{tag.title}
+            a(href="/tag/edit?id="+tag._id) #{tag.title}
           td
             #{tag.soc}
           td

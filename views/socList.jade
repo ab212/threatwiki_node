@@ -12,7 +12,7 @@ div#wrap
      each soc, i in socs
         tr(id="row_"+soc._id)
           td
-            #{soc.title}
+            a(href="/soc/edit?id="+soc._id) #{soc.title}
           td
             #{soc.modified}
           td 

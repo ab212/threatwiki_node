@@ -110,10 +110,13 @@ app.helpers({
 app.get('/', routes.index);
 app.get('/soc', routes.soc);
 app.get('/soc/create', routes.soc.create);
+app.get('/soc/edit', routes.soc.edit);
 app.get('/datapoint', routes.datapoint);
 app.get('/datapoint/create', routes.datapoint.create);
+app.get('/datapoint/edit', routes.datapoint.edit);
 app.get('/tag', routes.tag);
 app.get('/tag/create', routes.tag.create);
+app.get('/tag/edit', routes.tag.edit);
 
 // import socActions
 var socActions = soc_actions.load_socActions(app, SocModel);

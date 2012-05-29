@@ -100,6 +100,7 @@ function load_tagActions(app, tagmodel,datapointmodel) {
       tag.title = req.body.title;
       tag.description = req.body.description;
       tag.soc = req.body.soc;
+
       return tag.save(function (err) {
         if (!err) {
           console.log("updated");
@@ -109,6 +110,7 @@ function load_tagActions(app, tagmodel,datapointmodel) {
         return res.send(tag);
       });
     });
+    return res.send(tag);
   });
 
   // delete by id

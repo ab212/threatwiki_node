@@ -68,6 +68,7 @@ function load_socActions(app, socmodel) {
         return res.send(soc);
       });
     });
+    return res.send(soc);
   });
 
   // delete by id

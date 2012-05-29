@@ -9,6 +9,20 @@ $(document).ready(function() {
     return false;
   });
 
+  // #.put()
+  soc_form_update.submit(function(){
+    var obj_id = $("input[name=id]").val();
+    jQuery.ajax({
+      url: "/api/soc/"+obj_id,
+      data: soc_form_update.serialize(),
+      type: 'PUT'
+    }).done(function() { 
+      $("#status").html("posted");
+      $('#result').html(soc_form.serialize());
+    });
+    return false;
+  });
+
   // $.get()
   $("#get").click(function() {
     $("#result").html('');
