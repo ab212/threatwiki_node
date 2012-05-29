@@ -1,5 +1,11 @@
 WIP
 
+May 29, 2012:
+ - Update tests
+ - "populate" tags properly
+ - Cleanup file structure demarcating API well
+ - Hash out all API usecases 
+
 May 19, 2012:
  - Update tests
  - Add failsafes throughout code
