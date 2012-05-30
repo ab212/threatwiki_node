@@ -12,32 +12,32 @@ function createModel() {
       , longitude: { type: String, required: true }
       }
     , soc: { type: String, required: true }
-    , modified: { type: Date, default: Date.now }
-    , created: { type: Date, default: Date.now }
+    , modified: { type: Date, required: true }
+    , created: { type: Date, required: true }
     // foreign key
     , tags     : [{ type: ObjectId, ref: 'Tag' }]   
   });
 
   var Soc = new Schema ({
       title: { type: String, required: true }
-    , modified: { type: Date, default: Date.now }
-    , created: { type: Date, default: Date.now }
+    , modified: { type: Date, required: true }
+    , created: { type: Date, required: true }
     });
 
 
   var Tag = new Schema ({
       title: { type: String, required: true }
     , description: { type: String, required: false }
-    , modified: { type: Date, default: Date.now }
-    , created: { type: Date, default: Date.now }
+    , modified: { type: Date, required: true }
+    , created: { type: Date, required: true }
     , soc: { type: String, required: true }
   });
   //used for user authentication, can't have more than 1 user with same email
    var User = new Schema ({
       name: { type: String, required: true }
     , email: { type: String, required: true, unique: true }
-    , modified: { type: Date, default: Date.now }
-    , created: { type: Date, default: Date.now }
+    , modified: { type: Date, required: true }
+    , created: { type: Date, required: true }
   });
 
   // model definitions

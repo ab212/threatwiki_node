@@ -81,7 +81,9 @@ function load_tagActions(app, tagmodel,datapointmodel) {
     tag = new TagModel({
       title: req.body.title,
       description: req.body.description,
-      soc: req.body.soc
+      soc: req.body.soc,
+      created: Date.now(),
+      modified: Date.now()
     });
 
     tag.save(function (err) {
@@ -100,6 +102,7 @@ function load_tagActions(app, tagmodel,datapointmodel) {
       tag.title = req.body.title;
       tag.description = req.body.description;
       tag.soc = req.body.soc;
+      tag.modified = Date.now();
 
       return tag.save(function (err) {
         if (!err) {

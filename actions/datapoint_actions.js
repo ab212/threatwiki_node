@@ -84,7 +84,9 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
         latitude: req.body.latitude,
         longitude: req.body.longitude,
 	    },
-      tags: req.body.tag_list
+      tags: req.body.tag_list,
+      created: Date.now(),
+      modified: Date.now()
     });
 
     datapoint.save(function (err) {
@@ -108,6 +110,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
       datapoint.Location.latitude = req.body.latitude;
       datapoint.Location.longitude = req.body.longitude;
       datapoint.tags = req.body.tags;
+      datapoint.modified = Date.now();
 
       return datapoint.save(function (err) {
         if (!err) {

@@ -43,6 +43,8 @@ function load_socActions(app, socmodel) {
 
     soc = new SocModel({
       title: req.body.title,
+      created: Date.now(),
+      modified: Date.now()
     });
 
     soc.save(function (err) {
@@ -59,6 +61,7 @@ function load_socActions(app, socmodel) {
   app.put('/api/soc/:id', function (req, res) {
     return SocModel.findById(req.params.id, function (err, soc) {
       soc.title = req.body.title;
+      soc.modified = Date.now();
       return soc.save(function (err) {
         if (!err) {
           console.log("updated");
