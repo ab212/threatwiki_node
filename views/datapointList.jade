@@ -10,6 +10,7 @@ div#wrap
         th location
         th tags
         th modified
+        th createdBy
         th actions
     tbody
      each datapoint, i in datapoints
@@ -25,5 +26,7 @@ div#wrap
               #{tags.title} <br />
           td
             #{datapoint.modified}
+          td
+            #{datapoint.createdBy.name}
           td 
             a(href="#", id="delete_"+datapoint._id) delete
