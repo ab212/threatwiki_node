@@ -1,10 +1,10 @@
 var express = require("express");
 
-function load_socActions(app, socmodel) {
-  var SocModel = socmodel;
+function load_socActions(app, SocModel, UserModel) {
+
   // retrieve all
   app.get('/api/soc', function (req, res){
-    return SocModel.find(function (err, socs) {
+    return SocModel.find().populate('createdBy',['name']).run(function (err, socs) {
       if (!err) {
         return res.json(socs);
       } else {
@@ -15,7 +15,7 @@ function load_socActions(app, socmodel) {
 
   // retrieve by id
   app.get('/api/soc/:id', function (req, res) {
-    return SocModel.findById(req.params.id, function (err, soc) {
+    return SocModel.findById(req.params.id).populate('createdBy',['name']).run(function (err, soc) {
       if (!err) {
         return res.send(soc);
       } else {
@@ -26,7 +26,7 @@ function load_socActions(app, socmodel) {
 
   // retrieve by title
   app.get('/api/soc/title/:title', function (req, res) {
-    return SocModel.find({ title: req.params.title}, function (err, soc) {
+    return SocModel.find({ title: req.params.title}).populate('createdBy',['name']).run(function (err, soc) {
       if (!err) {
         return res.send(soc);
       } else {
@@ -41,21 +41,30 @@ function load_socActions(app, socmodel) {
     console.log("POST: ");
     console.log(req.body);
 
-    soc = new SocModel({
-      title: req.body.title,
-      created: Date.now(),
-      modified: Date.now()
-    });
+    //Find the user object in the DB that has the same email as the current loggedin google user
+    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
+      if(!err){
+        soc = new SocModel({
+          title: req.body.title,
+          created: Date.now(),
+          modified: Date.now(),
+          //save the _id of the current user in the new SOC
+          createdBy: user._id
+        });
 
-    soc.save(function (err) {
-      if (!err) {
-        return console.log("created");
+        soc.save(function (err) {
+          if (!err) {
+            return console.log("created");
+          } else {
+            return console.log("!!!Could not Save: " + err);
+          }
+        });
+        return res.send(soc);
       } else {
-        return console.log("!!!Could not Save: " + err);
+        return console.log(err);
       }
+      });
     });
-    return res.send(soc);
-  });
 
   // update
   app.put('/api/soc/:id', function (req, res) {
@@ -71,7 +80,6 @@ function load_socActions(app, socmodel) {
         return res.send(soc);
       });
     });
-    return res.send(soc);
   });
 
   // delete by id

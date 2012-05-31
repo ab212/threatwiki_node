@@ -32,7 +32,7 @@ var UserModel = model.UserModel;
 
 //using the informations we get back from Google Apps, we check if we already have this user in the DB, 
 //if yes we return it, if not we create a new one
-function addUser (sourceUser) {
+function addOrGetUser (sourceUser) {
   return UserModel.findOne({ email: sourceUser.email}, function (err, user){
       if (!err && user) {
         console.log("Found the user in DB with email: "+sourceUser.email);
@@ -72,15 +72,13 @@ everyauth.google
       googleUserMetadata.refreshToken = accessTokenExtra.refresh_token;
       googleUserMetadata.expiresIn = accessTokenExtra.expires_in;
       console.log(util.inspect(googleUserMetadata));
-      return (addUser(googleUserMetadata));
+      return (addOrGetUser(googleUserMetadata));
     } else {
       console.log("Not the sentinel project domain name");
      return ['Not the sentinel project domain name'];
     }
   })
   .redirectPath('/soc'); //where to redirect after we get back from the login screen from google
-
-
 
 // config
 app.configure(function () {
@@ -119,9 +117,9 @@ app.get('/tag/create', routes.tag.create);
 app.get('/tag/edit', routes.tag.edit);
 
 // import socActions
-var socActions = soc_actions.load_socActions(app, SocModel);
-var datapointActions = datapoint_actions.load_datapointActions(app, DataPointModel, TagModel);
-var tagActions = tag_actions.load_tagActions(app, TagModel, DataPointModel);
+var socActions = soc_actions.load_socActions(app, SocModel,UserModel);
+var datapointActions = datapoint_actions.load_datapointActions(app, DataPointModel, TagModel, UserModel);
+var tagActions = tag_actions.load_tagActions(app, TagModel, DataPointModel,UserModel);
 //var userActions = user_actions.load_userActions(app, UserModel);
 
 

@@ -1,11 +1,10 @@
 var express = require("express");
 
-function load_datapointActions(app, datapointmodel, tagmodel) {
-  var DataPointModel = datapointmodel;
-  var TagModel = tagmodel;
+function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
+
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
-    return DataPointModel.find().populate('tags',['title']).run(function (err, datapoints) {
+    return DataPointModel.find().populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoints) {
       if (!err) {
         return res.send(datapoints);
       } else {
@@ -16,7 +15,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
 
   // retrieve by id
   app.get('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id).populate('tags',['title']).run(function (err, datapoint) {
+    return DataPointModel.findById(req.params.id).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
       } else {
@@ -28,7 +27,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
   // retrieve by SOC
   app.get('/api/datapoint/soc/:soc', function (req, res) {
     console.log("DATAPOINT_ACTIONS:SOC:Search by: " + req.params.soc);
-    return DataPointModel.find({soc: req.params.soc}).populate('tags',['title']).run(function (err, datapoint) {
+    return DataPointModel.find({soc: req.params.soc}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
       } else {
@@ -44,7 +43,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
       if (!err) {
         console.log("Tag found at " + tag._id);
         // search datapoint for the tag_id that we just found
-        return DataPointModel.find({tags: tag._id}).populate('tags',['title']).run(function (err, datapoint) {
+        return DataPointModel.find({tags: tag._id}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
           if (!err) {
             return res.send(datapoint);
           } else {
@@ -60,7 +59,7 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
   // retrieve by location
   app.get('/api/datapoint/location/:Location', function (req, res) {
     console.log("DATAPOINT_ACTIONS:LOCATION:Search by: " + req.params.Location);
-    return DataPointModel.find({'Location.title': req.params.Location}).populate('tags',['title']).run(function (err, datapoint) {
+    return DataPointModel.find({'Location.title': req.params.Location}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
       } else {
@@ -75,28 +74,38 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
     console.log("POST: ");
     console.log(req.body);
 
-    datapoint = new DataPointModel({
-      title: req.body.title,
-      description: req.body.description,
-      soc: req.body.soc,
-      Location: {
-		    title: req.body.location,
-        latitude: req.body.latitude,
-        longitude: req.body.longitude,
-	    },
-      tags: req.body.tag_list,
-      created: Date.now(),
-      modified: Date.now()
-    });
+    //Find the user object in the DB that has the same email as the current loggedin google user
+    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
+      if(!err){
+        datapoint = new DataPointModel({
+          title: req.body.title,
+          description: req.body.description,
+          soc: req.body.soc,
+          Location: {
+            title: req.body.location,
+            latitude: req.body.latitude,
+            longitude: req.body.longitude
+          },
+          tags: req.body.tag_list,
+          created: Date.now(),
+          modified: Date.now(),
+          //save the _id of the current user in the new datapoint
+          createdBy: user._id
+        });
 
-    datapoint.save(function (err) {
-      if (!err) {
-        return console.log("created");
+        datapoint.save(function (err) {
+          if (!err) {
+            return console.log("created");
+          } else {
+            return console.log(err);
+          }
+        });
+        return res.send(datapoint);
       } else {
         return console.log(err);
       }
     });
-    return res.send(datapoint);
+
   });
 
   // update
@@ -121,7 +130,6 @@ function load_datapointActions(app, datapointmodel, tagmodel) {
         return res.send(datapoint);
       });
     });
-    return res.send(datapoint);
   });
 
   // delete by id

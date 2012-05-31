@@ -15,13 +15,16 @@ function createModel() {
     , modified: { type: Date, required: true }
     , created: { type: Date, required: true }
     // foreign key
-    , tags     : [{ type: ObjectId, ref: 'Tag' }]   
+    , tags      : [{ type: ObjectId, ref: 'Tag' }]   
+    , createdBy : { type: ObjectId, ref: 'User' }   
+
   });
 
   var Soc = new Schema ({
       title: { type: String, required: true }
     , modified: { type: Date, required: true }
     , created: { type: Date, required: true }
+    , createdBy : { type: ObjectId, ref: 'User' }   
     });
 
 
@@ -31,6 +34,7 @@ function createModel() {
     , modified: { type: Date, required: true }
     , created: { type: Date, required: true }
     , soc: { type: String, required: true }
+    , createdBy : { type: ObjectId, ref: 'User' }  
   });
   //used for user authentication, can't have more than 1 user with same email
    var User = new Schema ({
