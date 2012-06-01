@@ -1,3 +1,12 @@
+function ifInArray (array_n, value_n) {
+  for (var i = 0; i < array_n.length; i++) {
+    if (array_n[i] == value_n) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function getMonthText (monthNum) {
   switch (monthNum) {
   case 1:
