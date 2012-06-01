@@ -5,5 +5,10 @@
   , "dependencies": {
       "express": "2.5.8"
     , "jade": ">= 0.0.1"
+    , "mongoose": ">= 2.6.5"
+    , "location": ">= 0.0.1"
+    , "everyauth": ">= 0.2.32"
+    , "navigator": ">= 1.0.1"
+    , "jQuery": ">= 1.7.2"
   }
 }
