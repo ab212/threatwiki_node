@@ -112,7 +112,7 @@ exports.datapoint.create = function(req, res){
     if (domain=='thesentinelproject.org'){
       res.render('datapoint', { locals: {
         title: 'Create Datapoint'
-        ,  scripts: ['/javascript/datapoint.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js']
+        ,  scripts: ['/javascript/datapoint.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js']
       }});
     } else {
         //force logout if user doesn't meet conditions to view the page

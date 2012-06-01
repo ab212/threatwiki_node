@@ -22,7 +22,6 @@ $(document).ready(function() {
     var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
       var selected_soc = $("#soc option:selected").val();
       var already_included_tags = $('#tag_list').val();
-      alert(already_included_tags);
 
       var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
         $("#result").append("<br/>Loaded Initial Tags");

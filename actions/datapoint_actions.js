@@ -118,7 +118,7 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
       datapoint.Location.title = req.body.location;
       datapoint.Location.latitude = req.body.latitude;
       datapoint.Location.longitude = req.body.longitude;
-      datapoint.tags = req.body.tags;
+      datapoint.tags = req.body.tag_list;
       datapoint.modified = Date.now();
 
       return datapoint.save(function (err) {
