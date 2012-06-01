@@ -15,35 +15,35 @@ $(document).ready(function() {
     });
   });
 
+  // get tags for selected soc
   $(function() {
-      	var selected_soc;
-    
-      var socs2 = jQuery.get("/api/soc/", function (socs2, textStatus, jqXHR) {
-          $.each(socs2, function(key, value){
-              if (key==0){
-              	selected_soc = value.title;
-              	var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
-                     $("#result").append("<br/>Loaded Initial Tags");
-                     console.log("Loaded initial tags");
-                     $.each(tags, function(key, value) {
-                       $('#tag_list')
-                       .append($("<option></option>")
-                       .attr("value",value._id)
-                       .text(value.title));
-                     });
-                   });
-          	} else {
-          	    return true;
-          	}
-            
-          });
-    });
+    var selected_soc;
+
+    var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
+      var selected_soc = $("#soc option:selected").val();
+      var already_included_tags = $('#tag_list').val();
+      alert(already_included_tags);
+
+      var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
+        $("#result").append("<br/>Loaded Initial Tags");
+        console.log("Loaded initial tags");
+        $.each(tags, function(key, value) {
+          // this is a very inefficient way of checking if the tag is already loaded, brainstorm and improve this.
+          // one idea: add all tags. then iterate through entire list and delete repetitions
+          if (!ifInArray(already_included_tags, value.title)) {
+            $('#tag_list')
+            .append($("<option></option>")
+            .attr("value",value._id)
+            .text(value.title));
+          }
+        });
+      });
+    })
   });
-  
 
   // on soc change, refresh tags
-  $("#soc").change(function(){
-	var selected_soc = $("#soc option:selected").val();
+  var refresh_tags = $("#soc").change(function(){
+	  var selected_soc = $("#soc option:selected").val();
 
     var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
       $("#result").append("<br/>Loaded Tags");

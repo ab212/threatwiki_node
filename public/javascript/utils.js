@@ -1,4 +1,7 @@
 function ifInArray (array_n, value_n) {
+  if (array_n == null || value_n == null)
+    return false;
+
   for (var i = 0; i < array_n.length; i++) {
     if (array_n[i] == value_n) {
       return true;

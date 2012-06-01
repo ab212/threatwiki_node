@@ -15,7 +15,7 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
 
   // retrieve by id
   app.get('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
+    return DataPointModel.findById(req.params.id).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
       } else {
