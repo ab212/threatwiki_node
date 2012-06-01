@@ -15,6 +15,7 @@ div#wrap
           label(for="soc") SOC
           br/
           select(id="soc", name="soc", value=datapoint.soc)
+            option(selected=datapoint.soc) #{datapoint.soc}
           br/
           label(for="title") Title
           br/
@@ -41,6 +42,8 @@ div#wrap
           label(for="tags") Tags
           br/
           select(multiple id="tag_list", name="tag_list")
+            for tag in datapoint.tags
+              option(selected=tag.title) #{tag.title}
           br/
           input(type="submit", value="save")
       - else
