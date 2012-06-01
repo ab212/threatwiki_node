@@ -1,4 +1,9 @@
-WIP
+How to use:
+- Make sure you have an instance of mongodb running
+- npm install -d
+- node app.js
+- Point your browser to http://localhost:3000
+- You will be asked to login with a Google Apps account, you need a @thesentinelproject.org google apps email in order to login
 
 May 29, 2012:
  - Update tests
@@ -17,11 +22,3 @@ May 18, 2012:
  - Data is not properly being carried forward from forms to POST
  - Datapoint model needs tweaks
  - Update tests
-
-
-How to use:
-Make sure you have an instance of mongodb running
-node app.js
-In a browser, access
-http://localhost:3000
-You will be asked to login with a Google Apps account, you need a @thesentinelproject.org google apps email in order to login
