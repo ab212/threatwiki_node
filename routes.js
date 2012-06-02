@@ -93,14 +93,14 @@ exports.datapoint = function(req, res){
         , scripts: ['/javascript/datapoint_list.js']
         , datapoints: datapoints
         }});
-      })
+      });
     } else {
       //force logout if user doesn't meet conditions to view the page
-      res.redirect('/logout');         
+      res.redirect('/logout');
     }
   } else {
       //force logout if user doesn't meet conditions to view the page
-      res.redirect('/logout');  
+      res.redirect('/logout');
   }
 };
 
@@ -163,7 +163,7 @@ exports.tag = function(req, res){
           , scripts: ['/javascript/tag_list.js']
           , tags: tags
         }});
-      })
+      });
     } else {
       //force logout if user doesn't meet conditions to view the page
       res.redirect('/logout');
