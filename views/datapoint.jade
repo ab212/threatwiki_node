@@ -43,7 +43,7 @@ div#wrap
           br/
           select(multiple id="tag_list", name="tag_list")
             for tag in datapoint.tags
-              option(selected=tag.title) #{tag.title}
+              option(selected=tag._id, value=tag._id) #{tag.title}
           br/
           input(type="submit", value="save")
       - else
