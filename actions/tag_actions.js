@@ -70,6 +70,47 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
        });
   });
 
+  // retrieve by date
+  app.get('/api/tag/date/:date', function (req, res) {
+    var d_small = new Date(req.params.date);
+    var d_big = new Date(req.params.date);
+    d_small.setHours(0,0,0,0);
+    d_big.setHours(23,59,59,59);
+    return TagModel.find({created: {$gte : d_small, $lte : d_big}}).populate('createdBy',['name']).run(function (err, tag) {
+      if (!err) {
+        return res.send(tag);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by date after
+  app.get('/api/tag/date/after/:date', function (req, res) {
+    var d_small = new Date(req.params.date);
+    d_small.setHours(0,0,0,0);
+    return TagModel.find({created: {$gte : d_small}}).populate('createdBy',['name']).run(function (err, tag) {
+      if (!err) {
+        return res.send(tag);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by date before
+  app.get('/api/tag/date/before/:date', function (req, res) {
+    var d_big = new Date(req.params.date);
+    d_big.setHours(23,59,59,59);
+    return TagModel.find({created: {$lte : d_big}}).populate('createdBy',['name']).run(function (err, tag) {
+      if (!err) {
+        return res.send(tag);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // create
   app.post('/api/tag', function (req, res) {
     var tag;

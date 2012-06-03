@@ -24,6 +24,47 @@ function load_socActions(app, SocModel, UserModel) {
     });
   });
 
+  // retrieve by date
+  app.get('/api/soc/date/:date', function (req, res) {
+    var d_small = new Date(req.params.date);
+    var d_big = new Date(req.params.date);
+    d_small.setHours(0,0,0,0);
+    d_big.setHours(23,59,59,59);
+    return SocModel.find({created: {$gte : d_small, $lte : d_big}}).populate('createdBy',['name']).run(function (err, soc) {
+      if (!err) {
+        return res.send(soc);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by date after
+  app.get('/api/soc/date/after/:date', function (req, res) {
+    var d_small = new Date(req.params.date);
+    d_small.setHours(0,0,0,0);
+    return SocModel.find({created: {$gte : d_small}}).populate('createdBy',['name']).run(function (err, soc) {
+      if (!err) {
+        return res.send(soc);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by date before
+  app.get('/api/soc/date/before/:date', function (req, res) {
+    var d_big = new Date(req.params.date);
+    d_big.setHours(23,59,59,59);
+    return SocModel.find({created: {$lte : d_big}}).populate('createdBy',['name']).run(function (err, soc) {
+      if (!err) {
+        return res.send(soc);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // retrieve by title
   app.get('/api/soc/title/:title', function (req, res) {
     return SocModel.find({ title: req.params.title}).populate('createdBy',['name']).run(function (err, soc) {

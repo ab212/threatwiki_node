@@ -68,6 +68,47 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
     });
   });
 
+  // retrieve by date
+  app.get('/api/datapoint/:date', function (req, res) {
+    var d_small = new Date(req.params.date);
+    var d_big = new Date(req.params.date);
+    d_small.setHours(0,0,0,0);
+    d_big.setHours(23,59,59,59);
+    return DataPointModel.find({created: {$gte : d_small, $lte : d_big}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
+      if (!err) {
+        return res.send(datapoint);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by date after
+  app.get('/api/datapoint/after/:date', function (req, res) {
+    var d_small = new Date(req.params.date);
+    d_small.setHours(0,0,0,0);
+    return DataPointModel.find({created: {$gte : d_small}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
+      if (!err) {
+        return res.send(datapoint);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by date before
+  app.get('/api/datapoint/before/:date', function (req, res) {
+    var d_big = new Date(req.params.date);
+    d_big.setHours(23,59,59,59);
+    return DataPointModel.find({created: {$lte : d_big}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
+      if (!err) {
+        return res.send(datapoint);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // create
   app.post('/api/datapoint', function (req, res) {
     var datapoint;
