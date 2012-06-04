@@ -1,4 +1,5 @@
 var express = require("express");
+var time = require('time')(Date);
 
 function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
 
@@ -133,6 +134,9 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
     console.log("POST: ");
     console.log(req.body);
 
+    var date_now = new Date();
+    date_now.setTimezone('America/Toronto');
+
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
       if(!err){
@@ -146,8 +150,8 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
             longitude: req.body.longitude
           },
           tags: req.body.tag_list,
-          created: Date.now(),
-          modified: Date.now(),
+          created: date_now,
+          modified: date_now,
           //save the _id of the current user in the new datapoint
           createdBy: user._id
         });
@@ -170,6 +174,8 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
   // update
   app.put('/api/datapoint/:id', function (req, res) {
     return DataPointModel.findById(req.params.id, function (err, datapoint) {
+      var date_now = new Date();
+      date_now.setTimezone('America/Toronto');
 
       datapoint.title = req.body.title;
       datapoint.description = req.body.description;
@@ -178,7 +184,7 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
       datapoint.Location.latitude = req.body.latitude;
       datapoint.Location.longitude = req.body.longitude;
       datapoint.tags = req.body.tag_list;
-      datapoint.modified = Date.now();
+      datapoint.modified = date_now;
 
       return datapoint.save(function (err) {
         if (!err) {

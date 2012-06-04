@@ -1,4 +1,5 @@
 var express = require("express");
+var time = require('time')(Date);
 
 function load_socActions(app, SocModel, UserModel) {
 
@@ -100,13 +101,16 @@ function load_socActions(app, SocModel, UserModel) {
     console.log("POST: ");
     console.log(req.body);
 
+    var date_now = new Date();
+    date_now.setTimezone('America/Toronto');
+
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
       if(!err){
         soc = new SocModel({
           title: req.body.title,
-          created: Date.now(),
-          modified: Date.now(),
+          created: date_now,
+          modified: date_now,
           //save the _id of the current user in the new SOC
           createdBy: user._id
         });
@@ -128,8 +132,11 @@ function load_socActions(app, SocModel, UserModel) {
   // update
   app.put('/api/soc/:id', function (req, res) {
     return SocModel.findById(req.params.id, function (err, soc) {
+      var date_now = new Date();
+      date_now.setTimezone('America/Toronto');
+
       soc.title = req.body.title;
-      soc.modified = Date.now();
+      soc.modified = date_now;
       return soc.save(function (err) {
         if (!err) {
           console.log("updated");

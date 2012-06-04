@@ -1,5 +1,6 @@
 var express = require("express");
 var util = require("util");
+var time = require('time')(Date);
 
 function load_tagActions(app, TagModel,DataPointModel,UserModel) {
 
@@ -134,16 +135,19 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
     var tag;
     console.log("POST: ");
     console.log(req.body);
+
+    var date_now = new Date();
+    date_now.setTimezone('America/Toronto');
+
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
       if(!err){
-    
         tag = new TagModel({
           title: req.body.title,
           description: req.body.description,
           soc: req.body.soc,
-          created: Date.now(),
-          modified: Date.now(),
+          created: date_now,
+          modified: date_now,
           createdBy: user._id
         });
 
@@ -164,10 +168,13 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
   // update
   app.put('/api/tag/:id', function (req, res) {
     return TagModel.findById(req.params.id, function (err, tag) {
+      var date_now = new Date();
+      date_now.setTimezone('America/Toronto');
+
       tag.title = req.body.title;
       tag.description = req.body.description;
       tag.soc = req.body.soc;
-      tag.modified = Date.now();
+      tag.modified = date_now;
 
       return tag.save(function (err) {
         if (!err) {
