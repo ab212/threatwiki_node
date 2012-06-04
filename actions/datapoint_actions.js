@@ -84,7 +84,7 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
   });
 
   // retrieve by date after
-  app.get('/api/datapoint/after/:date', function (req, res) {
+  app.get('/api/datapoint/date/after/:date', function (req, res) {
     var d_small = new Date(req.params.date);
     d_small.setHours(0,0,0,0);
     return DataPointModel.find({created: {$gte : d_small}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
@@ -97,12 +97,30 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
   });
 
   // retrieve by date before
-  app.get('/api/datapoint/before/:date', function (req, res) {
+  app.get('/api/datapoint/date/before/:date', function (req, res) {
     var d_big = new Date(req.params.date);
     d_big.setHours(23,59,59,59);
     return DataPointModel.find({created: {$lte : d_big}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by date range
+  app.get('/api/datapoint/date/range/:date_start/:date_end', function (req, res) {
+    console.log("Search between range");
+    console.log("Range start: " + req.params.date_start);
+    console.log("Range end: " + req.params.date_end);
+    var d_start = new Date(req.params.date_start);
+    var d_end = new Date(req.params.date_end);
+    d_start.setHours(0,0,0,0);
+    d_end.setHours(23,59,59,59);
+    return DataPointModel.find({created: {$gte : d_start, $lte : d_end}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
+      if (!err) {
+        return res.send(soc);
       } else {
         return console.log(err);
       }

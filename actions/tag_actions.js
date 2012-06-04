@@ -111,6 +111,24 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
     });
   });
 
+  // retrieve by date range
+  app.get('/api/tag/date/range/:date_start/:date_end', function (req, res) {
+    console.log("Search between range");
+    console.log("Range start: " + req.params.date_start);
+    console.log("Range end: " + req.params.date_end);
+    var d_start = new Date(req.params.date_start);
+    var d_end = new Date(req.params.date_end);
+    d_start.setHours(0,0,0,0);
+    d_end.setHours(23,59,59,59);
+    return TagModel.find({created: {$gte : d_start, $lte : d_end}}).populate('createdBy',['name']).run(function (err, tag) {
+      if (!err) {
+        return res.send(soc);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // create
   app.post('/api/tag', function (req, res) {
     var tag;

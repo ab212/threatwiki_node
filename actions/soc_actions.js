@@ -65,6 +65,24 @@ function load_socActions(app, SocModel, UserModel) {
     });
   });
 
+  // retrieve by date range
+  app.get('/api/soc/date/range/:date_start/:date_end', function (req, res) {
+    console.log("Search between range");
+    console.log("Range start: " + req.params.date_start);
+    console.log("Range end: " + req.params.date_end);
+    var d_start = new Date(req.params.date_start);
+    var d_end = new Date(req.params.date_end);
+    d_start.setHours(0,0,0,0);
+    d_end.setHours(23,59,59,59);
+    return SocModel.find({created: {$gte : d_start, $lte : d_end}}).populate('createdBy',['name']).run(function (err, soc) {
+      if (!err) {
+        return res.send(soc);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // retrieve by title
   app.get('/api/soc/title/:title', function (req, res) {
     return SocModel.find({ title: req.params.title}).populate('createdBy',['name']).run(function (err, soc) {
