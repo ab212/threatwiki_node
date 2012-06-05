@@ -21,6 +21,10 @@ everyauth.helpExpress(app);
 mongoose.connect('mongodb://localhost/namp', function(err) {
   if (err) throw err;
 });
+//This is our mongohq database config, already created, we can switch to this webcentered database whenever we want
+//mongoose.connect('mongodb://nodejitsu:12356bd5fb33eab9ec5b9ca43ebfbab5@staff.mongohq.com:10058/nodejitsudb795685203760', function(err) {
+//if (err) throw err;
+//});
 
 
 // create model
@@ -43,6 +47,8 @@ function addOrGetUser (sourceUser) {
         user = new UserModel({
           name: sourceUser.name,
           email: sourceUser.email,
+          created : Date.now(),
+          modified: Date.now()
         });
         user.save(function (err) {
           if (!err) {
@@ -50,7 +56,7 @@ function addOrGetUser (sourceUser) {
           } else {
             return console.log(err);
           }
-        }); 
+        });
       } else {
         return console.log(err);
       }
@@ -85,8 +91,9 @@ app.configure(function () {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
-  app.use(express.cookieParser()); 
-  app.use(express.session({ 'secret' : 'not sure what to put here' })); 
+  app.use(express.cookieParser());
+  //TODO: Will need to specify a memorystore to go in PROD (see warning in log when deploying in PROD)
+  app.use(express.session({ 'secret' : 'not sure what to put here' }));
   app.use(everyauth.middleware());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -125,4 +132,5 @@ var tagActions = tag_actions.load_tagActions(app, TagModel, DataPointModel,UserM
 
 // server listen
 app.listen(3000);
-console.log("server's up at %d in %s mode", app.address().port, app.settings.env);
+//console.log("server's up at %d in %s mode", app.address().port, app.settings.env);
+console.log("server's up in %s mode", app.settings.env);
