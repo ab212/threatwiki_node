@@ -122,7 +122,7 @@ function load_socApi(app, SocModel, UserModel) {
     console.log(req.body);
 
     var date_now = new Date();
-    date_now.setTimezone('America/Toronto');
+    date_now.setTimezone('UTC');
 
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
@@ -153,7 +153,7 @@ function load_socApi(app, SocModel, UserModel) {
   app.put('/api/soc/:id', function (req, res) {
     return SocModel.findById(req.params.id, function (err, soc) {
       var date_now = new Date();
-      date_now.setTimezone('America/Toronto');
+      date_now.setTimezone('UTC');
 
       soc.title = req.body.title;
       soc.modified = date_now;

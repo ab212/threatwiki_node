@@ -157,7 +157,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     console.log(req.body);
 
     var date_now = new Date();
-    date_now.setTimezone('America/Toronto');
+    date_now.setTimezone('UTC');
 
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
@@ -189,7 +189,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.put('/api/tag/:id', function (req, res) {
     return TagModel.findById(req.params.id, function (err, tag) {
       var date_now = new Date();
-      date_now.setTimezone('America/Toronto');
+      date_now.setTimezone('UTC');
 
       tag.title = req.body.title;
       tag.description = req.body.description;

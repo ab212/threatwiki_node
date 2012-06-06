@@ -159,7 +159,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     console.log(req.body);
 
     var date_now = new Date();
-    date_now.setTimezone('America/Toronto');
+    date_now.setTimezone('UTC');
 
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
@@ -199,7 +199,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   app.put('/api/datapoint/:id', function (req, res) {
     return DataPointModel.findById(req.params.id, function (err, datapoint) {
       var date_now = new Date();
-      date_now.setTimezone('America/Toronto');
+      date_now.setTimezone('UTC');
 
       datapoint.title = req.body.title;
       datapoint.description = req.body.description;
