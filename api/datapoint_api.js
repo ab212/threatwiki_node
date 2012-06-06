@@ -1,7 +1,7 @@
 var express = require("express");
 var time = require('time')(Date);
 
-function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
+function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
 
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
@@ -27,7 +27,7 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
 
   // retrieve by SOC
   app.get('/api/datapoint/soc/:soc', function (req, res) {
-    console.log("DATAPOINT_ACTIONS:SOC:Search by: " + req.params.soc);
+    console.log("DATAPOINT_API:SOC:Search by: " + req.params.soc);
     return DataPointModel.find({soc: req.params.soc}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
@@ -63,7 +63,7 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
 
   // retrieve by location
   app.get('/api/datapoint/location/:Location', function (req, res) {
-    console.log("DATAPOINT_ACTIONS:LOCATION:Search by: " + req.params.Location);
+    console.log("DATAPOINT_API:LOCATION:Search by: " + req.params.Location);
     return DataPointModel.find({'Location.title': req.params.Location}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
       if (!err) {
         return res.send(datapoint);
@@ -236,4 +236,4 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
   });
 }
 
-exports.load_datapointActions = load_datapointActions;
+exports.load_datapointApi = load_datapointApi;

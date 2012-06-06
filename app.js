@@ -6,11 +6,11 @@ var application_root = __dirname
   , mongoose = require('mongoose')
   , path = require("path")
   , util = require('util')
-  // actions
-  , soc_actions = require("./actions/soc_actions")
-  , datapoint_actions = require("./actions/datapoint_actions")
-  , tag_actions = require("./actions/tag_actions")
-  //, user_actions = require("./actions/user_actions")
+  // api
+  , soc_api = require("./api/soc_api")
+  , datapoint_api = require("./api/datapoint_api")
+  , tag_api = require("./api/tag_api")
+  //, user_api = require("./api/user_api")
 ;
 
 var app = module.exports = express.createServer();
@@ -123,11 +123,11 @@ app.get('/tag', routes.tag);
 app.get('/tag/create', routes.tag.create);
 app.get('/tag/edit', routes.tag.edit);
 
-// import socActions
-var socActions = soc_actions.load_socActions(app, SocModel,UserModel);
-var datapointActions = datapoint_actions.load_datapointActions(app, DataPointModel, TagModel, UserModel);
-var tagActions = tag_actions.load_tagActions(app, TagModel, DataPointModel,UserModel);
-//var userActions = user_actions.load_userActions(app, UserModel);
+// import socApi
+var socApi = soc_api.load_socApi(app, SocModel,UserModel);
+var datapointApi = datapoint_api.load_datapointApi(app, DataPointModel, TagModel, UserModel);
+var tagApi = tag_api.load_tagApi(app, TagModel, DataPointModel,UserModel);
+//var userApi = user_api.load_userApi(app, UserModel);
 
 
 // server listen

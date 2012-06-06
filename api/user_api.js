@@ -1,6 +1,6 @@
 var express = require("express");
 
-function load_userActions(app, usermodel) {
+function load_userApi(app, usermodel) {
   var UserModel = usermodel;
 
   // retrieve all
@@ -38,4 +38,4 @@ function load_userActions(app, usermodel) {
 
 }
 
-exports.load_userActions = load_userActions;
+exports.load_userApi = load_userApi;

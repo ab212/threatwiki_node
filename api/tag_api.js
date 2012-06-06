@@ -2,7 +2,7 @@ var express = require("express");
 var util = require("util");
 var time = require('time')(Date);
 
-function load_tagActions(app, TagModel,DataPointModel,UserModel) {
+function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
   // retrieve all
   app.get('/api/tag', function (req, res){
@@ -28,7 +28,7 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
 
   // retrieve by soc name
   app.get('/api/tag/soc/:soc', function (req, res) {
-	console.log('TAG_ACTIONS:SOC:Search by ' + req.params.soc);
+	console.log('TAG_API:SOC:Search by ' + req.params.soc);
     return TagModel.find({ soc: req.params.soc}).populate('createdBy',['name']).run(function (err, tag) {
       if (!err) {
         return res.send(tag);
@@ -40,7 +40,7 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
 
   // retrieve by tag title
   app.get('/api/tag/title/:title', function (req, res) {
-	console.log('TAG_ACTIONS:TITLE:Search by ' + req.params.title);
+	console.log('TAG_API:TITLE:Search by ' + req.params.title);
     return TagModel.find({ title: req.params.title}).populate('createdBy',['name']).run( function (err, tag) {
       if (!err) {
         console.log("Tag found: %o", tag);
@@ -53,10 +53,10 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
 
   // retrieve all tags inside a datapoint
   app.get('/api/tag/datapoint/:datapointid', function (req, res) {
-    console.log('TAG_ACTIONS:DatapointId:Search by ' + req.params.datapointid);
+    console.log('TAG_API:DatapointId:Search by ' + req.params.datapointid);
     var datapoint = DataPointModel.findById(req.params.datapointid, function (err, datapoint) {
       if (!err) {
-         console.log('TAG_ACTIONS:Id:Search by ' + datapoint.tags);
+         console.log('TAG_API:Id:Search by ' + datapoint.tags);
           return TagModel.find({ _id: {$in: datapoint.tags }}).populate('createdBy',['name']).run(function (err, tag) {
             if (!err) {
               console.log("Tag found: %o", tag);
@@ -222,4 +222,4 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
   });
 }
 
-exports.load_tagActions = load_tagActions;
+exports.load_tagApi = load_tagApi;

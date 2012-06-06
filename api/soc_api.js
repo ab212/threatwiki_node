@@ -1,7 +1,7 @@
 var express = require("express");
 var time = require('time')(Date);
 
-function load_socActions(app, SocModel, UserModel) {
+function load_socApi(app, SocModel, UserModel) {
 
   // retrieve all
   app.get('/api/soc', function (req, res){
@@ -183,4 +183,4 @@ function load_socActions(app, SocModel, UserModel) {
   });
 }
 
-exports.load_socActions = load_socActions;
+exports.load_socApi = load_socApi;
