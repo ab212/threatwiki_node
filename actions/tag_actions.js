@@ -130,6 +130,26 @@ function load_tagActions(app, TagModel,DataPointModel,UserModel) {
     });
   });
 
+  // retrieve by user
+  app.get('/api/tag/user/:user_name', function (req, res) {
+    // first retrieve user based on user_name
+    var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
+      if (!err) {
+        console.log("User found at " + user._id);
+        // search tag for the user_id that we just found
+        return TagModel.find({createdBy: user._id}).populate('createdBy',['name']).run(function (err, tag) {
+          if (!err) {
+            return res.send(tag);
+          } else {
+            return console.log(err);
+          }
+        });
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // create
   app.post('/api/tag', function (req, res) {
     var tag;

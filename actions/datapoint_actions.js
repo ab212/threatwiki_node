@@ -38,16 +38,20 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
   });
 
   // retrieve by tag
-  app.get('/api/datapoint/tag/:tag_title', function (req, res) {
+  app.get('/api/datapoint/tag/:title', function (req, res) {
     // first retrieve tag based on tag_title
-    var tag = TagModel.findOne({ title: req.params.tag_title}, function (err, tag) {
+    var tag = TagModel.findOne({ title: req.params.title}, function (err, tag) {
+      console.log(req.params.title);
       if (!err) {
         console.log("Tag found at " + tag._id);
         // search datapoint for the tag_id that we just found
         return DataPointModel.find({tags: tag._id}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
           if (!err) {
+            console.log("1");
+            console.log(datapoint);
             return res.send(datapoint);
           } else {
+            console.log("2");
             return console.log(err);
           }
         });
@@ -122,6 +126,26 @@ function load_datapointActions(app, DataPointModel, TagModel, UserModel) {
     return DataPointModel.find({created: {$gte : d_start, $lte : d_end}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
       if (!err) {
         return res.send(soc);
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
+  // retrieve by user
+  app.get('/api/datapoint/user/:user_name', function (req, res) {
+    // first retrieve user based on user_name
+    var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
+      if (!err) {
+        console.log("User found at " + user._id);
+        // search datapoint for the user_id that we just found
+        return DataPointModel.find({createdBy: user._id}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
+          if (!err) {
+            return res.send(datapoint);
+          } else {
+            return console.log(err);
+          }
+        });
       } else {
         return console.log(err);
       }

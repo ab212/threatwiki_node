@@ -95,6 +95,26 @@ function load_socActions(app, SocModel, UserModel) {
     });
   });
 
+  // retrieve by user
+  app.get('/api/soc/user/:user_name', function (req, res) {
+    // first retrieve user based on user_name
+    var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
+      if (!err) {
+        console.log("User found at " + user._id);
+        // search soc for the user_id that we just found
+        return SocModel.find({createdBy: user._id}).populate('createdBy',['name']).run(function (err, soc) {
+          if (!err) {
+            return res.send(soc);
+          } else {
+            return console.log(err);
+          }
+        });
+      } else {
+        return console.log(err);
+      }
+    });
+  });
+
   // create
   app.post('/api/soc', function (req, res) {
     var soc;
