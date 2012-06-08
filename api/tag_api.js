@@ -7,7 +7,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   // retrieve all
   app.get('/api/tag', function (req, res){
     return TagModel.find().populate('createdBy',['name']).run(function (err, tags) {
-      if (!err) {
+      if (!err && tags) {
         return res.send(tags);
       } else {
         return console.log(err);
@@ -18,7 +18,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   // retrieve by id
   app.get('/api/tag/:id', function (req, res) {
     return TagModel.findById(req.params.id).populate('createdBy',['name']).run(function (err, tag) {
-      if (!err) {
+      if (!err && tag) {
         return res.send(tag);
       } else {
         return console.log(err);
@@ -30,7 +30,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.get('/api/tag/soc/:soc', function (req, res) {
 	console.log('TAG_API:SOC:Search by ' + req.params.soc);
     return TagModel.find({ soc: req.params.soc}).populate('createdBy',['name']).run(function (err, tag) {
-      if (!err) {
+      if (!err && tag) {
         return res.send(tag);
       } else {
         return console.log(err);
@@ -42,7 +42,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.get('/api/tag/title/:title', function (req, res) {
 	console.log('TAG_API:TITLE:Search by ' + req.params.title);
     return TagModel.find({ title: req.params.title}).populate('createdBy',['name']).run( function (err, tag) {
-      if (!err) {
+      if (!err && tag) {
         console.log("Tag found: %o", tag);
         return res.send(tag);
       } else {
@@ -55,10 +55,10 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.get('/api/tag/datapoint/:datapointid', function (req, res) {
     console.log('TAG_API:DatapointId:Search by ' + req.params.datapointid);
     var datapoint = DataPointModel.findById(req.params.datapointid, function (err, datapoint) {
-      if (!err) {
+      if (!err && datapoint) {
          console.log('TAG_API:Id:Search by ' + datapoint.tags);
           return TagModel.find({ _id: {$in: datapoint.tags }}).populate('createdBy',['name']).run(function (err, tag) {
-            if (!err) {
+            if (!err && tag) {
               console.log("Tag found: %o", tag);
               return res.send(tag);
             } else {
@@ -78,7 +78,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
     return TagModel.find({created: {$gte : d_small, $lte : d_big}}).populate('createdBy',['name']).run(function (err, tag) {
-      if (!err) {
+      if (!err && tag) {
         return res.send(tag);
       } else {
         return console.log(err);
@@ -91,7 +91,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     var d_small = new Date(req.params.date);
     d_small.setHours(0,0,0,0);
     return TagModel.find({created: {$gte : d_small}}).populate('createdBy',['name']).run(function (err, tag) {
-      if (!err) {
+      if (!err && tag) {
         return res.send(tag);
       } else {
         return console.log(err);
@@ -104,7 +104,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     var d_big = new Date(req.params.date);
     d_big.setHours(23,59,59,59);
     return TagModel.find({created: {$lte : d_big}}).populate('createdBy',['name']).run(function (err, tag) {
-      if (!err) {
+      if (!err && tag) {
         return res.send(tag);
       } else {
         return console.log(err);
@@ -122,7 +122,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
     return TagModel.find({created: {$gte : d_start, $lte : d_end}}).populate('createdBy',['name']).run(function (err, tag) {
-      if (!err) {
+      if (!err && tag) {
         return res.send(soc);
       } else {
         return console.log(err);
@@ -138,7 +138,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
         console.log("User found at " + user._id);
         // search tag for the user_id that we just found
         return TagModel.find({createdBy: user._id}).populate('createdBy',['name']).run(function (err, tag) {
-          if (!err) {
+          if (!err && tag) {
             return res.send(tag);
           } else {
             return console.log(err);
@@ -161,7 +161,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-      if(!err){
+      if(!err && user){
         tag = new TagModel({
           title: req.body.title,
           description: req.body.description,

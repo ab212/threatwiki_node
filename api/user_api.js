@@ -6,7 +6,7 @@ function load_userApi(app, usermodel) {
   // retrieve all
   app.get('/api/user', function (req, res){
     return UserModel.find(function (err, users) {
-      if (!err) {
+      if (!err && users) {
         return res.send(users);
       } else {
         return console.log(err);
@@ -17,7 +17,7 @@ function load_userApi(app, usermodel) {
   // retrieve by id
   app.get('/api/user/:id', function (req, res) {
     return UserModel.findById(req.params.id, function (err, user) {
-      if (!err) {
+      if (!err && user) {
         return res.send(user);
       } else {
         return console.log(err);
@@ -28,7 +28,7 @@ function load_userApi(app, usermodel) {
   // retrieve by email
   app.get('/api/user/email/:email', function (req, res) {
     return UserModel.find({email: req.params.email}, function (err, user) {
-      if (!err) {
+      if (!err && user) {
         return res.send(user);
       } else {
         return console.log(err);

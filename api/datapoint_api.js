@@ -6,7 +6,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
     return DataPointModel.find().populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoints) {
-      if (!err) {
+      if (!err && datapoints) {
         return res.send(datapoints);
       } else {
         return console.log(err);
@@ -17,7 +17,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve by id
   app.get('/api/datapoint/:id', function (req, res) {
     return DataPointModel.findById(req.params.id).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
-      if (!err) {
+      if (!err && datapoint) {
         return res.send(datapoint);
       } else {
         return console.log(err);
@@ -29,7 +29,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   app.get('/api/datapoint/soc/:soc', function (req, res) {
     console.log("DATAPOINT_API:SOC:Search by: " + req.params.soc);
     return DataPointModel.find({soc: req.params.soc}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
-      if (!err) {
+      if (!err && datapoint) {
         return res.send(datapoint);
       } else {
         return console.log(err);
@@ -42,16 +42,14 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     // first retrieve tag based on tag_title
     var tag = TagModel.findOne({ title: req.params.title}, function (err, tag) {
       console.log(req.params.title);
-      if (!err) {
+      if (!err && tag) {
         console.log("Tag found at " + tag._id);
         // search datapoint for the tag_id that we just found
         return DataPointModel.find({tags: tag._id}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
-          if (!err) {
-            console.log("1");
+          if (!err && datapoint) {
             console.log(datapoint);
             return res.send(datapoint);
           } else {
-            console.log("2");
             return console.log(err);
           }
         });
@@ -65,7 +63,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   app.get('/api/datapoint/location/:Location', function (req, res) {
     console.log("DATAPOINT_API:LOCATION:Search by: " + req.params.Location);
     return DataPointModel.find({'Location.title': req.params.Location}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
-      if (!err) {
+      if (!err && datapoint) {
         return res.send(datapoint);
       } else {
         return console.log(err);
@@ -80,7 +78,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
     return DataPointModel.find({created: {$gte : d_small, $lte : d_big}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
-      if (!err) {
+      if (!err && datapoint) {
         return res.send(datapoint);
       } else {
         return console.log(err);
@@ -93,7 +91,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     var d_small = new Date(req.params.date);
     d_small.setHours(0,0,0,0);
     return DataPointModel.find({created: {$gte : d_small}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
-      if (!err) {
+      if (!err && datapoint) {
         return res.send(datapoint);
       } else {
         return console.log(err);
@@ -106,7 +104,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     var d_big = new Date(req.params.date);
     d_big.setHours(23,59,59,59);
     return DataPointModel.find({created: {$lte : d_big}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
-      if (!err) {
+      if (!err && datapoint) {
         return res.send(datapoint);
       } else {
         return console.log(err);
@@ -124,8 +122,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
     return DataPointModel.find({created: {$gte : d_start, $lte : d_end}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
-      if (!err) {
-        return res.send(soc);
+      if (!err && datapoint) {
+        return res.send(datapoint);
       } else {
         return console.log(err);
       }
@@ -136,11 +134,11 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   app.get('/api/datapoint/user/:user_name', function (req, res) {
     // first retrieve user based on user_name
     var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
-      if (!err) {
+      if (!err && user) {
         console.log("User found at " + user._id);
         // search datapoint for the user_id that we just found
         return DataPointModel.find({createdBy: user._id}).populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoint) {
-          if (!err) {
+          if (!err && datapoint) {
             return res.send(datapoint);
           } else {
             return console.log(err);
@@ -163,7 +161,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
 
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-      if(!err){
+      if(!err && user){
         datapoint = new DataPointModel({
           title: req.body.title,
           description: req.body.description,

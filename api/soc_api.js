@@ -6,7 +6,7 @@ function load_socApi(app, SocModel, UserModel) {
   // retrieve all
   app.get('/api/soc', function (req, res){
     return SocModel.find().populate('createdBy',['name']).run(function (err, socs) {
-      if (!err) {
+      if (!err && socs) {
         return res.json(socs);
       } else {
         return console.log(err);
@@ -17,7 +17,7 @@ function load_socApi(app, SocModel, UserModel) {
   // retrieve by id
   app.get('/api/soc/:id', function (req, res) {
     return SocModel.findById(req.params.id).populate('createdBy',['name']).run(function (err, soc) {
-      if (!err) {
+      if (!err && soc) {
         return res.send(soc);
       } else {
         return console.log(err);
@@ -32,7 +32,7 @@ function load_socApi(app, SocModel, UserModel) {
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
     return SocModel.find({created: {$gte : d_small, $lte : d_big}}).populate('createdBy',['name']).run(function (err, soc) {
-      if (!err) {
+      if (!err && soc) {
         return res.send(soc);
       } else {
         return console.log(err);
@@ -45,7 +45,7 @@ function load_socApi(app, SocModel, UserModel) {
     var d_small = new Date(req.params.date);
     d_small.setHours(0,0,0,0);
     return SocModel.find({created: {$gte : d_small}}).populate('createdBy',['name']).run(function (err, soc) {
-      if (!err) {
+      if (!err && soc) {
         return res.send(soc);
       } else {
         return console.log(err);
@@ -58,7 +58,7 @@ function load_socApi(app, SocModel, UserModel) {
     var d_big = new Date(req.params.date);
     d_big.setHours(23,59,59,59);
     return SocModel.find({created: {$lte : d_big}}).populate('createdBy',['name']).run(function (err, soc) {
-      if (!err) {
+      if (!err && soc) {
         return res.send(soc);
       } else {
         return console.log(err);
@@ -76,7 +76,7 @@ function load_socApi(app, SocModel, UserModel) {
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
     return SocModel.find({created: {$gte : d_start, $lte : d_end}}).populate('createdBy',['name']).run(function (err, soc) {
-      if (!err) {
+      if (!err && soc) {
         return res.send(soc);
       } else {
         return console.log(err);
@@ -87,7 +87,7 @@ function load_socApi(app, SocModel, UserModel) {
   // retrieve by title
   app.get('/api/soc/title/:title', function (req, res) {
     return SocModel.find({ title: req.params.title}).populate('createdBy',['name']).run(function (err, soc) {
-      if (!err) {
+      if (!err && soc) {
         return res.send(soc);
       } else {
         return console.log(err);
@@ -99,11 +99,11 @@ function load_socApi(app, SocModel, UserModel) {
   app.get('/api/soc/user/:user_name', function (req, res) {
     // first retrieve user based on user_name
     var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
-      if (!err) {
+      if (!err && user) {
         console.log("User found at " + user._id);
         // search soc for the user_id that we just found
         return SocModel.find({createdBy: user._id}).populate('createdBy',['name']).run(function (err, soc) {
-          if (!err) {
+          if (!err && soc) {
             return res.send(soc);
           } else {
             return console.log(err);
@@ -126,7 +126,7 @@ function load_socApi(app, SocModel, UserModel) {
 
     //Find the user object in the DB that has the same email as the current loggedin google user
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-      if(!err){
+      if(!err && user){
         soc = new SocModel({
           title: req.body.title,
           created: date_now,
