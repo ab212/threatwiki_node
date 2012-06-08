@@ -9,7 +9,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && datapoints) {
         return res.send(datapoints);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -20,7 +21,9 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
+
       }
     });
   });
@@ -32,7 +35,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -50,11 +54,13 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
             console.log(datapoint);
             return res.send(datapoint);
           } else {
-            return console.log(err);
+            console.log(err);
+            return res.send(null);
           }
         });
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -66,7 +72,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -81,7 +88,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -94,7 +102,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -107,7 +116,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -125,7 +135,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -141,11 +152,13 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
           if (!err && datapoint) {
             return res.send(datapoint);
           } else {
-            return console.log(err);
+            console.log(err);
+            return res.send(null);
           }
         });
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);        
       }
     });
   });
@@ -156,40 +169,48 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     console.log("POST: ");
     console.log(req.body);
 
-    var date_now = new Date();
-    date_now.setTimezone('UTC');
+    //Can only create datapoints if currently loggedin in the system
+    if(req.session.auth && req.session.auth.loggedIn){
+      var date_now = new Date();
+      date_now.setTimezone('UTC');
 
-    //Find the user object in the DB that has the same email as the current loggedin google user
-    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-      if(!err && user){
-        datapoint = new DataPointModel({
-          title: req.body.title,
-          description: req.body.description,
-          soc: req.body.soc,
-          Location: {
-            title: req.body.location,
-            latitude: req.body.latitude,
-            longitude: req.body.longitude
-          },
-          tags: req.body.tag_list,
-          created: date_now,
-          modified: date_now,
-          //save the _id of the current user in the new datapoint
-          createdBy: user._id
-        });
+      //Find the user object in the DB that has the same email as the current loggedin google user
+      UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
+        if(!err && user){
+          datapoint = new DataPointModel({
+            title: req.body.title,
+            description: req.body.description,
+            soc: req.body.soc,
+            Location: {
+              title: req.body.location,
+              latitude: req.body.latitude,
+              longitude: req.body.longitude
+            },
+            tags: req.body.tag_list,
+            created: date_now,
+            modified: date_now,
+            //save the _id of the current user in the new datapoint
+            createdBy: user._id
+          });
 
-        datapoint.save(function (err) {
-          if (!err) {
-            return console.log("created");
-          } else {
-            return console.log(err);
-          }
-        });
-        return res.send(datapoint);
-      } else {
-        return console.log(err);
-      }
-    });
+          datapoint.save(function (err) {
+            if (!err) {
+              return console.log("created");
+            } else {
+              console.log(err);
+              return res.send(null);
+            }
+          });
+          return res.send(datapoint);
+        } else {
+          console.log(err);
+          return res.send(null);
+        }
+      });
+    } else {
+      console.log("Can't create a new datapoint if currently not logged in");
+      return res.send(null);
+    }
 
   });
 
