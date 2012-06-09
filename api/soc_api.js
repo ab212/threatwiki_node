@@ -123,30 +123,31 @@ function load_socApi(app, SocModel, UserModel) {
 
     var date_now = new Date();
     date_now.setTimezone('UTC');
+    if(req.session.auth && req.session.auth.loggedIn){
+      //Find the user object in the DB that has the same email as the current loggedin google user
+      UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
+        if(!err && user){
+          soc = new SocModel({
+            title: req.body.title,
+            created: date_now,
+            modified: date_now,
+            //save the _id of the current user in the new SOC
+            createdBy: user._id
+          });
 
-    //Find the user object in the DB that has the same email as the current loggedin google user
-    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-      if(!err && user){
-        soc = new SocModel({
-          title: req.body.title,
-          created: date_now,
-          modified: date_now,
-          //save the _id of the current user in the new SOC
-          createdBy: user._id
-        });
-
-        soc.save(function (err) {
-          if (!err) {
-            return console.log("created");
-          } else {
-            return console.log("!!!Could not Save: " + err);
-          }
-        });
-        return res.send(soc);
-      } else {
-        return console.log(err);
-      }
+          soc.save(function (err) {
+            if (!err) {
+              return console.log("created");
+            } else {
+              return console.log("!!!Could not Save: " + err);
+            }
+          });
+          return res.send(soc);
+        } else {
+          return console.log(err);
+        }
       });
+    }
     });
 
   // update

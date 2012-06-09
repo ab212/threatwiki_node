@@ -158,31 +158,32 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
     var date_now = new Date();
     date_now.setTimezone('UTC');
+    if(req.session.auth && req.session.auth.loggedIn){
+      //Find the user object in the DB that has the same email as the current loggedin google user
+      UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
+        if(!err && user){
+          tag = new TagModel({
+            title: req.body.title,
+            description: req.body.description,
+            soc: req.body.soc,
+            created: date_now,
+            modified: date_now,
+            createdBy: user._id
+          });
 
-    //Find the user object in the DB that has the same email as the current loggedin google user
-    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-      if(!err && user){
-        tag = new TagModel({
-          title: req.body.title,
-          description: req.body.description,
-          soc: req.body.soc,
-          created: date_now,
-          modified: date_now,
-          createdBy: user._id
-        });
-
-        tag.save(function (err) {
-          if (!err) {
-            return console.log("created");
-          } else {
-            return console.log(err);
-          }
-        });
-        return res.send(tag);
-      } else {
-        return console.log(err);
-      }
-    });
+          tag.save(function (err) {
+            if (!err) {
+              return console.log("created");
+            } else {
+              return console.log(err);
+            }
+          });
+          return res.send(tag);
+        } else {
+          return console.log(err);
+        }
+      });
+    }
   });
 
   // update
