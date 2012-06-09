@@ -9,7 +9,8 @@ function load_socApi(app, SocModel, UserModel) {
       if (!err && socs) {
         return res.json(socs);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -20,7 +21,8 @@ function load_socApi(app, SocModel, UserModel) {
       if (!err && soc) {
         return res.send(soc);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -35,7 +37,8 @@ function load_socApi(app, SocModel, UserModel) {
       if (!err && soc) {
         return res.send(soc);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -48,7 +51,9 @@ function load_socApi(app, SocModel, UserModel) {
       if (!err && soc) {
         return res.send(soc);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
+
       }
     });
   });
@@ -61,7 +66,8 @@ function load_socApi(app, SocModel, UserModel) {
       if (!err && soc) {
         return res.send(soc);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -79,7 +85,9 @@ function load_socApi(app, SocModel, UserModel) {
       if (!err && soc) {
         return res.send(soc);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
+
       }
     });
   });
@@ -90,7 +98,8 @@ function load_socApi(app, SocModel, UserModel) {
       if (!err && soc) {
         return res.send(soc);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -106,11 +115,13 @@ function load_socApi(app, SocModel, UserModel) {
           if (!err && soc) {
             return res.send(soc);
           } else {
-            return console.log(err);
+            console.log(err);
+            return res.send(null);
           }
         });
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -139,16 +150,21 @@ function load_socApi(app, SocModel, UserModel) {
             if (!err) {
               return console.log("created");
             } else {
-              return console.log("!!!Could not Save: " + err);
+              console.log("!!!Could not Save: " + err);
+              return res.send(null);
             }
           });
           return res.send(soc);
         } else {
-          return console.log(err);
+          console.log(err);
+          return res.send(null);
         }
       });
+    } else {
+      console.log("Can't create a new SOC if currently not logged in");
+      return res.send(null);
     }
-    });
+  });
 
   // update
   app.put('/api/soc/:id', function (req, res) {

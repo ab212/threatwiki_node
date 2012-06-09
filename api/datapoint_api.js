@@ -158,7 +158,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         });
       } else {
         console.log(err);
-        return res.send(null);        
+        return res.send(null);
       }
     });
   });

@@ -10,7 +10,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       if (!err && tags) {
         return res.send(tags);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -21,7 +22,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       if (!err && tag) {
         return res.send(tag);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -33,7 +35,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       if (!err && tag) {
         return res.send(tag);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -46,7 +49,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
         console.log("Tag found: %o", tag);
         return res.send(tag);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -62,11 +66,13 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
               console.log("Tag found: %o", tag);
               return res.send(tag);
             } else {
-              return console.log(err);
+              console.log(err);
+              return res.send(null);
             }
           });
         } else {
-            return console.log(err);
+            console.log(err);
+            return res.send(null);
         }
        });
   });
@@ -81,7 +87,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       if (!err && tag) {
         return res.send(tag);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -94,7 +101,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       if (!err && tag) {
         return res.send(tag);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -107,7 +115,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       if (!err && tag) {
         return res.send(tag);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -125,7 +134,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       if (!err && tag) {
         return res.send(soc);
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -141,11 +151,13 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
           if (!err && tag) {
             return res.send(tag);
           } else {
-            return console.log(err);
+            console.log(err);
+            return res.send(null);
           }
         });
       } else {
-        return console.log(err);
+        console.log(err);
+        return res.send(null);
       }
     });
   });
@@ -173,16 +185,21 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
           tag.save(function (err) {
             if (!err) {
-              return console.log("created");
+              console.log("created");
+              return res.send(tag);
             } else {
-              return console.log(err);
+              console.log(err);
+              return res.send(null);
             }
           });
-          return res.send(tag);
         } else {
-          return console.log(err);
+          console.log(err);
+          return res.send(null);
         }
       });
+    } else {
+      console.log("Can't create a new TAG if currently not logged in");
+      return res.send(null);
     }
   });
 
