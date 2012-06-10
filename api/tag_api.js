@@ -2,6 +2,41 @@ var express = require("express");
 var util = require("util");
 var time = require('time')(Date);
 
+function generateDevUser(UserModel) {
+  user = new UserModel({
+    name: "developer"+Date.now(),
+    email: "dev@outerspace.com"+Date.now(),
+    created : Date.now(),
+    modified: Date.now()
+  });
+  user.save(function (err) {
+    if (!err) {
+      return console.log("created");
+    } else {
+      console.log("!!!Could not Save: " + err);
+      return res.send(null);
+    }
+  });
+  return user;
+}
+
+// authenticate user based on the incoming request
+function authenticate(req, res){
+  if (req.session.auth && req.session.auth.loggedIn) {
+    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user) {
+      this.user = user;
+      if(!err && user){
+        return user;
+      } else {
+        console.log(err);
+        return res.send(null);
+      }
+    });
+  return true;
+  }
+  return false;
+}
+
 function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
   // retrieve all
@@ -170,28 +205,23 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
     var date_now = new Date();
     date_now.setTimezone('UTC');
-    if(req.session.auth && req.session.auth.loggedIn){
-      //Find the user object in the DB that has the same email as the current loggedin google user
-      UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-        if(!err && user){
-          tag = new TagModel({
-            title: req.body.title,
-            description: req.body.description,
-            soc: req.body.soc,
-            created: date_now,
-            modified: date_now,
-            createdBy: user._id
-          });
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))) {
+      if (typeof user == 'undefined') {
+        var user = generateDevUser(UserModel);
+      }
+      tag = new TagModel({
+        title: req.body.title,
+        description: req.body.description,
+        soc: req.body.soc,
+        created: date_now,
+        modified: date_now,
+        createdBy: user._id
+      });
 
-          tag.save(function (err) {
-            if (!err) {
-              console.log("created");
-              return res.send(tag);
-            } else {
-              console.log(err);
-              return res.send(null);
-            }
-          });
+      tag.save(function (err) {
+        if (!err) {
+          console.log("created");
+          return res.send(tag);
         } else {
           console.log(err);
           return res.send(null);

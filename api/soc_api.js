@@ -1,8 +1,42 @@
 var express = require("express");
 var time = require('time')(Date);
 
-function load_socApi(app, SocModel, UserModel) {
+function generateDevUser(UserModel) {
+  user = new UserModel({
+    name: "developer"+Date.now(),
+    email: "dev@outerspace.com"+Date.now(),
+    created : Date.now(),
+    modified: Date.now()
+  });
+  user.save(function (err) {
+    if (!err) {
+      return console.log("created");
+    } else {
+      console.log("!!!Could not Save: " + err);
+      return res.send(null);
+    }
+  });
+  return user;
+}
 
+// authenticate user based on the incoming request
+function authenticate(req, res){
+  if (req.session.auth && req.session.auth.loggedIn) {
+    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user) {
+      this.user = user;
+      if(!err && user){
+        return user;
+      } else {
+        console.log(err);
+        return res.send(null);
+      }
+    });
+  return true;
+  }
+  return false;
+}
+
+function load_socApi(app, SocModel, UserModel) {
   // retrieve all
   app.get('/api/soc', function (req, res){
     return SocModel.find().populate('createdBy',['name']).run(function (err, socs) {
@@ -134,32 +168,26 @@ function load_socApi(app, SocModel, UserModel) {
 
     var date_now = new Date();
     date_now.setTimezone('UTC');
-    if(req.session.auth && req.session.auth.loggedIn){
-      //Find the user object in the DB that has the same email as the current loggedin google user
-      UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-        if(!err && user){
-          soc = new SocModel({
-            title: req.body.title,
-            created: date_now,
-            modified: date_now,
-            //save the _id of the current user in the new SOC
-            createdBy: user._id
-          });
-
-          soc.save(function (err) {
-            if (!err) {
-              return console.log("created");
-            } else {
-              console.log("!!!Could not Save: " + err);
-              return res.send(null);
-            }
-          });
-          return res.send(soc);
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))) {
+      if (typeof user == 'undefined') {
+        var user = generateDevUser(UserModel);
+      }
+      soc = new SocModel({
+        title: req.body.title,
+        created: date_now,
+        modified: date_now,
+        //save the _id of the current user in the new SOC
+        createdBy: user._id
+      });
+      soc.save(function (err) {
+        if (!err) {
+          return console.log("created");
         } else {
-          console.log(err);
+          console.log("!!!Could not Save: " + err);
           return res.send(null);
         }
       });
+      return res.send(soc);
     } else {
       console.log("Can't create a new SOC if currently not logged in");
       return res.send(null);

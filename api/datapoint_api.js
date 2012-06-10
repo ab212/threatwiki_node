@@ -1,6 +1,41 @@
 var express = require("express");
 var time = require('time')(Date);
 
+function generateDevUser(UserModel) {
+  user = new UserModel({
+    name: "developehaxor"+Date.now(),
+    email: "dev@outerspace.com"+Date.now(),
+    created : Date.now(),
+    modified: Date.now()
+  });
+  user.save(function (err) {
+    if (!err) {
+      return console.log("created");
+    } else {
+      console.log("!!!Could not Save: " + err);
+      return res.send(null);
+    }
+  });
+  return user;
+}
+
+// authenticate user based on the incoming request
+function authenticate(req, res){
+  if (req.session.auth && req.session.auth.loggedIn) {
+    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user) {
+      this.user = user;
+      if(!err && user){
+        return user;
+      } else {
+        console.log(err);
+        return res.send(null);
+      }
+    });
+  return true;
+  }
+  return false;
+}
+
 function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
 
   // retrieve all
@@ -168,48 +203,41 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     //console.log("POST: ");
     //console.log(req.body);
 
-    //Can only create datapoints if currently loggedin in the system
-    if(req.session.auth && req.session.auth.loggedIn){
-      var date_now = new Date();
-      date_now.setTimezone('UTC');
+    var date_now = new Date();
+    date_now.setTimezone('UTC');
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))) {
+      if (typeof user == 'undefined') {
+        var user = generateDevUser(UserModel);
+      }
+      datapoint = new DataPointModel({
+        title: req.body.title,
+        description: req.body.description,
+        soc: req.body.soc,
+        Location: {
+          title: req.body.location,
+          latitude: req.body.latitude,
+          longitude: req.body.longitude
+        },
+        tags: req.body.tag_list,
+        created: date_now,
+        modified: date_now,
+        //save the _id of the current user in the new datapoint
+        createdBy: user._id
+      });
 
-      //Find the user object in the DB that has the same email as the current loggedin google user
-      return UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
-        if(!err && user){
-          datapoint = new DataPointModel({
-            title: req.body.title,
-            description: req.body.description,
-            soc: req.body.soc,
-            Location: {
-              title: req.body.location,
-              latitude: req.body.latitude,
-              longitude: req.body.longitude
-            },
-            tags: req.body.tag_list,
-            created: date_now,
-            modified: date_now,
-            //save the _id of the current user in the new datapoint
-            createdBy: user._id
-          });
-
-          return datapoint.save(function (err) {
-            if (!err) {
-              return console.log("created");
-            } else {
-              console.log(err);
-              return res.send(null);
-            }
-          });
+      return datapoint.save(function (err) {
+        if (!err) {
+          return console.log("created");
         } else {
           console.log(err);
           return res.send(null);
         }
+        return res.send(soc);
       });
     } else {
       console.log("Can't create a new datapoint if currently not logged in");
       return res.send(null);
     }
-
   });
 
   // update

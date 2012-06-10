@@ -99,6 +99,7 @@ app.configure(function () {
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
+
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
@@ -112,6 +113,7 @@ app.helpers({
 
 // get routes
 routes.load_routes(app);
+routes.authenticate;
 app.get('/', routes.index);
 app.get('/soc', routes.soc);
 app.get('/soc/create', routes.soc.create);

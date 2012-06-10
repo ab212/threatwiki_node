@@ -11,7 +11,7 @@ html
     -each script in scripts
       script(type='text/javascript', src= script)
 
-  - if (everyauth.loggedIn)
+  - if (app.settings.env == "development" || everyauth.loggedIn)
     #menu
         li
           a(href='/') Home
