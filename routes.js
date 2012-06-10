@@ -40,9 +40,9 @@ exports.soc.create = function(req, res){
     var splitemail = req.session.auth.google.user.email.split("@");
     var domain = splitemail[1];
     if (domain=='thesentinelproject.org'){
-      res.render('soc', { locals: {
+      res.render('socForm', { locals: {
         title: 'Create an SOC'
-        , scripts: ['/javascript/soc.js']
+        , scripts: ['/javascript/soc_form.js']
       }});
     } else {
         //force logout if user doesn't meet conditions to view the page
@@ -64,9 +64,9 @@ exports.soc.edit = function(req, res){
       console.log('http://localhost:3000/api/soc/'+ obj_id +'?callback=?');
 
       jQuery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
-        res.render('soc', { locals: {
+        res.render('socForm', { locals: {
           title: 'Edit SOC'
-          , scripts: ['/javascript/soc.js']
+          , scripts: ['/javascript/soc_form.js']
           , soc: soc
         }});
       });
@@ -110,9 +110,9 @@ exports.datapoint.create = function(req, res){
     var splitemail = req.session.auth.google.user.email.split("@");
     var domain = splitemail[1];
     if (domain=='thesentinelproject.org'){
-      res.render('datapoint', { locals: {
+      res.render('datapointForm', { locals: {
         title: 'Create Datapoint'
-        ,  scripts: ['/javascript/datapoint.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js']
+        ,  scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js']
       }});
     } else {
         //force logout if user doesn't meet conditions to view the page
@@ -134,9 +134,9 @@ exports.datapoint.edit = function(req, res){
       console.log('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?');
 
       jQuery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
-        res.render('datapoint', { locals: {
+        res.render('datapointForm', { locals: {
           title: 'Edit Datapoint'
-          , scripts: ['/javascript/datapoint.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js']
+          , scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js']
           , datapoint: datapoint
         }});
       });
@@ -179,9 +179,9 @@ exports.tag.create = function(req, res){
     var splitemail = req.session.auth.google.user.email.split("@");
     var domain = splitemail[1];
     if (domain=='thesentinelproject.org'){
-      res.render('tag', { locals: {
+      res.render('tagForm', { locals: {
         title: 'Create Tag'
-        , scripts: ['/javascript/tag.js']
+        , scripts: ['/javascript/tag_form.js']
       }});
     } else {
       //force logout if user doesn't meet conditions to view the page
@@ -201,9 +201,9 @@ exports.tag.edit = function(req, res){
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/tag/'+ obj_id +'?callback=?');
       jQuery.getJSON('http://localhost:3000/api/tag/'+ obj_id +'?callback=?', function(tag) {
-        res.render('tag', { locals: {
+        res.render('tagForm', { locals: {
           title: 'Edit Tag'
-          , scripts: ['/javascript/tag.js']
+          , scripts: ['/javascript/tag_form.js']
           , tag: tag
         }});
       });
