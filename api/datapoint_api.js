@@ -23,7 +23,6 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       } else {
         console.log(err);
         return res.send(null);
-
       }
     });
   });
@@ -45,7 +44,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   app.get('/api/datapoint/tag/:title', function (req, res) {
     // first retrieve tag based on tag_title
     var tag = TagModel.findOne({ title: req.params.title}, function (err, tag) {
-      console.log(req.params.title);
+      //console.log(req.params.title);
       if (!err && tag) {
         console.log("Tag found at " + tag._id);
         // search datapoint for the tag_id that we just found
@@ -166,8 +165,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // create
   app.post('/api/datapoint', function (req, res) {
     var datapoint;
-    console.log("POST: ");
-    console.log(req.body);
+    //console.log("POST: ");
+    //console.log(req.body);
 
     //Can only create datapoints if currently loggedin in the system
     if(req.session.auth && req.session.auth.loggedIn){
@@ -175,7 +174,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       date_now.setTimezone('UTC');
 
       //Find the user object in the DB that has the same email as the current loggedin google user
-      UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
+      return UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user){
         if(!err && user){
           datapoint = new DataPointModel({
             title: req.body.title,
@@ -193,7 +192,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
             createdBy: user._id
           });
 
-          datapoint.save(function (err) {
+          return datapoint.save(function (err) {
             if (!err) {
               return console.log("created");
             } else {
@@ -201,7 +200,6 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
               return res.send(null);
             }
           });
-          return res.send(datapoint);
         } else {
           console.log(err);
           return res.send(null);
@@ -217,40 +215,49 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // update
   app.put('/api/datapoint/:id', function (req, res) {
     return DataPointModel.findById(req.params.id, function (err, datapoint) {
-      var date_now = new Date();
-      date_now.setTimezone('UTC');
+      if (!err && datapoint){
+        var date_now = new Date();
+        date_now.setTimezone('UTC');
 
-      datapoint.title = req.body.title;
-      datapoint.description = req.body.description;
-      datapoint.soc = req.body.soc;
-      datapoint.Location.title = req.body.location;
-      datapoint.Location.latitude = req.body.latitude;
-      datapoint.Location.longitude = req.body.longitude;
-      datapoint.tags = req.body.tag_list;
-      datapoint.modified = date_now;
+        datapoint.title = req.body.title;
+        datapoint.description = req.body.description;
+        datapoint.soc = req.body.soc;
+        datapoint.Location.title = req.body.location;
+        datapoint.Location.latitude = req.body.latitude;
+        datapoint.Location.longitude = req.body.longitude;
+        datapoint.tags = req.body.tag_list;
+        datapoint.modified = date_now;
 
-      return datapoint.save(function (err) {
-        if (!err) {
-          console.log("updated");
-        } else {
-          console.log(err);
-        }
-        return res.send(datapoint);
-      });
+        return datapoint.save(function (err) {
+          if (!err) {
+            console.log("updated");
+          } else {
+            console.log(err);
+          }
+        });
+      } else {
+        console.log('Cant find datapoint by ID '+err);
+        return res.send(null);
+      }
     });
   });
 
   // delete by id
   app.get('/api/datapoint/delete/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id, function (err, datapoint) {
-      return datapoint.remove(function (err) {
-        if (!err) {
-          console.log("removed");
-          return res.send('');
-        } else {
-          console.log(err);
-        }
-      });
+     return DataPointModel.findById(req.params.id, function (err, datapoint) {
+      if (!err && datapoint){
+        return datapoint.remove(function (err) {
+          if (!err) {
+            console.log("removed");
+            return res.send('');
+          } else {
+            console.log(err);
+          }
+        });
+      } else {
+        console.log('Cant delete datapoint with this id '+err);
+        return res.send(null);
+      }
     });
   });
 }
