@@ -34,7 +34,7 @@ var DataPointModel = model.DataPointModel;
 var TagModel = model.TagModel;
 var UserModel = model.UserModel;
 
-//using the informations we get back from Google Apps, we check if we already have this user in the DB, 
+//using the informations we get back from Google Apps, we check if we already have this user in the DB,
 //if yes we return it, if not we create a new one
 function addOrGetUser (sourceUser) {
   return UserModel.findOne({ email: sourceUser.email}, function (err, user){

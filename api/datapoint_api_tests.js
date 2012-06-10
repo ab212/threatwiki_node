@@ -17,7 +17,6 @@ if(month <= 9)
 var day= currentTime.getDate();
 if(day <= 9)
     day = '0'+day;
-console.log(currentTime.getTime());
 
 var api = {
     get: function (path) {
@@ -43,19 +42,34 @@ var api = {
 
 function assertStatus(code) {
     return function (e, res) {
+        console.log(res.statusCode);
         assert.equal (res.statusCode, code);
     };
 }
-console.log('/api/datapoint/date/range/'+time2000.getTime().toString()+'/'+currentTime.getTime().toString());
 vows.describe('Test Datapoint API').addBatch({
     'GET /api/datapoint': {
-        topic: api.get('/api/datapoint'),
-        'should respond with a 200 OK': assertStatus(200),
-        'should return a list of datapoints if the DB contains some': function (res) {
+        topic: function () {
+            var browser = tobi.createBrowser(serverPort, serverUrl);
+            browser.get('/api/datapoint', this.callback.bind(this, null));
+        },
+            //first we test that we get results from getting all datapoints
+            'should respond with a 200 OK': assertStatus(200),
+            'should return a list of datapoints if the DB contains some': function (res) {
             assert.isArray (res.body);
-        }
+            },
+            //We take the first datapoint that we receive when we get all datapoints, get the _id of it
+            //call a nested test to /api/datapoint/:id and make sure they both are the same
+            'Retrieve /api/datapoint/:id from the first datapoint retrieved in /api/datapoint':{
+               topic: function (e, res) {
+                var browser = tobi.createBrowser(serverPort, serverUrl);
+                browser.get('/api/datapoint/'+res[0]._id, this.callback.bind(this, null,res[0]._id));
+                },
+                'Both _id are equal': function (e,prevId,res){
+                    assert.equal(res.body._id,prevId);
+                }
+            }
     },
-    'GET /api/datapoint/delete/:id': {
+    'GET /api/datapoint/delete/ random id number that doesnt exist': {
         topic: api.get('/api/datapoint/delete/123'),
         'should respond with a 200 OK': assertStatus(200)
     },
@@ -77,7 +91,7 @@ vows.describe('Test Datapoint API').addBatch({
         topic: api.get('/api/datapoint/date/range/'+time2000.getTime().toString()+'/'+currentTime.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of datapoints if the DB contains some': function (res) {
-            console.log(res.body);
+            //console.log(res.body);
             assert.isArray (res.body);
         }
     },

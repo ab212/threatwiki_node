@@ -77,7 +77,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
        });
   });
 
-  // retrieve by date
+  // retrieve by date, date format is milliseconds since 1970/01/01
   app.get('/api/tag/date/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date,10));
     var d_big = new Date(parseInt(req.params.date,10));
@@ -93,7 +93,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     });
   });
 
-  // retrieve by date after
+  // retrieve by date after, date format is milliseconds since 1970/01/01
   app.get('/api/tag/date/after/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date,10));
     d_small.setHours(0,0,0,0);
@@ -107,7 +107,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     });
   });
 
-  // retrieve by date before
+  // retrieve by date before, date format is milliseconds since 1970/01/01
   app.get('/api/tag/date/before/:date', function (req, res) {
     var d_big = new Date(parseInt(req.params.date,10));
     d_big.setHours(23,59,59,59);
@@ -121,7 +121,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     });
   });
 
-  // retrieve by date range
+  // retrieve by date range, date format is milliseconds since 1970/01/01
   app.get('/api/tag/date/range/:date_start/:date_end', function (req, res) {
     console.log("Search between range");
     console.log("Range start: " + req.params.date_start);
