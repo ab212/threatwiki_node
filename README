@@ -3,7 +3,8 @@ How to use:
 - npm install -d
 - node app.js
 - Point your browser to http://localhost:3000
-- You will be asked to login with a Google Apps account, you need a @thesentinelproject.org google apps email in order to login
+- In DEV mode you won't need to be authentified
+- If you run the app in production mode, you will be asked to login with a Google Apps account with a @thesentinelproject.org google apps email, to run in Production mode: export NODE_ENV=production. It is recommended to use a different instance of the DB in production mode vs dev mode
 
 May 29, 2012:
  - Update tests
