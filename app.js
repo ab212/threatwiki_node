@@ -106,12 +106,12 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-
 // helpers
 app.helpers({
 });
 
 // get routes
+routes.load_routes(app);
 app.get('/', routes.index);
 app.get('/soc', routes.soc);
 app.get('/soc/create', routes.soc.create);
@@ -128,7 +128,6 @@ var socApi = soc_api.load_socApi(app, SocModel,UserModel);
 var datapointApi = datapoint_api.load_datapointApi(app, DataPointModel, TagModel, UserModel);
 var tagApi = tag_api.load_tagApi(app, TagModel, DataPointModel,UserModel);
 //var userApi = user_api.load_userApi(app, UserModel);
-
 
 // server listen
 app.listen(3000);
