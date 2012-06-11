@@ -42,16 +42,12 @@ var api = {
 
 function assertStatus(code) {
     return function (e, res) {
-        console.log(res.statusCode);
         assert.equal (res.statusCode, code);
     };
 }
 vows.describe('Test Datapoint API').addBatch({
     'GET /api/datapoint': {
-        topic: function () {
-            var browser = tobi.createBrowser(serverPort, serverUrl);
-            browser.get('/api/datapoint', this.callback.bind(this, null));
-        },
+        topic: api.get('/api/datapoint'),
             //first we test that we get results from getting all datapoints
             'should respond with a 200 OK': assertStatus(200),
             'should return a list of datapoints if the DB contains some': function (res) {
@@ -62,6 +58,7 @@ vows.describe('Test Datapoint API').addBatch({
             'Retrieve /api/datapoint/:id from the first datapoint retrieved in /api/datapoint':{
                topic: function (e, res) {
                 var browser = tobi.createBrowser(serverPort, serverUrl);
+                //we include the _id of the first datapoint result in the callback argument in order to compare it after
                 browser.get('/api/datapoint/'+res[0]._id, this.callback.bind(this, null,res[0]._id));
                 },
                 'Both _id are equal': function (e,prevId,res){
@@ -76,31 +73,45 @@ vows.describe('Test Datapoint API').addBatch({
     'GET /api/datapoint/date/after/ from Jan 1st 2000': {
         topic: api.get('/api/datapoint/date/after/'+time2000.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
-        'should return a list of datapoints if the DB contains some': function (res) {
+        'should return a list of datapoints in an array': function (res) {
             assert.isArray (res.body);
         }
     },
      'GET /api/datapoint/date/before/ todays date': {
         topic: api.get('/api/datapoint/date/before/'+currentTime.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
-        'should return a list of datapoints if the DB contains some': function (res) {
+        'should return a list of datapoints in an array': function (res) {
             assert.isArray (res.body);
         }
     },
     'GET /api/datapoint/date/range/ year 2000 to today': {
         topic: api.get('/api/datapoint/date/range/'+time2000.getTime().toString()+'/'+currentTime.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
-        'should return a list of datapoints if the DB contains some': function (res) {
+        'should return a list of datapoints in an array': function (res) {
             //console.log(res.body);
             assert.isArray (res.body);
         }
     },
     'POST empty data to /api/datapoint without being logged in': {
         topic: api.post('/api/datapoint'),
-        'should respond with a 200 OK': assertStatus(200)
-    },'PUT(update) empty data to /api/datapoint/:id': {
+        'should respond with a 401 unauthorized status': assertStatus(401)
+    },'PUT(update) empty data to /api/datapoint/:id random id number that doesnt exist': {
         topic: api.put('/api/datapoint/1224444'),
         'should respond with a 200 OK': assertStatus(200)
+    },'GET /api/datapoint/user/:username for a random user that doesnt exist': {
+        topic: api.get('/api/datapoint/user/dummy'),
+        'should respond with a 200 OK': assertStatus(200)
+    },'GET /api/datapoint/location/:Location for a random location name': {
+        topic: api.get('/api/datapoint/location/dummy123'),
+        'should respond with a 200 OK': assertStatus(200)
+    },'GET /api/datapoint/tag/:title for a random tag title': {
+        topic: api.get('/api/datapoint/tag/dummy123'),
+        'should respond with a 200 OK': assertStatus(200)
+    },'GET /api/datapoint/soc/:soc for a random soc title': {
+        topic: api.get('/api/datapoint/soc/dummy123'),
+        'should respond with a 200 OK': assertStatus(200)
     }
+
+
 
 }).run(); // Run it
