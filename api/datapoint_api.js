@@ -23,7 +23,7 @@ function generateDevUser(UserModel) {
 // authenticate user based on the incoming request
 function authenticate(req, res){
   if (req.session.auth && req.session.auth.loggedIn) {
-    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user) {
+    UserModel.find({'email':req.session.auth.google.user.email}).run(function (err, user) {
       this.user = user;
       if(!err && user){
         return user;
@@ -76,6 +76,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   });
 
   // retrieve by tag
+  /*
   app.get('/api/datapoint/tag/:title', function (req, res) {
     // first retrieve tag based on tag_title
     var tag = TagModel.findOne({ title: req.params.title}, function (err, tag) {
@@ -97,7 +98,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         return res.send(null);
       }
     });
-  });
+  });*/
 
   // retrieve by location
   app.get('/api/datapoint/location/:Location', function (req, res) {
@@ -113,9 +114,9 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   });
 
   // retrieve by date, date format is milliseconds since 1970/01/01
-  app.get('/api/datapoint/:date', function (req, res) {
+  app.get('/api/datapoint/date/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date_start,10));
-    var d_big = new Date(parseInt(req.params.date_start,10));
+    var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
     return DataPointModel.find({created: {$gte : d_small, $lt : d_big}}).populate('tags',['title']).populate('created by',['name']).run(function (err, datapoint) {
@@ -178,7 +179,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve by email
   app.get('/api/datapoint/user/:email', function (req, res) {
     // first retrieve user based on email
-    var user = UserModel.findOne({ email: req.params.email}, function (err, user) {
+    var user = UserModel.find({ email: req.params.email}, function (err, user) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search datapoint for the user_id that we just found

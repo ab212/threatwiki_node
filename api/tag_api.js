@@ -23,7 +23,7 @@ function generateDevUser(UserModel) {
 // authenticate user based on the incoming request
 function authenticate(req, res){
   if (req.session.auth && req.session.auth.loggedIn) {
-    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user) {
+    UserModel.find({'email':req.session.auth.google.user.email}).run(function (err, user) {
       this.user = user;
       if(!err && user){
         return user;
@@ -76,7 +76,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     });
   });
 
-  // retrieve by tag title
+  // retrieve all tags that have this title
   app.get('/api/tag/title/:title', function (req, res) {
 	console.log('TAG_API:TITLE:Search by ' + req.params.title);
     return TagModel.find({ title: req.params.title}).populate('createdBy',['name']).run( function (err, tag) {
@@ -107,7 +107,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
           });
         } else {
             console.log(err);
-            return res.send(null);
+            return res.send({});
         }
        });
   });
@@ -115,7 +115,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   // retrieve by date, date format is milliseconds since 1970/01/01
   app.get('/api/tag/date/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date,10));
-    var d_big = new Date(parseInt(req.params.date,10));
+    var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
     return TagModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy',['name']).run(function (err, tag) {
@@ -167,7 +167,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     d_end.setHours(23,59,59,59);
     return TagModel.find({created: {$gte : d_start, $lt : d_end}}).populate('createdBy',['name']).run(function (err, tag) {
       if (!err && tag) {
-        return res.send(soc);
+        return res.send(tag);
       } else {
         console.log(err);
         return res.send(null);
@@ -178,7 +178,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   // retrieve by user email
   app.get('/api/tag/user/:email', function (req, res) {
     // first retrieve user based on user_name
-    var user = UserModel.findOne({ email: req.params.email}, function (err, user) {
+    var user = UserModel.find({ email: req.params.email}, function (err, user) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search tag for the user_id that we just found
@@ -229,45 +229,55 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       });
     } else {
       console.log("Can't create a new TAG if currently not logged in");
-      return res.send(null);
+      return res.send(401);
     }
   });
 
   // update
   app.put('/api/tag/:id', function (req, res) {
     return TagModel.findById(req.params.id, function (err, tag) {
-      var date_now = new Date();
-      date_now.setTimezone('UTC');
+      if (!err && tag){
+        var date_now = new Date();
+        date_now.setTimezone('UTC');
 
-      tag.title = req.body.title;
-      tag.description = req.body.description;
-      tag.soc = req.body.soc;
-      tag.modified = date_now;
+        tag.title = req.body.title;
+        tag.description = req.body.description;
+        tag.soc = req.body.soc;
+        tag.modified = date_now;
 
-      return tag.save(function (err) {
-        if (!err) {
-          console.log("updated");
-        } else {
-          console.log(err);
-          return res.send(500);
-        }
-        return res.send(tag);
-      });
+        return tag.save(function (err) {
+          if (!err) {
+            console.log("updated");
+          } else {
+            console.log(err);
+            return res.send(500);
+          }
+          return res.send(tag);
+        });
+    } else {
+      console.log(err);
+      return res.send(null);
+    }
     });
   });
 
   // delete by id
   app.get('/api/tag/delete/:id', function (req, res) {
     return TagModel.findById(req.params.id, function (err, tag) {
-      return tag.remove(function (err) {
-        if (!err) {
-          console.log("removed");
-          return res.send(204);
-        } else {
-          console.log(err);
-          return res.send(500);
-        }
-      });
+      if (!err && tag){
+        return tag.remove(function (err) {
+          if (!err) {
+            console.log("removed");
+            return res.send(204);
+          } else {
+            console.log(err);
+            return res.send(500);
+          }
+        });
+    } else {
+      console.log(err);
+      return res.send(null);
+    }
     });
   });
 }

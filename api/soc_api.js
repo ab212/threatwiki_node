@@ -22,7 +22,7 @@ function generateDevUser(UserModel) {
 // authenticate user based on the incoming request
 function authenticate(req, res){
   if (req.session.auth && req.session.auth.loggedIn) {
-    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user) {
+    UserModel.find({'email':req.session.auth.google.user.email}).run(function (err, user) {
       this.user = user;
       if(!err && user){
         return user;
@@ -31,7 +31,7 @@ function authenticate(req, res){
         return res.send(null);
       }
     });
-  return true;
+    return true;
   }
   return false;
 }
@@ -64,7 +64,7 @@ function load_socApi(app, SocModel, UserModel) {
   // retrieve by date, date format is milliseconds since 1970/01/01
   app.get('/api/soc/date/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date,10));
-    var d_big = new Date(parseInt(req.params.date,10));
+    var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
     return SocModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy',['name']).run(function (err, soc) {
@@ -141,7 +141,7 @@ function load_socApi(app, SocModel, UserModel) {
   // retrieve by user
   app.get('/api/soc/user/:email', function (req, res) {
     // first retrieve user based on user_name
-    var user = UserModel.findOne({ email: req.params.email}, function (err, user) {
+    var user = UserModel.find({ email: req.params.email}, function (err, user) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search soc for the user_id that we just found
@@ -197,35 +197,45 @@ function load_socApi(app, SocModel, UserModel) {
   // update
   app.put('/api/soc/:id', function (req, res) {
     return SocModel.findById(req.params.id, function (err, soc) {
-      var date_now = new Date();
-      date_now.setTimezone('UTC');
+      if (!err && soc){
+        var date_now = new Date();
+        date_now.setTimezone('UTC');
 
-      soc.title = req.body.title;
-      soc.modified = date_now;
-      return soc.save(function (err) {
-        if (!err) {
-          console.log("updated");
-        } else {
-          console.log(err);
-          return res.send(500);
-        }
-        return res.send(soc);
-      });
+        soc.title = req.body.title;
+        soc.modified = date_now;
+        return soc.save(function (err) {
+          if (!err) {
+            console.log("updated");
+            return res.send(soc);
+          } else {
+            console.log(err);
+            return res.send(500);
+          }
+        });
+      } else {
+        console.log(err);
+        return res.send(null);
+      }
     });
   });
 
   // delete by id
   app.get('/api/soc/delete/:id', function (req, res) {
     return SocModel.findById(req.params.id, function (err, soc) {
-      return soc.remove(function (err) {
-        if (!err) {
-          console.log("removed");
-          return res.send(204);
-        } else {
-          console.log(err);
-          return res.send(500);
-        }
-      });
+      if (!err && soc){
+        return soc.remove(function (err) {
+          if (!err) {
+            console.log("removed");
+            return res.send(204);
+          } else {
+            console.log(err);
+            return res.send(500);
+          }
+        });
+     } else {
+        console.log(err);
+        return res.send(null);
+     }
     });
   });
 }
