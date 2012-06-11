@@ -9,6 +9,7 @@ function authenticate(req, res){
     if (domain!='thesentinelproject.org'){
       return false;
     }
+    return true;
   } else {
     return false;
   }
