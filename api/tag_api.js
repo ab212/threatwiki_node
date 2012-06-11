@@ -175,10 +175,10 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     });
   });
 
-  // retrieve by user
-  app.get('/api/tag/user/:user_name', function (req, res) {
+  // retrieve by user email
+  app.get('/api/tag/user/:email', function (req, res) {
     // first retrieve user based on user_name
-    var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
+    var user = UserModel.findOne({ email: req.params.email}, function (err, user) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search tag for the user_id that we just found

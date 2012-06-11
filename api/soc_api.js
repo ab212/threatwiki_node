@@ -139,9 +139,9 @@ function load_socApi(app, SocModel, UserModel) {
   });
 
   // retrieve by user
-  app.get('/api/soc/user/:user_name', function (req, res) {
+  app.get('/api/soc/user/:email', function (req, res) {
     // first retrieve user based on user_name
-    var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
+    var user = UserModel.findOne({ email: req.params.email}, function (err, user) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search soc for the user_id that we just found
