@@ -2,6 +2,7 @@ var express = require("express");
 var time = require('time')(Date);
 
 function generateDevUser(UserModel) {
+  //we generate a random dev user during DEV mode (not using Google Apps auth)
   user = new UserModel({
     name: "developehaxor"+Date.now(),
     email: "dev@outerspace.com"+Date.now(),
@@ -175,10 +176,10 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     });
   });
 
-  // retrieve by user
-  app.get('/api/datapoint/user/:user_name', function (req, res) {
-    // first retrieve user based on user_name
-    var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
+  // retrieve by email
+  app.get('/api/datapoint/user/:email', function (req, res) {
+    // first retrieve user based on email
+    var user = UserModel.findOne({ email: req.params.email}, function (err, user) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search datapoint for the user_id that we just found
@@ -191,7 +192,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
           }
         });
       } else {
-        console.log(err);
+        console.log('No user found or error:'+err);
         return res.send(null);
       }
     });
@@ -222,6 +223,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         created: date_now,
         modified: date_now,
         //save the _id of the current user in the new datapoint
+        //TODO: My editor is complaining that scope for variable user might be wrong here
         createdBy: user._id
       });
 
