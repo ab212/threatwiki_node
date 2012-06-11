@@ -13,8 +13,8 @@ function generateDevUser(UserModel) {
     if (!err) {
       return console.log("created");
     } else {
-      console.log("!!!Could not Save: " + err);
-      return res.send(null);
+      console.log("Could not Save: " + err);
+      return res.send(500);
     }
   });
   return user;
@@ -179,7 +179,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.get('/api/tag/user/:user_name', function (req, res) {
     // first retrieve user based on user_name
     var user = UserModel.findOne({ name: req.params.user_name}, function (err, user) {
-      if (!err) {
+      if (!err && user) {
         console.log("User found at " + user._id);
         // search tag for the user_id that we just found
         return TagModel.find({createdBy: user._id}).populate('createdBy',['name']).run(function (err, tag) {
@@ -224,7 +224,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
           return res.send(tag);
         } else {
           console.log(err);
-          return res.send(null);
+          return res.send(500);
         }
       });
     } else {
@@ -249,6 +249,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
           console.log("updated");
         } else {
           console.log(err);
+          return res.send(500);
         }
         return res.send(tag);
       });
@@ -261,9 +262,10 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       return tag.remove(function (err) {
         if (!err) {
           console.log("removed");
-          return res.send('');
+          return res.send(204);
         } else {
           console.log(err);
+          return res.send(500);
         }
       });
     });

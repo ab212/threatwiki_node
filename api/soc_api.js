@@ -12,8 +12,8 @@ function generateDevUser(UserModel) {
     if (!err) {
       return console.log("created");
     } else {
-      console.log("!!!Could not Save: " + err);
-      return res.send(null);
+      console.log("Could not Save: " + err);
+      return res.send(500);
     }
   });
   return user;
@@ -183,14 +183,14 @@ function load_socApi(app, SocModel, UserModel) {
         if (!err) {
           return console.log("created");
         } else {
-          console.log("!!!Could not Save: " + err);
-          return res.send(null);
+          console.log("Could not Save: " + err);
+          return res.send(500);
         }
       });
       return res.send(soc);
     } else {
       console.log("Can't create a new SOC if currently not logged in");
-      return res.send(null);
+      return res.send(401);
     }
   });
 
@@ -207,6 +207,7 @@ function load_socApi(app, SocModel, UserModel) {
           console.log("updated");
         } else {
           console.log(err);
+          return res.send(500);
         }
         return res.send(soc);
       });
@@ -219,9 +220,10 @@ function load_socApi(app, SocModel, UserModel) {
       return soc.remove(function (err) {
         if (!err) {
           console.log("removed");
-          return res.send('done');
+          return res.send(204);
         } else {
           console.log(err);
+          return res.send(500);
         }
       });
     });

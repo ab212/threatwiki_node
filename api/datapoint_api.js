@@ -13,8 +13,8 @@ function generateDevUser(UserModel) {
     if (!err) {
       return console.log("created");
     } else {
-      console.log("!!!Could not Save: " + err);
-      return res.send(null);
+      console.log("Could not Save: " + err);
+      return res.send(500);
     }
   });
   return user;
@@ -38,7 +38,6 @@ function authenticate(req, res){
 }
 
 function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
-
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
     return DataPointModel.find().populate('tags',['title']).populate('createdBy',['name']).run(function (err, datapoints) {
@@ -159,9 +158,9 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
 
   // retrieve by date range, date format is milliseconds since 1970/01/01
   app.get('/api/datapoint/date/range/:date_start/:date_end', function (req, res) {
-    console.log("Search between range");
-    console.log("Range start: " + req.params.date_start);
-    console.log("Range end: " + req.params.date_end);
+    //console.log("Search between range");
+    //console.log("Range start: " + req.params.date_start);
+    //console.log("Range end: " + req.params.date_end);
     var d_start = new Date(parseInt(req.params.date_start,10));
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);
@@ -232,13 +231,14 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
           return console.log("created");
         } else {
           console.log(err);
-          return res.send(null);
+          return res.send(500);
         }
         return res.send(soc);
       });
     } else {
       console.log("Can't create a new datapoint if currently not logged in");
-      return res.send(null);
+      //401=unauthorized
+      return res.send(401);
     }
   });
 
@@ -263,6 +263,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
             console.log("updated");
           } else {
             console.log(err);
+            return res.send(500);
           }
         });
       } else {
@@ -279,9 +280,10 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         return datapoint.remove(function (err) {
           if (!err) {
             console.log("removed");
-            return res.send('');
+            return res.send(204);
           } else {
             console.log(err);
+            return res.send(500);
           }
         });
       } else {
