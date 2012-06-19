@@ -21,20 +21,23 @@ function generateDevUser(UserModel) {
 }
 
 // authenticate user based on the incoming request
-function authenticate(req, res){
+function authenticate(req, res, UserModel, callback) {
   if (req.session.auth && req.session.auth.loggedIn) {
-    UserModel.find({'email':req.session.auth.google.user.email}).run(function (err, user) {
+    UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user) {
       this.user = user;
       if(!err && user){
-        return user;
+        callback(this.user);
+        return this.user;
       } else {
         console.log(err);
         return res.send(null);
       }
     });
-  return true;
+    return true;
+  } else {
+    console.log("Can't create a new datapoint if currently not logged in");
+    return res.send(401);
   }
-  return false;
 }
 
 function load_tagApi(app, TagModel,DataPointModel,UserModel) {
@@ -205,10 +208,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
     var date_now = new Date();
     date_now.setTimezone('UTC');
-    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))) {
-      if (typeof user == 'undefined') {
-        var user = generateDevUser(UserModel);
-      }
+
+    function save_tag (req, date_now, user) {
       tag = new TagModel({
         title: req.body.title,
         description: req.body.description,
@@ -227,9 +228,14 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
           return res.send(500);
         }
       });
+    }
+
+    if((app.settings.env == 'development')) {
+      save_tag(req, date_now, generateDevUser(UserModel));
     } else {
-      console.log("Can't create a new TAG if currently not logged in");
-      return res.send(401);
+      authenticate(req, res, UserModel, function(user) {
+        save_tag(req, date_now, user);
+      });
     }
   });
 
