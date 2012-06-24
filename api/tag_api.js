@@ -11,13 +11,13 @@ function generateDevUser(UserModel) {
   });
   user.save(function (err) {
     if (!err) {
-      return console.log("created");
+      console.log("created");
+      return user;
     } else {
       console.log("Could not Save: " + err);
       return res.send(500);
     }
   });
-  return user;
 }
 
 // authenticate user based on the incoming request
@@ -221,7 +221,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
       tag.save(function (err) {
         if (!err) {
-          console.log("created");
+          console.log("tagcreated");
           return res.send(tag);
         } else {
           console.log(err);

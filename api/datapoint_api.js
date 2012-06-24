@@ -11,13 +11,13 @@ function generateDevUser(UserModel) {
   });
   user.save(function (err) {
     if (!err) {
-      return console.log("created");
+      console.log("Generated Dev User created");
+      return user;
     } else {
       console.log("Could not Save: " + err);
       return res.send(500);
     }
   });
-  return user;
 }
 
 // authenticate user based on the incoming request
@@ -224,7 +224,6 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         created: date_now,
         modified: date_now,
         //save the _id of the current user in the new datapoint
-        //TODO: My editor is complaining that scope for variable user might be wrong here
         createdBy: user._id
       });
 

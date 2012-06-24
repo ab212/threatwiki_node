@@ -10,13 +10,13 @@ function generateDevUser(UserModel) {
   });
   user.save(function (err) {
     if (!err) {
-      return console.log("created");
+      console.log("Dev User created");
+      return user;
     } else {
       console.log("Could not Save: " + err);
       return res.send(500);
     }
   });
-  return user;
 }
 
 // authenticate user based on the incoming request

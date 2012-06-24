@@ -202,8 +202,8 @@ vows.describe('Test API').addBatch({
         'should be empty': function(res){
             assert.isEmpty(res.body);
         }
-
-    },'GET /api/soc/user/:username for a random user that doesnt exist': {
+    },
+    'GET /api/soc/user/:username for a random user that doesnt exist': {
         topic: api.get('/api/soc/user/dummy'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
@@ -216,7 +216,8 @@ vows.describe('Test API').addBatch({
         'should be empty': function(res){
             assert.isUndefined(res.body);
         }
-    },'PUT(update) empty data to /api/soc/:id random id number that doesnt exist': {
+    },
+    'PUT(update) empty data to /api/soc/:id random id number that doesnt exist': {
         topic: api.put('/api/soc/1224444'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
@@ -231,6 +232,7 @@ vows.describe('Test API').addBatch({
     }
 }).addBatch({
     //SECTION TO TEST TAG API
+    
     'GET /api/tag': {
         topic: api.get('/api/tag'),
             //first we test that we get results from getting all tags
