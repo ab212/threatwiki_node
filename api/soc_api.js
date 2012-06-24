@@ -182,13 +182,13 @@ function load_socApi(app, SocModel, UserModel) {
       });
       soc.save(function (err) {
         if (!err) {
-          return console.log("created");
+          console.log("SOC created");
+          return res.send(soc);
         } else {
-          console.log("Could not Save: " + err);
+          console.log("Could not save SOC: " + err);
           return res.send(500);
         }
       });
-      return res.send(soc);
     }
 
     if((app.settings.env == 'development')) {

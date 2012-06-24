@@ -229,12 +229,12 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
 
       return datapoint.save(function (err) {
         if (!err) {
-          return console.log("created");
+          console.log("Datapoint created");
+          return res.send(datapoint);
         } else {
           console.log(err);
           return res.send(500);
         }
-        return res.send(soc);
       });
     }
 
