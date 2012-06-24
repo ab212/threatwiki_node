@@ -103,9 +103,9 @@ vows.describe('Test API').addBatch({
             assert.isArray (res.body);
         }
     },
-    'POST empty data to /api/datapoint without being logged in': {
+    'POST empty data to /api/datapoint': {
         topic: api.post('/api/datapoint'),
-        'should respond with a 401 unauthorized status': assertStatus(401),
+        'should respond with a 400 bad request': assertStatus(400),
         'should be empty': function(res){
             assert.isUndefined(res.body);
         }
