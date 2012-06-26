@@ -1,11 +1,14 @@
-How to use:
+How to use (for all versions):
 - Make sure you have an instance of mongodb running
 - npm install -d
-- Specify the NODE_ENV to Production because the development environment is currently not supported: 
-	ie: export NODE_ENV=Production
 - node app.js
 - Point your browser to http://localhost:3000
 - You will be asked to login with a Google Apps account with a @thesentinelproject.org google apps email
+
+Version 2.0
+- URL https://github.com/thesentinelproject/threatwiki_node/tree/v2.0
+- Specify the NODE_ENV to Production because the development environment is currently not supported: 
+	ie: export NODE_ENV=Production
 
 May 29, 2012:
  - Update tests
