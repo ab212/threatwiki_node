@@ -1,7 +1,7 @@
 var express = require("express");
 var time = require('time')(Date);
 
-function generateDevUser(UserModel) {
+function generateDevUser(UserModel, callback) {
   //we generate a random dev user during DEV mode (not using Google Apps auth)
   user = new UserModel({
     name: "developehaxor"+Date.now(),
@@ -12,6 +12,7 @@ function generateDevUser(UserModel) {
   user.save(function (err) {
     if (!err) {
       console.log("Generated Dev User created");
+      callback(user);
       return user;
     } else {
       console.log("Could not Save: " + err);
@@ -24,10 +25,9 @@ function generateDevUser(UserModel) {
 function authenticate(req, res, UserModel, callback) {
   if (req.session.auth && req.session.auth.loggedIn) {
     UserModel.findOne({'email':req.session.auth.google.user.email}).run(function (err, user) {
-      this.user = user;
       if(!err && user){
         callback(user);
-        return this.user;
+        return user;
       } else {
         console.log(err);
         return res.send(null);
@@ -238,8 +238,10 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       });
     }
 
-    if((app.settings.env == 'development')) {
-      save_datapoint(req, date_now, generateDevUser(UserModel));
+    if((app.settings.env != 'production')) {
+      generateDevUser(UserModel, function(user) {
+        save_datapoint(req, date_now, user);
+      });
     } else {
       authenticate(req, res, UserModel, function(user) {
         save_datapoint(req, date_now, user);
