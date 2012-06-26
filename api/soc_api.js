@@ -39,7 +39,7 @@ function authenticate(req, res, UserModel, callback) {
   }
 }
 
-function load_socApi(app, SocModel, UserModel) {
+function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   // retrieve all
   app.get('/api/soc', function (req, res){
     return SocModel.find().populate('createdBy',['name']).run(function (err, socs) {
@@ -206,12 +206,28 @@ function load_socApi(app, SocModel, UserModel) {
       if (!err && soc){
         var date_now = new Date();
         date_now.setTimezone('UTC');
-
+        oldTitle = soc.title;
         soc.title = req.body.title;
         soc.modified = date_now;
         return soc.save(function (err) {
           if (!err) {
-            console.log("updated");
+            console.log("SOC updated");
+            //Now that SOC record is updated, we want to update the SOC value stored in Datapoints and Tags
+            var searchConditions = { soc: oldTitle},
+             update = {   soc: soc.title },
+             options = { multi: true };
+             //Update datapoints
+             DataPointModel.update(searchConditions, update, options, function(err, numAffected) {
+                  if (err){
+                    console.log(err);
+                  }
+                 });
+             //Update tags
+             TagModel.update(searchConditions, update, options, function(err, numAffected) {
+                  if (err){
+                    console.log(err);
+                  }
+                 });
             return res.send(soc);
           } else {
             console.log(err);

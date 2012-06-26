@@ -126,7 +126,7 @@ app.get('/tag/create', routes.tag.create);
 app.get('/tag/edit', routes.tag.edit);
 
 // import socApi
-var socApi = soc_api.load_socApi(app, SocModel,UserModel);
+var socApi = soc_api.load_socApi(app, SocModel,UserModel,DataPointModel,TagModel);
 var datapointApi = datapoint_api.load_datapointApi(app, DataPointModel, TagModel, UserModel);
 var tagApi = tag_api.load_tagApi(app, TagModel, DataPointModel,UserModel);
 //var userApi = user_api.load_userApi(app, UserModel);

@@ -5,7 +5,7 @@
   "dependencies": {
     "express": "2.5.9",
     "jade": ">= 0.0.1",
-    "mongoose": ">= 2.6.5",
+    "mongoose": ">= 2.7.0",
     "location": ">= 0.0.1",
     "everyauth": ">= 0.2.32",
     "navigator": ">= 1.0.1",
