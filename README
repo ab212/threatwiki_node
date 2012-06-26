@@ -1,10 +1,11 @@
 How to use:
 - Make sure you have an instance of mongodb running
 - npm install -d
+- Specify the NODE_ENV to Production because the development environment is currently not supported: 
+	ie: export NODE_ENV=Production
 - node app.js
 - Point your browser to http://localhost:3000
-- In DEV mode you won't need to be authentified
-- If you run the app in production mode, you will be asked to login with a Google Apps account with a @thesentinelproject.org google apps email, to run in Production mode: export NODE_ENV=production. It is recommended to use a different instance of the DB in production mode vs dev mode
+- You will be asked to login with a Google Apps account with a @thesentinelproject.org google apps email
 
 May 29, 2012:
  - Update tests
