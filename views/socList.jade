@@ -7,6 +7,8 @@ div#wrap
       tr
         th title
         th modified
+        th created
+        th by
         th actions
     tbody
      each soc, i in socs
@@ -14,6 +16,10 @@ div#wrap
           td
             a(href="/soc/edit?id="+soc._id) #{soc.title}
           td
-            #{soc.modified}
+            span #{soc.modified}
+          td
+            span #{soc.created}
+          td
+            span #{soc.createdBy.name}
           td 
             a(href="#", id="delete_"+soc._id) delete

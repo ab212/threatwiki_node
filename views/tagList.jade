@@ -8,6 +8,8 @@ div#wrap
         th title
         th soc
         th modified
+        th created
+        th by
         th actions
     tbody
      each tag, i in tags
@@ -15,8 +17,12 @@ div#wrap
           td
             a(href="/tag/edit?id="+tag._id) #{tag.title}
           td
-            #{tag.soc}
+            span #{tag.soc}
           td
-            #{tag.modified}
+            span #{tag.modified}
+          td
+            span #{tag.created}
+          td
+            span #{tag.createdBy.name}
           td 
             a(href="#", id="delete_"+tag._id) delete

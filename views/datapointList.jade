@@ -9,9 +9,9 @@ div#wrap
         th soc
         th location
         th tags
-        th modified on
-        th created on
-        th created by
+        th modified
+        th created
+        th by
         th actions
     tbody
      each datapoint, i in datapoints
@@ -19,17 +19,17 @@ div#wrap
           td
             a(href="/datapoint/edit?id="+datapoint._id) #{datapoint.title}
           td
-            #{datapoint.soc}
+            span #{datapoint.soc}
           td
-            #{datapoint.Location.title}
+            span #{datapoint.Location.title}
           td
             each tags in datapoint.tags
-              #{tags.title} <br />
+              span #{tags.title} <br />
           td
-            #{datapoint.modified}
+            span #{datapoint.modified}
           td
-            #{datapoint.created}
+            span #{datapoint.created}
           td
-            #{datapoint.createdBy.name}
+            span #{datapoint.createdBy.name}
           td 
             a(href="#", id="delete_"+datapoint._id) delete
