@@ -43,7 +43,7 @@ function authenticate(req, res, UserModel, callback) {
 function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
-    return DataPointModel.find().populate('tags',['title']).populate('createdBy',['name']).exec(function (err, datapoints) {
+    return DataPointModel.find().populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoints) {
       if (!err && datapoints) {
         return res.send(datapoints);
       } else {
@@ -68,7 +68,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve by SOC
   app.get('/api/datapoint/soc/:soc', function (req, res) {
     console.log("DATAPOINT_API:SOC:Search by: " + req.params.soc);
-    return DataPointModel.find({soc: req.params.soc}).populate('tags',['title']).populate('createdBy',['name']).exec(function (err, datapoint) {
+    return DataPointModel.find({soc: req.params.soc}).populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -84,7 +84,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     var tag = TagModel.findOne({ title: req.params.tag_title}, function (err, tag) {
       if (!err && typeof tag._id != 'undefined') {
         // search datapoint for the tag_id that we just found
-        return DataPointModel.find({tags: tag._id, soc: tag.soc}).populate('tags',['title']).populate('createdBy',['name']).exec(function (err, datapoint) {
+        return DataPointModel.find({tags: tag._id, soc: tag.soc}).populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoint) {
           if (!err && datapoint) {
             console.log(datapoint);
             return res.send(datapoint);
@@ -103,7 +103,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve by location
   app.get('/api/datapoint/location/:Location', function (req, res) {
     console.log("DATAPOINT_API:LOCATION:Search by: " + req.params.Location);
-    return DataPointModel.find({'Location.title': req.params.Location}).populate('tags',['title']).populate('createdBy',['name']).exec(function (err, datapoint) {
+    return DataPointModel.find({'Location.title': req.params.Location}).populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -183,7 +183,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search datapoint for the user_id that we just found
-        return DataPointModel.find({createdBy: user._id}).populate('tags',['title']).populate('createdBy',['name']).exec(function (err, datapoint) {
+        return DataPointModel.find({createdBy: user._id}).populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoint) {
           if (!err && datapoint) {
             return res.send(datapoint);
           } else {
@@ -221,7 +221,8 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         created: date_now,
         modified: date_now,
         //save the _id of the current user in the new datapoint
-        createdBy: user._id
+        createdBy: user._id,
+        modifiedBy: user._id
       });
 
       return datapoint.save(function (err) {
@@ -248,10 +249,12 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
 
   // update
   app.put('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id, function (err, datapoint) {
+    var date_now = new Date();
+    date_now.setTimezone('UTC');
+    
+    function update_datapoint(req, date_now, user) {
+      DataPointModel.findById(req.params.id, function (err, datapoint) {
       if (!err && datapoint){
-        var date_now = new Date();
-        date_now.setTimezone('UTC');
 
         datapoint.title = req.body.title;
         datapoint.description = req.body.description;
@@ -261,6 +264,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         datapoint.Location.longitude = req.body.longitude;
         datapoint.tags = req.body.tag_list;
         datapoint.modified = date_now;
+        datapoint.modifiedBy = user._id;
 
         return datapoint.save(function (err) {
           if (!err) {
@@ -275,6 +279,17 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         return res.send(null);
       }
     });
+    }
+
+    if((app.settings.env != 'production')) {
+      generateDevUser(UserModel, function(user) {
+        update_datapoint(req, date_now, user);
+      });
+    } else {
+      authenticate(req, res, UserModel, function(user) {
+        update_datapoint(req, date_now, user);
+      });
+    }
   });
 
   // delete by id

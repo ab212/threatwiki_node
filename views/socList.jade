@@ -7,6 +7,7 @@ div#wrap
       tr
         th title
         th modified
+        th by
         th created
         th by
         th actions
@@ -17,6 +18,8 @@ div#wrap
             a(href="/soc/edit?id="+soc._id) #{soc.title}
           td
             span #{soc.modified}
+          td
+            span #{soc.modifiedBy.name}
           td
             span #{soc.created}
           td

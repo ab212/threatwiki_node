@@ -44,7 +44,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
   // retrieve all
   app.get('/api/tag', function (req, res){
-    return TagModel.find().populate('createdBy',['name']).exec(function (err, tags) {
+    return TagModel.find().populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tags) {
       if (!err && tags) {
         return res.send(tags);
       } else {
@@ -56,7 +56,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
   // retrieve by id
   app.get('/api/tag/:id', function (req, res) {
-    return TagModel.findById(req.params.id).populate('createdBy',['name']).exec(function (err, tag) {
+    return TagModel.findById(req.params.id).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tag) {
       if (!err && tag) {
         return res.send(tag);
       } else {
@@ -69,7 +69,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   // retrieve by soc name
   app.get('/api/tag/soc/:soc', function (req, res) {
 	console.log('TAG_API:SOC:Search by ' + req.params.soc);
-    return TagModel.find({ soc: req.params.soc}).populate('createdBy',['name']).exec(function (err, tag) {
+    return TagModel.find({ soc: req.params.soc}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tag) {
       if (!err && tag) {
         return res.send(tag);
       } else {
@@ -82,7 +82,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   // retrieve all tags that have this title
   app.get('/api/tag/title/:title', function (req, res) {
 	console.log('TAG_API:TITLE:Search by ' + req.params.title);
-    return TagModel.find({ title: req.params.title}).populate('createdBy',['name']).exec( function (err, tag) {
+    return TagModel.find({ title: req.params.title}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec( function (err, tag) {
       if (!err && tag) {
         console.log("Tag found: %o", tag);
         return res.send(tag);
@@ -99,7 +99,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     var datapoint = DataPointModel.findById(req.params.datapointid, function (err, datapoint) {
       if (!err && datapoint) {
          console.log('TAG_API:Id:Search by ' + datapoint.tags);
-          return TagModel.find({ _id: {$in: datapoint.tags }}).populate('createdBy',['name']).exec(function (err, tag) {
+          return TagModel.find({ _id: {$in: datapoint.tags }}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tag) {
             if (!err && tag) {
               console.log("Tag found: %o", tag);
               return res.send(tag);
@@ -121,7 +121,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
-    return TagModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy',['name']).exec(function (err, tag) {
+    return TagModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tag) {
       if (!err && tag) {
         return res.send(tag);
       } else {
@@ -135,7 +135,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.get('/api/tag/date/after/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date,10));
     d_small.setHours(0,0,0,0);
-    return TagModel.find({created: {$gte : d_small}}).populate('createdBy',['name']).exec(function (err, tag) {
+    return TagModel.find({created: {$gte : d_small}}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tag) {
       if (!err && tag) {
         return res.send(tag);
       } else {
@@ -149,7 +149,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.get('/api/tag/date/before/:date', function (req, res) {
     var d_big = new Date(parseInt(req.params.date,10));
     d_big.setHours(23,59,59,59);
-    return TagModel.find({created: {$lt : d_big}}).populate('createdBy',['name']).exec(function (err, tag) {
+    return TagModel.find({created: {$lt : d_big}}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tag) {
       if (!err && tag) {
         return res.send(tag);
       } else {
@@ -168,7 +168,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
-    return TagModel.find({created: {$gte : d_start, $lt : d_end}}).populate('createdBy',['name']).exec(function (err, tag) {
+    return TagModel.find({created: {$gte : d_start, $lt : d_end}}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tag) {
       if (!err && tag) {
         return res.send(tag);
       } else {
@@ -185,7 +185,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search tag for the user_id that we just found
-        return TagModel.find({createdBy: user._id}).populate('createdBy',['name']).exec(function (err, tag) {
+        return TagModel.find({createdBy: user._id}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, tag) {
           if (!err && tag) {
             return res.send(tag);
           } else {
@@ -216,7 +216,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
         soc: req.body.soc,
         created: date_now,
         modified: date_now,
-        createdBy: user._id
+        createdBy: user._id,
+        modifiedBy: user._id
       });
 
       tag.save(function (err) {
@@ -243,15 +244,17 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
   // update
   app.put('/api/tag/:id', function (req, res) {
-    return TagModel.findById(req.params.id, function (err, tag) {
-      if (!err && tag){
-        var date_now = new Date();
-        date_now.setTimezone('UTC');
+    var date_now = new Date();
+    date_now.setTimezone('UTC');
 
+    function update_tag(req, date_now, user) {
+    TagModel.findById(req.params.id, function (err, tag) {
+      if (!err && tag){
         tag.title = req.body.title;
         tag.description = req.body.description;
         tag.soc = req.body.soc;
         tag.modified = date_now;
+        tag.modifiedBy = user._id;
 
         return tag.save(function (err) {
           if (!err) {
@@ -267,6 +270,17 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       return res.send(null);
     }
     });
+    }
+
+    if((app.settings.env != 'production')) {
+      generateDevUser(UserModel, function(user) {
+        update_tag(req, date_now, user);
+      });
+    } else {
+      authenticate(req, res, UserModel, function(user) {
+        update_tag(req, date_now, user);
+      });
+    }
   });
 
   // delete by id

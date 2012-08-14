@@ -10,6 +10,7 @@ div#wrap
         th location
         th tags
         th modified
+        th by
         th created
         th by
         th actions
@@ -27,6 +28,8 @@ div#wrap
               span #{tags.title} <br />
           td
             span #{datapoint.modified}
+          td
+            span #{datapoint.modifiedBy.name}
           td
             span #{datapoint.created}
           td
