@@ -1,0 +1,20 @@
+
+	.textField { width: 200px; margin: 1px; margin-bottom: 2px; padding: 1px; }
+	.largeTextField { width: 400px; margin: 1px; margin-bottom: 2px; padding: 1px; }
+
+	.sectionTextField { width: 550px; margin: 1px; margin-bottom: 2px; padding: 1px; }
+	.asideTextField { width: 350px; margin: 1px; margin-bottom: 2px; padding: 1px; }
+	.sectionTextArea { width: 550px; height: 100px; margin-top: 2px; margin-bottom: 2px; padding: 1px; }
+	.asideTextArea { width: 350px; height: 100px; margin-top: 2px; margin-bottom: 2px; padding: 1px; }
+	.splitTextField { width: 450px; margin: 1px; margin-bottom: 2px; padding: 1px; }
+
+	.dropDown { font-size: 12px; margin-top: 2px; margin-bottom: 2px; }
+	
+	.primaryButton { -moz-box-shadow:inset 0px 1px 0px 0px #bbdaf7; -webkit-box-shadow:inset 0px 1px 0px 0px #bbdaf7; box-shadow:inset 0px 1px 0px 0px #bbdaf7; background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) ); background:-moz-linear-gradient( center top, #79bbff 5%, #378de5 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5'); background-color:#79bbff; -moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px; border:1px solid #84bbf3; display:inline-block; color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:bold; padding:4px 34px; text-decoration:none; text-shadow:1px 1px 0px #528ecc; }
+	.primaryButton:hover { background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) ); background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff'); background-color:#378de5; }
+	.primaryButton:active { position:relative; top:1px; }
+
+	.secondaryButton { -moz-box-shadow:inset 0px 1px 0px 0px #dcecfb; -webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb; box-shadow:inset 0px 1px 0px 0px #dcecfb; background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #bddbfa), color-stop(1, #80b5ea) ); background:-moz-linear-gradient( center top, #bddbfa 5%, #80b5ea 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bddbfa', endColorstr='#80b5ea'); background-color:#bddbfa; -moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px; border:1px solid #84bbf3; display:inline-block; color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:bold; padding:4px 34px; text-decoration:none; text-shadow:1px 1px 0px #528ecc; }
+	.secondaryButton:hover { background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #80b5ea), color-stop(1, #bddbfa) ); background:-moz-linear-gradient( center top, #80b5ea 5%, #bddbfa 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#80b5ea', endColorstr='#bddbfa'); background-color:#80b5ea; }
+	.secondaryButton:active { position:relative; top:1px; }
+	

@@ -1,8 +1,8 @@
-div#wrap
+#pageContent
 
-  a(href='soc/create') New
+  a(href='soc/create',class='primaryButton',style="color:#fff") New
 
-  table#soc
+  table#soc.display
     thead
       tr
         th title
@@ -26,3 +26,4 @@ div#wrap
             span #{soc.createdBy.name}
           td 
             a(href="#", id="delete_"+soc._id) delete
+

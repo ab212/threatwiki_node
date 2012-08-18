@@ -1,6 +1,7 @@
-- if (app.settings.env != "development" && !everyauth.loggedIn)
- a(href='/auth/google', style='border: 0px') Login with your thesentinelproject.org email
-- else if (app.settings.env == "development")
- p Welcome developer!
-- else
- p Welcome #{everyauth.google.user.name} with email #{everyauth.google.user.email}!
+#pageContent
+  - if (app.settings.env != "development" && !everyauth.loggedIn)
+   a(href='/auth/google', style='border: 0px') Login with your thesentinelproject.org email
+  - else if (app.settings.env == "development")
+   p Welcome developer!
+  - else
+   p Welcome #{everyauth.google.user.name} with email #{everyauth.google.user.email}!

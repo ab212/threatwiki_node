@@ -1,0 +1,27 @@
+	body { color: #192329; font-family: "Lucida Grande",Verdana,Arial,Helvetica,sans-serif; font-size: 80%/1.45em; }
+	h2 { font-family: Verdana, Helvetica, Arial, sans-serif; color: #333; font-size: 14pt; padding-bottom: 15px; }
+	h3 { font-family: Verdana, Helvetica, Arial, sans-serif; color: #09C; font-size: 12pt; padding-bottom: 15px; }
+	p { padding-bottom: 9pt; }
+
+	.errorMessage { font-family: Georgia, "Times New Roman", Times, serif; font-size: 9pt; font-style: italic; color: #ff0000; }
+	.successMessage { font-family: Georgia, "Times New Roman", Times, serif; font-size: 9pt; font-style: italic; color: #519777; }
+	.subtle { color: #c2c2c2; }
+	.smallAndSubtle { color: #c2c2c2; font-size: 8pt; font-weight: normal; }
+
+	/* header, page container and footer */
+		#nav { color: #ccc; font-size: 11pt; }
+		#footer { font-size: 8pt; }
+
+	/* page layouts and forms */
+		.textField, .largeTextField, .dropDown, .textArea { font-size: 9pt; font-weight: normal; }
+
+		.formLabel { color: #999999; }
+
+		.podTitle { color: #ffffff; font-family: Verdana, Helvetica, Arial, sans-serif; font-size: 9pt; font-weight: bold; text-align: center; }
+
+		.pullquote { font-family: Georgia, "Times New Roman", Times, serif; color: #09C; font-size: 14pt; font-style: italic; }
+
+	/* tables */
+		.tableHeaderRow { color: #666; font-family: Verdana, Helvetica, Arial, sans-serif; font-size: 9pt; font-weight: bold; text-align: center; }
+		.tableHeaderColumn { color: #666; font-family: Verdana, Helvetica, Arial, sans-serif; font-size: 9pt; font-weight: bold; }
+	

@@ -7,4 +7,8 @@ $(document).ready(function() {
       $("#row_"+id[1]).fadeOut('slow', function() {});
     }).error(function() { alert("delete failed");});
   });
+
+    $('#tag').dataTable({
+    "bPaginate": false
+  });
 });

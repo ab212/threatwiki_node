@@ -1,0 +1,78 @@
+/*	---------------------------
+	Shared
+	--------------------------- */
+
+	html { height: 100%; }
+	body { height: 100%; background-color: #ffffff; }
+
+	.clear { clear: both; }
+	.hidden { position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; display: none; }
+	.errorMessage { padding-top: 15px; }
+	.successMessage { padding-top: 15px; }
+
+	/* header, page container and footer */
+		#headerBackground { background-color: #333; }
+		#header { margin: 0 auto; width: 1280px; padding-top: 3px; padding-bottom: 3px; }
+		#nav { padding-top: 2px; padding-bottom: 2px; }
+		#logo { margin: 0 auto; width: 1280px; padding-top: 15px; padding-bottom: 15px; border-bottom: 3px solid #09C; }
+		#pageContent { margin: 0 auto; width: 1280px; padding-top: 20px; }
+		#footer { margin: 0 auto; margin-top: 25px; width: 1280px; padding-top: 10px; padding-bottom: 10px; }
+		#footerNav { padding-top: 2px; padding-bottom: 2px; }
+		
+	/* lists */
+		ul { list-style-type: square; padding-left: 15px; }
+		li { list-style-type: square; }
+		
+		.subtleDivider { padding-top: 5px; padding-bottom: 5px; }
+		.subtleDividerRuled { padding-top: 5px; padding-bottom: 5px; border-bottom: 1px dotted #ccc; }
+
+		#navList { list-style: none; padding: 0; margin: 0; }
+		#navList li { display: inline; padding: 0; margin: 0; }
+		#navList li:before { content: "- "; }
+		#navList li:first-child:before { content: ""; }
+		/*IE workaround*/
+			/*All IE browsers*/
+				* html #navList li { background-image: url('../img/dash.gif'); background-repeat: no-repeat; background-position: 0 50%; padding: 0 0.5em 0 1em; margin: 0 1em 0 -1em; }
+			/*Win IE browsers - hide from Mac IE\*/
+				* html #navList { height: 1%; }
+				* html #navList li { display: block; float: left; }
+			/*End hide*/
+				/*Mac IE 5*/
+					* html #navList li:first-child { background-image: none; }
+
+	/* page layouts and forms */
+		.section { float: left; width: 655px; padding-right: 25px; }
+		.sectionFormLabel { float: left; width: 180px; padding-right: 10px; }
+		.sectionFormValue { float: left; }
+		.aside { float: left; width: 280px; }
+		.asideFormLabel { float: left; width: 60px; padding-right: 10px; }
+		.asideFormValue { float: left; }
+		.split { float: left; width: 470px; padding-right: 10px; }
+		
+		#socialMediaBar { padding-bottom: 15px; }
+		
+		#pullquoteContainer { padding-bottom: 25px; }
+		.pullquote { padding-bottom: 25px; }
+
+		#sentinelNews { padding-bottom: 15px; }
+		#sentinelTwitter { padding-bottom: 15px; }
+		.otherNews { padding-bottom: 15px; }
+
+		.pod { margin-bottom: 15px; }
+		.podTitle { background-color: #09C; border: 1px solid #09C; border-bottom: 3px solid #000; padding: 5px;  -moz-border-radius-topleft: 10px;  -moz-border-radius-topright: 10px; -webkit-border-top-left-radius: 10px; -webkit-border-top-right-radius: 10px; }
+		.podBody { background-color: #eee; border: 1px solid #ddd; padding: 5px; -moz-border-radius-bottomleft: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; }
+
+		.businessCardContainer { float: left; width: 225px; margin-right: 20px; }
+		.businessCardContainerEndOfRow { float: left; width: 225px; }
+		.businessCardImage { float: left; width: 60px; margin-right: 10px; }
+		.businessCardContent { float: left; width: 135px; }
+		
+		#accountInformation { float: left; width: 845px; padding-right: 15px; }
+		#accountPhoto { float: left; width: 100px; }
+
+	/* tables */
+		td { padding: 2px; }
+		.tableHeaderRow { background-color: #ddd; }
+		.tableHeaderCell { padding: 5px; }
+		
+		

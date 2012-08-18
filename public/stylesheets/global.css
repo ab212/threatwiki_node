@@ -1,0 +1,26 @@
+@import url("containers.css");
+@import url("type.css");
+@import url("links.css");
+@import url("images.css");
+@import url("form_elements.css");
+
+.jquery-auto-geocoder-map
+{
+  margin: 1em 0;
+  float: right;
+  width: 400px;
+  height: 200px;
+}
+
+.dataTables_filter input[type="text"] {
+  -moz-transition: all 0.7s ease 0s;
+  background: url("../images/search-white.png") no-repeat scroll 10px 6px #FCFCFC;
+  border: 1px solid #D1D1D1;
+  border-radius: 20px 20px 20px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+  color: #BEBEBE;
+  font: bold 12px Arial,Helvetica,Sans-serif;
+  padding: 6px 15px 6px 35px;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  width: 150px;
+}
