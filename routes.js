@@ -1,4 +1,5 @@
 util = require('util');
+moment = require('moment');
 var jQuery = require('jQuery');
 
 // authenticate user based on the incoming request
@@ -27,6 +28,15 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       jQuery.getJSON('http://localhost:3000/api/soc?callback=?', function(socs) {
         console.log(socs);
+
+        // convert dates from ISO-8601 to string
+        // consider doing this in a better way
+        // one way is the write a virtual method for mongo date itself, but that is kinda sloppy
+        for(i=0; i<socs.length; i++) {
+          socs[i].created = moment(socs[i].created).format("MMMM Do YYYY");
+          socs[i].modified = moment(socs[i].modified).format("MMMM Do YYYY");
+        }
+
         res.render('socList', { locals: {
           title: 'SOC Manager',
           scripts: ['/javascript/soc_list.js'],
@@ -73,6 +83,13 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       jQuery.getJSON('http://localhost:3000/api/datapoint?callback=?', function(datapoints) {
         console.log(datapoints);
+
+        // convert dates from ISO-8601 to string
+        for(i=0; i<tags.length; i++) {
+          datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
+          datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
+        }
+
         res.render('datapointList', { locals: {
           title: 'Datapoint Manager',
           scripts: ['/javascript/datapoint_list.js'],
@@ -119,6 +136,13 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       jQuery.getJSON('http://localhost:3000/api/tag?callback=?', function(tags) {
         console.log(tags);
+
+        // convert dates from ISO-8601 to string
+        for(i=0; i<tags.length; i++) {
+          tags[i].created = moment(tags[i].created).format("MMMM Do YYYY");
+          tags[i].modified = moment(tags[i].modified).format("MMMM Do YYYY");
+        }
+
         res.render('tagList', { locals: {
           title: 'Tag Manager',
           scripts: ['/javascript/tag_list.js'],
