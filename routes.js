@@ -85,7 +85,7 @@ function load_routes(app) {
         console.log(datapoints);
 
         // convert dates from ISO-8601 to string
-        for(i=0; i<tags.length; i++) {
+        for(i=0; i<datapoints.length; i++) {
           datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
           datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
         }
