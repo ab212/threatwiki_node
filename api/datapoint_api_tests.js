@@ -52,7 +52,7 @@ vows.describe('Test API').addBatch({
             //first we test that we get results from getting all datapoints
             'should respond with a 200 OK': assertStatus(200),
             'should return a list of datapoints if the DB contains some': function (res) {
-                assert.isArray (res.body);
+                assert.isNotEmpty (res.body);
             },
             //We take the first datapoint that we receive when we get all datapoints, get the _id of it
             //call a nested test to /api/datapoint/:id and make sure they both are the same
@@ -85,14 +85,14 @@ vows.describe('Test API').addBatch({
         topic: api.get('/api/datapoint/date/after/'+time2000.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of datapoints in an array': function (res) {
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },
      'GET /api/datapoint/date/before/ todays date': {
         topic: api.get('/api/datapoint/date/before/'+currentTime.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of datapoints in an array': function (res) {
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },
     'GET /api/datapoint/date/range/ year 2000 to today': {
@@ -100,7 +100,7 @@ vows.describe('Test API').addBatch({
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of datapoints in an array': function (res) {
             //console.log(res.body);
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },
     'POST empty data to /api/datapoint': {
@@ -152,7 +152,7 @@ vows.describe('Test API').addBatch({
             //first we test that we get results from getting all SOCs
             'should respond with a 200 OK': assertStatus(200),
             'should return a list of SOC if the DB contains some': function (res) {
-                assert.isArray (res.body);
+                assert.isNotEmpty (res.body);
             },
             //We take the first soc that we receive when we get all soc, get the _id of it
             //call a nested test to /api/soc/:id and make sure they both are the same
@@ -178,14 +178,14 @@ vows.describe('Test API').addBatch({
         topic: api.get('/api/soc/date/after/'+time2000.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of soc in an array': function (res) {
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },
      'GET /api/soc/date/before/ todays date': {
         topic: api.get('/api/soc/date/before/'+currentTime.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of soc in an array': function (res) {
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },
     'GET /api/soc/date/range/ year 2000 to today': {
@@ -193,7 +193,7 @@ vows.describe('Test API').addBatch({
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of soc in an array': function (res) {
             //console.log(res.body);
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },
     'GET /api/soc/title/:title for a random soc title': {
@@ -238,7 +238,7 @@ vows.describe('Test API').addBatch({
             //first we test that we get results from getting all tags
             'should respond with a 200 OK': assertStatus(200),
             'should return a list of tag if the DB contains some': function (res) {
-                assert.isArray (res.body);
+                assert.isNotEmpty (res.body);
             },
             //We take the first tag that we receive when we get all tag, get the _id of it
             //call a nested test to /api/tag/:id and make sure they both are the same
@@ -285,14 +285,14 @@ vows.describe('Test API').addBatch({
         topic: api.get('/api/tag/date/after/'+time2000.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of tag in an array': function (res) {
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },
      'GET /api/tag/date/before/ todays date': {
         topic: api.get('/api/tag/date/before/'+currentTime.getTime().toString()),
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of tag in an array': function (res) {
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },
     'GET /api/tag/date/range/ year 2000 to today': {
@@ -300,13 +300,13 @@ vows.describe('Test API').addBatch({
         'should respond with a 200 OK': assertStatus(200),
         'should return a list of tag in an array': function (res) {
             //console.log(res.body);
-            assert.isArray (res.body);
+            assert.isNotEmpty (res.body);
         }
     },'GET /api/tag/user/:username for a random user that doesnt exist': {
         topic: api.get('/api/tag/user/dummy'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
-            assert.isEmpty(res.body);
+            assert.isNotEmpty(res.body);
         }
     },
     'POST empty data to /api/tag without being logged in': {
