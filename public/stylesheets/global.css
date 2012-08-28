@@ -14,7 +14,7 @@
 
 .dataTables_filter input[type="text"] {
   -moz-transition: all 0.7s ease 0s;
-  background: url("search-white.png") no-repeat scroll 10px 6px #FCFCFC;
+  background: url("../images/search-white.png") no-repeat scroll 10px 6px #FCFCFC;
   border: 1px solid #D1D1D1;
   border-radius: 20px 20px 20px 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;

@@ -33,7 +33,7 @@
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
-  margin-top: -27px; /* For the love of god, remove this! */
+  /*margin-top: -27px;  For the love of god, remove this! */
 	zoom: 1; /* Feeling sorry for IE */
 }
 
