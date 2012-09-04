@@ -43,7 +43,7 @@ function authenticate(req, res, UserModel, callback) {
 function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
-    return DataPointModel.find().populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoints) {
+    return DataPointModel.find().populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
       if (!err && datapoints) {
         return res.send(datapoints);
       } else {
@@ -55,7 +55,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
 
   // retrieve by id
   app.get('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id).populate('tags',['title']).populate('created by',['name']).exec(function (err, datapoint) {
+    return DataPointModel.findById(req.params.id).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -68,7 +68,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve by SOC
   app.get('/api/datapoint/soc/:soc', function (req, res) {
     console.log("DATAPOINT_API:SOC:Search by: " + req.params.soc);
-    return DataPointModel.find({soc: req.params.soc}).populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoint) {
+    return DataPointModel.find({soc: req.params.soc}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -84,7 +84,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     var tag = TagModel.findOne({ title: req.params.tag_title}, function (err, tag) {
       if (!err && typeof tag._id != 'undefined') {
         // search datapoint for the tag_id that we just found
-        return DataPointModel.find({tags: tag._id, soc: tag.soc}).populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoint) {
+        return DataPointModel.find({tags: tag._id, soc: tag.soc}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
           if (!err && datapoint) {
             console.log(datapoint);
             return res.send(datapoint);
@@ -103,7 +103,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   // retrieve by location
   app.get('/api/datapoint/location/:Location', function (req, res) {
     console.log("DATAPOINT_API:LOCATION:Search by: " + req.params.Location);
-    return DataPointModel.find({'Location.title': req.params.Location}).populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoint) {
+    return DataPointModel.find({'Location.title': req.params.Location}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -119,7 +119,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$gte : d_small, $lt : d_big}}).populate('tags',['title']).populate('created by',['name']).exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_small, $lt : d_big}}).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -133,7 +133,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   app.get('/api/datapoint/date/after/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date_start,10));
     d_small.setHours(0,0,0,0);
-    return DataPointModel.find({created: {$gte : d_small}}).populate('tags',['title']).populate('created by',['name']).exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_small}}).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -147,7 +147,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   app.get('/api/datapoint/date/before/:date', function (req, res) {
     var d_big = new Date(parseInt(req.params.date,10));
     d_big.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$lt : d_big}}).populate('tags',['title']).populate('created by',['name']).exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$lt : d_big}}).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -166,7 +166,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$gte : d_start, $lt : d_end}}).populate('tags',['title']).populate('created by',['name']).exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_start, $lt : d_end}}).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.send(datapoint);
       } else {
@@ -183,7 +183,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search datapoint for the user_id that we just found
-        return DataPointModel.find({createdBy: user._id}).populate('tags',['title']).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, datapoint) {
+        return DataPointModel.find({createdBy: user._id}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
           if (!err && datapoint) {
             return res.send(datapoint);
           } else {

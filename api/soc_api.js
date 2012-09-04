@@ -42,7 +42,7 @@ function authenticate(req, res, UserModel, callback) {
 function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   // retrieve all
   app.get('/api/soc', function (req, res){
-    return SocModel.find().populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, socs) {
+    return SocModel.find().populate('createdBy','name').populate('modifiedBy','name').exec(function (err, socs) {
       if (!err && socs) {
         return res.json(socs);
       } else {
@@ -54,7 +54,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
 
   // retrieve by id
   app.get('/api/soc/:id', function (req, res) {
-    return SocModel.findById(req.params.id).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, soc) {
+    return SocModel.findById(req.params.id).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.send(soc);
       } else {
@@ -70,7 +70,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
-    return SocModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, soc) {
+    return SocModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.send(soc);
       } else {
@@ -84,7 +84,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.get('/api/soc/date/after/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date,10));
     d_small.setHours(0,0,0,0);
-    return SocModel.find({created: {$gte : d_small}}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, soc) {
+    return SocModel.find({created: {$gte : d_small}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.send(soc);
       } else {
@@ -99,7 +99,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.get('/api/soc/date/before/:date', function (req, res) {
     var d_big = new Date(parseInt(req.params.date,10));
     d_big.setHours(23,59,59,59);
-    return SocModel.find({created: {$lt : d_big}}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, soc) {
+    return SocModel.find({created: {$lt : d_big}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.send(soc);
       } else {
@@ -118,7 +118,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
-    return SocModel.find({created: {$gte : d_start, $lt : d_end}}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, soc) {
+    return SocModel.find({created: {$gte : d_start, $lt : d_end}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.send(soc);
       } else {
@@ -131,7 +131,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
 
   // retrieve by title
   app.get('/api/soc/title/:title', function (req, res) {
-    return SocModel.find({ title: req.params.title}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, soc) {
+    return SocModel.find({ title: req.params.title}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.send(soc);
       } else {
@@ -148,7 +148,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search soc for the user_id that we just found
-        return SocModel.find({createdBy: user._id}).populate('createdBy',['name']).populate('modifiedBy',['name']).exec(function (err, soc) {
+        return SocModel.find({createdBy: user._id}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
           if (!err && soc) {
             return res.send(soc);
           } else {
