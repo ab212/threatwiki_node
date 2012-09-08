@@ -7,10 +7,9 @@
   hr/
   div#post_form
     span.bold
-      p New Datapoint
       - if (typeof(datapoint) != 'undefined')
         form#datapoint_form_update
-          input(type="text", name="id", value=datapoint._id)
+          input(type="text", name="id", value=datapoint._id, hidden=true)
           br/
           label(for="soc") SOC
           br/
@@ -47,6 +46,7 @@
           br/
           input(type="submit", value="save")
       - else
+        p New Datapoint
         form#datapoint_form
           label(for="soc") SOC
           br/

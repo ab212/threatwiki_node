@@ -6,10 +6,9 @@
   hr/
   div#post_form
     span.bold
-      p New Tag
       - if (typeof(tag) != 'undefined')
         form#tag_form_update
-          input(type="text", name="id", value=tag._id)
+          input(type="text", name="id", value=tag._id, hidden=true)
           br/
           label(for="soc") SOC
           br/
@@ -26,6 +25,7 @@
           br/
           input(type="submit", value="save")
       - else
+        p New Tag
         form#tag_form
           label(for="soc") SOC
           br/

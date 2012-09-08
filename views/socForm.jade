@@ -6,10 +6,9 @@
   hr/
   div#post_form
     span.bold
-      p New SOC
       - if (typeof(soc) != 'undefined')
         form#soc_form_update
-          input(type="text", name="id", value=soc._id)
+          input(type="text", name="id", value=soc._id, hidden=true)
           br/
           label(for="title") Title
           br/
@@ -19,14 +18,9 @@
       - else
         form#soc_form
           br/
-          - if (typeof(soc) != 'undefined')
-            input(type="text", name="id", value=soc._id)
-            br/
-            label(for="title") Title
-            br/
-            input(type="text", name="title", value=soc.title)
-          - else
-            input(type="text", name="title")
+          label(for="title") Title
+          br/
+          input(type="text", name="title")
           br/
           input(type="submit", value="save")
 
