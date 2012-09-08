@@ -8,18 +8,14 @@
     span.bold
       - if (typeof(soc) != 'undefined')
         form#soc_form_update
-          input(type="text", name="id", value=soc._id, hidden=true)
-          br/
+          input(type="text", name="id", value=soc._id, type="hidden")
           label(for="title") Title
-          br/
           input(type="text", name="title", value=soc.title)
           br/
           input(type="submit", value="save")
       - else
         form#soc_form
-          br/
           label(for="title") Title
-          br/
           input(type="text", name="title")
           br/
           input(type="submit", value="save")

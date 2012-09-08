@@ -8,19 +8,13 @@
     span.bold
       - if (typeof(tag) != 'undefined')
         form#tag_form_update
-          input(type="text", name="id", value=tag._id, hidden=true)
-          br/
+          input(type="text", name="id", value=tag._id, type="hidden")
           label(for="soc") SOC
-          br/
           select(name="soc", id="soc")
             option(selected=tag.soc, value=tag.soc) #{tag.soc}
-          br/
           label(for="title") Title
-          br/
           input(type="text", name="title", value=tag.title)
-          br/
           label(for="description") Description
-          br/
           textarea(name="description", rows="4", cols="60") #{tag.description}
           br/
           input(type="submit", value="save")
@@ -28,15 +22,10 @@
         p New Tag
         form#tag_form
           label(for="soc") SOC
-          br/
           select(name="soc", id="soc")
-          br/
           label(for="title") Title
-          br/
           input(type="text", name="title")
-          br/
           label(for="description") Description
-          br/
           textarea(name="description", rows="4", cols="60")
           br/
           input(type="submit", value="save")
