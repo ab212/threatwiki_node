@@ -9,6 +9,11 @@ $(document).ready(function() {
   });
 
     $('#tag').dataTable({
-    "bPaginate": false
+    "bPaginate": false,
+    //don't want to sort or search the actions column
+    "aoColumnDefs": [
+      { "bSortable": false, "aTargets": [ 6 ] },
+      { "bSearchable": false, "aTargets": [ 6 ] }
+    ]
   });
 });

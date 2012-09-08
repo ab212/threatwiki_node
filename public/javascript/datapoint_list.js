@@ -8,6 +8,11 @@ $(document).ready(function() {
   });
 
   $('#datapoint').dataTable({
-    "bPaginate": false
+    "bPaginate": false,
+    //don't want to sort the actions column
+    "aoColumnDefs": [
+      { "bSortable": false, "aTargets": [ 8 ] },
+      { "bSearchable": false, "aTargets": [ 8 ] }
+    ]
   });
 });
