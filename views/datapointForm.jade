@@ -1,21 +1,34 @@
 #pageContent
-  p Run a console to see JSON data.
-    br/
-  p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
-  p Shift+Ctrl+I for Chromium
+  //
+    p Run a console to see JSON data.
+      br/
+    p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
+    p Shift+Ctrl+I for Chromium
+    hr/
+  ul.breadcrumb
+    li 
+      a(href="/soc") List of SOC
+    span.divider
+    if (typeof(socname) != 'undefined' && typeof(datapoint) == 'undefined')
+      li 
+        a(href="/soc/view?soc="+socname) SOC: #{socname}
+      span.divider
+    else if (typeof(datapoint) != 'undefined')
+      li 
+        a(href="/soc/view?soc="+datapoint.soc) SOC: #{datapoint.soc}
+      span.divider
+    if (typeof(datapoint) == 'undefined')
+      li.active New Datapoint
+    else
+      li.active #{datapoint.title}
 
-  hr/
+
   div#post_form
     span.bold
       - if (typeof(datapoint) != 'undefined')
         form#datapoint_form_update
           input(name="id", value=datapoint._id, type="hidden")
-          if (typeof(socname) == 'undefined')
-            label(for="soc") SOC
-            select(id="soc", name="soc")
-              option(selected=datapoint.soc, value=datapoint.soc) #{datapoint.soc}
-          else
-            input(type="hidden", id="soc", name="soc", value=socname)
+          input(type="hidden", id="soc", name="soc", value=datapoint.soc)
           label(for="title") Title
           input(type="text", name="title", value=datapoint.title)
           label(for="location") Location
@@ -31,16 +44,11 @@
             for tag in datapoint.tags
               option(selected=tag._id, value=tag._id) #{tag.title}
           br/
-          input(type="submit", value="save")
+          input(type="submit", value="Save")
       - else
-        p New Datapoint
         form#datapoint_form
           //if SOC is present in the URL, it means we create a datapoint from a SOC, no need to give option to change SOC 
-          if (typeof(socname) == 'undefined')
-            label(for="soc") SOC
-            select(id="soc", name="soc")
-          else
-            input(type="hidden", id="soc", name="soc", value=socname)
+          input(type="hidden", id="soc", name="soc", value=socname)
           label(for="title") Title
           input(type="text", name="title")
           label(for="location") Location
@@ -54,27 +62,25 @@
           label(for="tags") Tags
           select(multiple id="tag_list", name="tag_list")
           br/
-          input(type="submit", value="save")
+          input(type="submit", value="Save")
 
-  hr/
-  div#get-div
-    input(type="submit", value="$.get()", id="get")
-
-  hr/
-  span.bold
-    p Status
-  div#status
-
-  hr/
-  span.bold
-    p Data
-  div#result
-
-  hr/
-  span.bold
-    p Poorly Consumed Data
-  div#consumed
-    table(id="consumed_table")
+  //
+    hr/
+    div#get-div
+      input(type="submit", value="$.get()", id="get")
+    hr/
+    span.bold
+      p Status
+    div#status
+    hr/
+    span.bold
+      p Data
+    div#result
+    hr/
+    span.bold
+      p Poorly Consumed Data
+    div#consumed
+      table(id="consumed_table")
 
 script
   var datapoint_form = $('#datapoint_form');

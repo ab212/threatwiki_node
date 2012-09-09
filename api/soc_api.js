@@ -131,7 +131,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
 
   // retrieve by title
   app.get('/api/soc/title/:title', function (req, res) {
-    return SocModel.find({ title: req.params.title}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
+    return SocModel.findOne({ title: req.params.title}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.send(soc);
       } else {

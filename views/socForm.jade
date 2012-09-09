@@ -1,44 +1,62 @@
 #pageContent
-  p Run a console to see JSON data.
-  p Ctrl+Shift+K in Firefox with 'Net' and 'JS' sources enabled
-  p Shift+Ctrl+I for Chromium
-
-  hr/
+  //
+    p Run a console to see JSON data.
+    p Ctrl+Shift+K in Firefox with 'Net' and 'JS' sources enabled
+    p Shift+Ctrl+I for Chromium
+    hr/
+  ul.breadcrumb
+    li 
+      a(href="/soc") List of SOC
+    span.divider
+    if (typeof(soc) != 'undefined')
+      li.active Edit SOC
+    else
+      li.active New SOC
   div#post_form
     span.bold
+      
       - if (typeof(soc) != 'undefined')
+        label Modified Date
+          p #{soc.modified}
+        label Modified By
+          p #{soc.modifiedBy.name}
+        label Created Date
+          p #{soc.created}
+        label Created By
+          p #{soc.createdBy.name}
+            //td 
+              //a(href="#", id="delete_"+soc._id) delete
         form#soc_form_update
           input(name="id", value=soc._id, type="hidden")
           label(for="title") Title
           input(type="text", name="title", value=soc.title)
           br/
-          input(type="submit", value="save")
+          input(type="submit", value="Save")
       - else
         form#soc_form
           label(for="title") Title
           input(type="text", name="title")
           br/
-          input(type="submit", value="save")
-
-  hr/
-  div#get-div
-    input(type="submit", value="$.get()", id="get")
-
-  hr/
-  span.bold
-    p Status
-  div#status
-
-  hr/
-  span.bold
-    p Data
-  div#result
-
-  hr/
-  span.bold
-    p Poorly Consumed Data
-  div#consumed
-    table(id="consumed_table")
+          input(type="submit", value="Save")
+        
+        
+  //
+    hr/
+    div#get-div
+      input(type="submit", value="$.get()", id="get")
+    hr/
+    span.bold
+      p Status
+    div#status
+    hr/
+    span.bold
+      p Data
+    div#result
+    hr/
+    span.bold
+      p Poorly Consumed Data
+    div#consumed
+      table(id="consumed_table")
 
 script
   var soc_form = $('#soc_form');

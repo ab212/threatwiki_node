@@ -1,25 +1,34 @@
 #pageContent
-  p Run a console to see JSON data.
-  p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
-  p Shift+Ctrl+I for Chromium
-
-  hr/
+  //
+    p Run a console to see JSON data.
+    p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
+    p Shift+Ctrl+I for Chromium
+    hr/
+  ul.breadcrumb
+    li 
+      a(href="/tag") List of Tags
+    span.divider
+    if (typeof(tag) != 'undefined')
+      li.active Edit Tag
+    else
+      li.active New Tag
   div#post_form
     span.bold
       - if (typeof(tag) != 'undefined')
         form#tag_form_update
           input(name="id", value=tag._id, type="hidden")
-          label(for="soc") SOC
-          select(name="soc", id="soc")
-            option(selected=tag.soc, value=tag.soc) #{tag.soc}
+          input(type="hidden", id="soc", name="soc", value=tag.soc)
+          //
+            label(for="soc") SOC
+            select(name="soc", id="soc")
+              option(selected=tag.soc, value=tag.soc) #{tag.soc}
           label(for="title") Title
           input(type="text", name="title", value=tag.title)
           label(for="description") Description
           textarea(name="description", rows="4", cols="60") #{tag.description}
           br/
-          input(type="submit", value="save")
+          input(type="submit", value="Save")
       - else
-        p New Tag
         form#tag_form
           label(for="soc") SOC
           select(name="soc", id="soc")
@@ -28,27 +37,24 @@
           label(for="description") Description
           textarea(name="description", rows="4", cols="60")
           br/
-          input(type="submit", value="save")
-
-  hr/
-  div#get-div
-    input(type="submit", value="$.get()", id="get")
-
-  hr/
-  span.bold
-    p Status
-  div#status
-
-  hr/
-  span.bold
-    p Data
-  div#result
-
-  hr/
-  span.bold
-    p Poorly Consumed Data
-  div#consumed
-    table(id="consumed_table")
+          input(type="submit", value="Save")
+  //
+    hr/
+    div#get-div
+      input(type="submit", value="$.get()", id="get")
+    hr/
+    span.bold
+      p Status
+    div#status
+    hr/
+    span.bold
+      p Data
+    div#result
+    hr/
+    span.bold
+      p Poorly Consumed Data
+    div#consumed
+      table(id="consumed_table")
 
 script
   var tag_form = $('#tag_form');

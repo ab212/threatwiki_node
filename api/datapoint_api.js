@@ -79,9 +79,9 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   });
 
   // retrieve by tag and soc
-  app.get('/api/datapoint/tag/:tag_title', function (req, res) {
+  app.get('/api/datapoint/tag/:tag_id', function (req, res) {
     // first retrieve tag based on tag_title
-    var tag = TagModel.findOne({ title: req.params.tag_title}, function (err, tag) {
+    var tag = TagModel.findOne({ _id: req.params.tag_id}, function (err, tag) {
       if (!err && typeof tag._id != 'undefined') {
         // search datapoint for the tag_id that we just found
         return DataPointModel.find({tags: tag._id, soc: tag.soc}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
