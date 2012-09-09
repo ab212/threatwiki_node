@@ -8,7 +8,7 @@
     span.bold
       - if (typeof(tag) != 'undefined')
         form#tag_form_update
-          input(type="text", name="id", value=tag._id, type="hidden")
+          input(name="id", value=tag._id, type="hidden")
           label(for="soc") SOC
           select(name="soc", id="soc")
             option(selected=tag.soc, value=tag.soc) #{tag.soc}

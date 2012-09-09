@@ -1,0 +1,35 @@
+#pageContent
+
+  a(href='/datapoint/create?soc='+soc,class='primaryButton',style="color:#fff") New Datapoint for this SOC
+
+  table(class='table table-striped table-bordered')#datapoint.display
+    thead
+      tr
+        th title
+        th location
+        th tags
+        th modified
+        th by
+        th created
+        th by
+        th actions
+    tbody
+     each datapoint, i in datapoints
+        tr(id="row_"+datapoint._id)
+          td
+            a(href="/datapoint/edit?id="+datapoint._id+"&soc="+soc) #{datapoint.title}
+          td
+            span #{datapoint.Location.title}
+          td
+            each tags in datapoint.tags
+              span #{tags.title} <br />
+          td
+            span #{datapoint.modified}
+          td
+            span #{datapoint.modifiedBy.name}
+          td
+            span #{datapoint.created}
+          td
+            span #{datapoint.createdBy.name}
+          td 
+            a(href="#", id="delete_"+datapoint._id) delete

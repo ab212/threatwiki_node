@@ -12,11 +12,11 @@ $(document).ready(function() {
   } );
 
   $('#soc').dataTable({
-    "bPaginate": false,
+    "bPaginate": false
     //don't want to sort the actions column
-    "aoColumnDefs": [
-      { "bSortable": false, "aTargets": [ 5 ] },
-      { "bSearchable": false, "aTargets": [ 5 ] }
-    ]
+   // "aoColumnDefs": [
+   //   { "bSortable": false, "aTargets": [ 5 ] },
+   //   { "bSearchable": false, "aTargets": [ 5 ] }
+   // ]
   });
 });

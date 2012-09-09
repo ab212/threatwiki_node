@@ -79,11 +79,29 @@ function load_routes(app) {
     }
   };
 
+
+  exports.soc.view = function(req, res){
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+      var socname = req.query["soc"];
+      console.log('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?');
+      jQuery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?', function(datapoints) {
+        res.render('socView', { locals: {
+          title: 'Edit SOC',
+          scripts: ['/javascript/soc_view.js'],
+          datapoints: datapoints,
+          soc:socname
+        }});
+      });
+    } else {
+      //force logout if user doesn't meet conditions to view the page
+      res.redirect('/logout');
+    }
+  };
+
   exports.datapoint = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       jQuery.getJSON('http://localhost:3000/api/datapoint?callback=?', function(datapoints) {
         console.log(datapoints);
-
         // convert dates from ISO-8601 to string
         for(i=0; i<datapoints.length; i++) {
           datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
@@ -104,9 +122,11 @@ function load_routes(app) {
 
   exports.datapoint.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+      var socname = req.query["soc"];
       res.render('datapointForm', { locals: {
         title: 'Create Datapoint',
-        scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js']
+        scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
+        socname:socname
       }});
     } else {
       //force logout if user doesn't meet conditions to view the page
@@ -117,13 +137,16 @@ function load_routes(app) {
   exports.datapoint.edit = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
+      var socname = req.query["soc"];
+
       console.log('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?');
 
       jQuery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
         res.render('datapointForm', { locals: {
           title: 'Edit Datapoint',
           scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
-          datapoint: datapoint
+          datapoint: datapoint,
+          socname:socname
         }});
       });
     } else {

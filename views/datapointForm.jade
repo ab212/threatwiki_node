@@ -9,10 +9,13 @@
     span.bold
       - if (typeof(datapoint) != 'undefined')
         form#datapoint_form_update
-          input(type="text", name="id", value=datapoint._id, type="hidden")
-          label(for="soc") SOC
-          select(id="soc", name="soc")
-            option(selected=datapoint.soc, value=datapoint.soc) #{datapoint.soc}
+          input(name="id", value=datapoint._id, type="hidden")
+          if (typeof(socname) == 'undefined')
+            label(for="soc") SOC
+            select(id="soc", name="soc")
+              option(selected=datapoint.soc, value=datapoint.soc) #{datapoint.soc}
+          else
+            input(type="hidden", id="soc", name="soc", value=socname)
           label(for="title") Title
           input(type="text", name="title", value=datapoint.title)
           label(for="location") Location
@@ -32,8 +35,12 @@
       - else
         p New Datapoint
         form#datapoint_form
-          label(for="soc") SOC
-          select(id="soc", name="soc")
+          //if SOC is present in the URL, it means we create a datapoint from a SOC, no need to give option to change SOC 
+          if (typeof(socname) == 'undefined')
+            label(for="soc") SOC
+            select(id="soc", name="soc")
+          else
+            input(type="hidden", id="soc", name="soc", value=socname)
           label(for="title") Title
           input(type="text", name="title")
           label(for="location") Location
