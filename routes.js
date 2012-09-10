@@ -38,7 +38,7 @@ function load_routes(app) {
         }
 
         res.render('socList', { locals: {
-          title: 'SOC Manager',
+          title: 'Sentinel Project: SOC Manager',
           scripts: ['/javascript/soc_list.js'],
           socs: socs
         }});
@@ -52,7 +52,7 @@ function load_routes(app) {
   exports.soc.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       res.render('socForm', { locals: {
-        title: 'Create an SOC',
+        title: 'Sentinel Project: Create a SOC',
         scripts: ['/javascript/soc_form.js']
       }});
     } else {
@@ -67,7 +67,7 @@ function load_routes(app) {
       console.log('http://localhost:3000/api/soc/'+ obj_id +'?callback=?');
       jquery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
         res.render('socForm', { locals: {
-          title: 'Edit SOC',
+          title: 'Sentinel Project: Edit SOC '+soc.title,
           scripts: ['/javascript/soc_form.js'],
           soc: soc
         }});
@@ -95,7 +95,7 @@ function load_routes(app) {
                 datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
               }
               res.render('socView', { locals: {
-                  title: 'Edit SOC',
+                  title: 'Sentinel Project: Edit SOC '+soc.title,
                   scripts: ['/javascript/soc_view.js'],
                   datapoints: datapoints,
                   soc:soc,
@@ -113,7 +113,7 @@ function load_routes(app) {
                 datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
               }
               res.render('socView', { locals: {
-                  title: 'Edit SOC',
+                  title: 'Sentinel Project: Edit SOC '+soc.title,
                   scripts: ['/javascript/soc_view.js'],
                   datapoints: datapoints,
                   soc:soc,
@@ -141,7 +141,7 @@ function load_routes(app) {
         }
 
         res.render('datapointList', { locals: {
-          title: 'Datapoint Manager',
+          title: 'Sentinel Project: Datapoint Manager',
           scripts: ['/javascript/datapoint_list.js'],
           datapoints: datapoints
         }});
@@ -156,7 +156,7 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var socname = req.query["soc"];
       res.render('datapointForm', { locals: {
-        title: 'Create Datapoint',
+        title: 'Sentinel Project: Create Datapoint for SOC '+socname,
         scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
         socname:socname
       }});
@@ -173,7 +173,7 @@ function load_routes(app) {
 
       jquery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
         res.render('datapointForm', { locals: {
-          title: 'Edit Datapoint',
+          title: 'Sentinel Project: Edit Datapoint '+datapoint.title,
           scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
           datapoint: datapoint
         }});
@@ -196,7 +196,7 @@ function load_routes(app) {
         }
 
         res.render('tagList', { locals: {
-          title: 'Tag Manager',
+          title: 'Sentinel Project: Tag Manager',
           scripts: ['/javascript/tag_list.js'],
           tags: tags
         }});
@@ -210,7 +210,7 @@ function load_routes(app) {
   exports.tag.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       res.render('tagForm', { locals: {
-        title: 'Create Tag',
+        title: 'Sentinel Project: Create Tag',
         scripts: ['/javascript/tag_form.js']
       }});
     } else {
@@ -225,7 +225,7 @@ function load_routes(app) {
       console.log('http://localhost:3000/api/tag/'+ obj_id +'?callback=?');
       jquery.getJSON('http://localhost:3000/api/tag/'+ obj_id +'?callback=?', function(tag) {
         res.render('tagForm', { locals: {
-          title: 'Edit Tag',
+          title: 'Sentinel Project: Edit Tag '+tag.title,
           scripts: ['/javascript/tag_form.js'],
           tag: tag
         }});
