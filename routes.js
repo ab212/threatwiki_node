@@ -1,6 +1,6 @@
 util = require('util');
 moment = require('moment');
-var jQuery = require('jquery');
+var jquery = require('jquery');
 
 // authenticate user based on the incoming request
 function authenticate(req, res){
@@ -26,7 +26,7 @@ function load_routes(app) {
 
   exports.soc = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      jQuery.getJSON('http://localhost:3000/api/soc?callback=?', function(socs) {
+      jquery.getJSON('http://localhost:3000/api/soc?callback=?', function(socs) {
         console.log(socs);
 
         // convert dates from ISO-8601 to string
@@ -65,7 +65,7 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/soc/'+ obj_id +'?callback=?');
-      jQuery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
+      jquery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
         res.render('socForm', { locals: {
           title: 'Edit SOC',
           scripts: ['/javascript/soc_form.js'],
@@ -87,9 +87,9 @@ function load_routes(app) {
 
       console.log('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?');
       if (typeof(tagname) != 'undefined') {
-        jQuery.getJSON('http://localhost:3000/api/datapoint/tag/'+ tagname +'?callback=?', function(datapoints) {
-          jQuery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
-            jQuery.getJSON('http://localhost:3000/api/tag/'+ tagname +'?callback=?', function(tag) {
+        jquery.getJSON('http://localhost:3000/api/datapoint/tag/'+ tagname +'?callback=?', function(datapoints) {
+          jquery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
+            jquery.getJSON('http://localhost:3000/api/tag/'+ tagname +'?callback=?', function(tag) {
               for(i=0; i<datapoints.length; i++) {
                 datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
                 datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
@@ -105,9 +105,9 @@ function load_routes(app) {
           });
         });
       } else {
-        jQuery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?', function(datapoints) {
-          jQuery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
-            jQuery.getJSON('http://localhost:3000/api/tag/soc/'+ socname +'?callback=?', function(tags) {
+        jquery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?', function(datapoints) {
+          jquery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
+            jquery.getJSON('http://localhost:3000/api/tag/soc/'+ socname +'?callback=?', function(tags) {
               for(i=0; i<datapoints.length; i++) {
                 datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
                 datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
@@ -132,7 +132,7 @@ function load_routes(app) {
 
   exports.datapoint = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      jQuery.getJSON('http://localhost:3000/api/datapoint?callback=?', function(datapoints) {
+      jquery.getJSON('http://localhost:3000/api/datapoint?callback=?', function(datapoints) {
         console.log(datapoints);
         // convert dates from ISO-8601 to string
         for(i=0; i<datapoints.length; i++) {
@@ -171,7 +171,7 @@ function load_routes(app) {
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?');
 
-      jQuery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
+      jquery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
         res.render('datapointForm', { locals: {
           title: 'Edit Datapoint',
           scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
@@ -186,7 +186,7 @@ function load_routes(app) {
 
   exports.tag = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      jQuery.getJSON('http://localhost:3000/api/tag?callback=?', function(tags) {
+      jquery.getJSON('http://localhost:3000/api/tag?callback=?', function(tags) {
         console.log(tags);
 
         // convert dates from ISO-8601 to string
@@ -223,7 +223,7 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/tag/'+ obj_id +'?callback=?');
-      jQuery.getJSON('http://localhost:3000/api/tag/'+ obj_id +'?callback=?', function(tag) {
+      jquery.getJSON('http://localhost:3000/api/tag/'+ obj_id +'?callback=?', function(tag) {
         res.render('tagForm', { locals: {
           title: 'Edit Tag',
           scripts: ['/javascript/tag_form.js'],
