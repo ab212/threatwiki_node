@@ -9,37 +9,54 @@
       li 
         a(href="/soc/view?soc="+soc.title) SOC: #{soc.title}
       span.divider
-      li.active #{tag.title}
-  div.row-fluid
-    div.span4
-      a(href='/datapoint/create?soc='+soc.title,class='primaryButton',style="color:#fff") New Datapoint for SOC #{soc.title}
-    div.span4 
-      a(href="/soc/edit?id="+soc._id) Edit SOC
-    div.span4 
+      li.active Tag: #{tag.title}
+  //
+    div.row-fluid
+      div.span4
+        a(href='/datapoint/create?soc='+soc.title,class='primaryButton',style="color:#fff") New Datapoint for SOC #{soc.title}
+      div.span4 
+        a(href="/soc/edit?id="+soc._id) Edit SOC
+      div.span4 
 
 
 
   div.container-fluid
     div.row-fluid
-      div.span2 
-        br/
-        if (typeof(tags) != 'undefined')
-          p Refine Datapoints by Tags
-          each tag, i in tags
-            p 
-              a(href="/soc/view?soc="+soc.title+"&tag="+tag._id) #{tag.title}
+      div.span2
+        div(class="well sidebar-nav")
+          ul(class="nav nav-list")
+            li.nav-header Actions
+            li 
+              if (typeof(tag) == 'undefined')
+                a(href='/datapoint/create?soc='+soc.title) New Datapoint
+              else
+                a(href='/datapoint/create?soc='+soc.title+"&tag="+tag._id) New Datapoint
+            li
+              a(href='/tag/create?soc='+soc.title) New Tag
+            li
+              a(href="/soc/edit?id="+soc._id) Edit SOC
+            if (typeof(tag) != 'undefined')
+              li
+                a(href="/tag/edit?id="+tag._id) Edit Tag
+            if (typeof(tags) != 'undefined')
+              li.nav-header Refine Datapoints by Tags
+              each tag, i in tags
+                li 
+                  a(href="/soc/view?soc="+soc.title+"&tag="+tag._id) #{tag.title}
       div.span10
+        if (typeof(tag) != 'undefined')
+          p Tag Description: #{tag.description}
         table(class='table table-striped table-bordered')#datapoint.display
           thead
             tr
-              th title
-              th location
-              th tags
-              th modified
-              th by
-              th created
-              th by
-              th actions
+              th Title
+              th Location
+              th Tags
+              th Modified
+              th By
+              th Created
+              th By
+              th Actions
           tbody
            each datapoint, i in datapoints
               tr(id="row_"+datapoint._id)

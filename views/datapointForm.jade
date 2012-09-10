@@ -13,10 +13,18 @@
       li 
         a(href="/soc/view?soc="+socname) SOC: #{socname}
       span.divider
+      if (typeof(tag) != 'undefined')
+        li 
+          a(href="/soc/view?soc="+socname+"&tag="+tag._id) Tag: #{tag.title}
+      span.divider
     else if (typeof(datapoint) != 'undefined')
       li 
         a(href="/soc/view?soc="+datapoint.soc) SOC: #{datapoint.soc}
       span.divider
+      if (typeof(tag) != 'undefined')
+        li 
+          a(href="/soc/view?soc="+datapoint.soc+"&tag="+tag._id) Tag: #{tag.title}
+       span.divider
     if (typeof(datapoint) == 'undefined')
       li.active New Datapoint
     else
@@ -27,6 +35,7 @@
     span.bold
       - if (typeof(datapoint) != 'undefined')
         form#datapoint_form_update
+          //update datapoint
           input(name="id", value=datapoint._id, type="hidden")
           input(type="hidden", id="soc", name="soc", value=datapoint.soc)
           label(for="title") Title
@@ -48,6 +57,7 @@
       - else
         form#datapoint_form
           //if SOC is present in the URL, it means we create a datapoint from a SOC, no need to give option to change SOC 
+          //create datapoint
           input(type="hidden", id="soc", name="soc", value=socname)
           label(for="title") Title
           input(type="text", name="title")
@@ -61,6 +71,9 @@
           textarea(name="description", rows="4", cols="60")
           label(for="tags") Tags
           select(multiple id="tag_list", name="tag_list")
+            //if there was tag argument in URL, we auto select it when we create this datapoint
+            if (typeof(tag) != 'undefined')
+              option(selected=tag, value=tag._id) #{tag.title}
           br/
           input(type="submit", value="Save")
 

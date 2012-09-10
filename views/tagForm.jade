@@ -5,8 +5,20 @@
     p Shift+Ctrl+I for Chromium
     hr/
   ul.breadcrumb
-    li 
-      a(href="/tag") List of Tags
+    li
+      a(href="/soc") List of SOC
+    span.divider
+    if (typeof(socname) == 'undefined' && typeof(tag) != 'undefined')
+      li 
+        a(href="/soc/view?soc="+tag.soc) SOC: #{tag.soc}
+      span.divider        
+      li 
+        a(href="/soc/view?soc="+tag.soc+"&tag="+tag._id) Tag: #{tag.title}
+    else
+      li
+        a(href="/soc/view?soc="+socname) SOC: #{socname}
+      
+
     span.divider
     if (typeof(tag) != 'undefined')
       li.active Edit Tag
@@ -16,6 +28,7 @@
     span.bold
       - if (typeof(tag) != 'undefined')
         form#tag_form_update
+          //we update an existing tag here
           input(name="id", value=tag._id, type="hidden")
           input(type="hidden", id="soc", name="soc", value=tag.soc)
           //
@@ -29,9 +42,9 @@
           br/
           input(type="submit", value="Save")
       - else
+        //we create the tag here
         form#tag_form
-          label(for="soc") SOC
-          select(name="soc", id="soc")
+          input(type="hidden", id="soc", name="soc", value=socname)
           label(for="title") Title
           input(type="text", name="title")
           label(for="description") Description

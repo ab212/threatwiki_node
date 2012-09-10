@@ -24,8 +24,9 @@
           p #{soc.created}
         label Created By
           p #{soc.createdBy.name}
-            //td 
-              //a(href="#", id="delete_"+soc._id) delete
+            //
+              td 
+              a(href="#", id="delete_"+soc._id) delete
         form#soc_form_update
           input(name="id", value=soc._id, type="hidden")
           label(for="title") Title

@@ -65,7 +65,10 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/soc/'+ obj_id +'?callback=?');
-      jquery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
+      jQuery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
+        soc.created = moment(soc.created).format("MMMM Do YYYY");
+        soc.modified = moment(soc.modified).format("MMMM Do YYYY");
+
         res.render('socForm', { locals: {
           title: 'Sentinel Project: Edit SOC '+soc.title,
           scripts: ['/javascript/soc_form.js'],
@@ -155,11 +158,25 @@ function load_routes(app) {
   exports.datapoint.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var socname = req.query["soc"];
-      res.render('datapointForm', { locals: {
-        title: 'Sentinel Project: Create Datapoint for SOC '+socname,
-        scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
-        socname:socname
-      }});
+      var tagid = req.query["tag"];
+      if (typeof(tagid)!='undefined'){
+        jQuery.getJSON('http://localhost:3000/api/tag/'+ tagid +'?callback=?', function(tag) {
+          res.render('datapointForm', { locals: {
+            title: 'Sentinel Project: Create Datapoint for SOC '+socname,
+            scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
+            socname:socname,
+            tag:tag
+          }});
+        });
+      } else {
+        res.render('datapointForm', { locals: {
+            title: 'Sentinel Project: Create Datapoint for SOC '+socname,
+            scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
+            socname:socname,
+            tag:tagid
+          }});
+      }
+
     } else {
       //force logout if user doesn't meet conditions to view the page
       res.redirect('/logout');
@@ -171,7 +188,9 @@ function load_routes(app) {
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?');
 
-      jquery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
+      jQuery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
+        datapoint.created = moment(datapoint.created).format("MMMM Do YYYY");
+        datapoint.modified = moment(datapoint.modified).format("MMMM Do YYYY");
         res.render('datapointForm', { locals: {
           title: 'Sentinel Project: Edit Datapoint '+datapoint.title,
           scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
@@ -209,9 +228,11 @@ function load_routes(app) {
 
   exports.tag.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+      var socname = req.query["soc"];
       res.render('tagForm', { locals: {
         title: 'Sentinel Project: Create Tag',
-        scripts: ['/javascript/tag_form.js']
+        scripts: ['/javascript/tag_form.js'],
+        socname: socname
       }});
     } else {
       //force logout if user doesn't meet conditions to view the page
