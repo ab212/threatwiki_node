@@ -127,14 +127,14 @@ vows.describe('Test API').addBatch({
         'should be empty': function(res){
             assert.isEmpty(res.body);
         }
-/* TODO: Currently disabled as this call to the API has been disabled before 2.0 release. See issue #44
-    },'GET /api/datapoint/tag/:title for a random tag title': {
+/* TODO: Currently disabled as this call to the API has been disabled before 2.0 release. See issue #44*/
+    },'GET /api/datapoint/tag/:tagid for a random tag id': {
         topic: api.get('/api/datapoint/tag/dummy123'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
             //console.log(res);
-            assert.isEmpty(res.body);
-        }*/
+            assert.isNull(res.body);
+        }
     },'GET /api/datapoint/soc/:soc for a random soc title': {
         topic: api.get('/api/datapoint/soc/dummy123'),
         'should respond with a 200 OK': assertStatus(200),
@@ -200,7 +200,7 @@ vows.describe('Test API').addBatch({
         topic: api.get('/api/soc/title/dummy123'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
-            assert.isEmpty(res.body);
+            assert.isNull(res.body);
         }
     },
     'GET /api/soc/user/:username for a random user that doesnt exist': {
