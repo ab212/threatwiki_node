@@ -84,11 +84,16 @@ function load_routes(app) {
       var socname = req.query["soc"];
       var tagname = req.query["tag"];
 
+
       console.log('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?');
       if (typeof(tagname) != 'undefined') {
         jQuery.getJSON('http://localhost:3000/api/datapoint/tag/'+ tagname +'?callback=?', function(datapoints) {
           jQuery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
             jQuery.getJSON('http://localhost:3000/api/tag/'+ tagname +'?callback=?', function(tag) {
+              for(i=0; i<datapoints.length; i++) {
+                datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
+                datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
+              }
               res.render('socView', { locals: {
                   title: 'Edit SOC',
                   scripts: ['/javascript/soc_view.js'],
@@ -103,6 +108,10 @@ function load_routes(app) {
         jQuery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?', function(datapoints) {
           jQuery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
             jQuery.getJSON('http://localhost:3000/api/tag/soc/'+ socname +'?callback=?', function(tags) {
+              for(i=0; i<datapoints.length; i++) {
+                datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
+                datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
+              }
               res.render('socView', { locals: {
                   title: 'Edit SOC',
                   scripts: ['/javascript/soc_view.js'],
