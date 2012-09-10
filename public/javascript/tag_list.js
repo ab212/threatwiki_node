@@ -7,8 +7,15 @@ $(document).ready(function() {
       $("#row_"+id[1]).fadeOut('slow', function() {});
     }).error(function() { alert("delete failed");});
   });
-
+  $.extend( $.fn.dataTableExt.oStdClasses, {
+      "sWrapper": "dataTables_wrapper form-inline"
+  } );
     $('#tag').dataTable({
-    "bPaginate": false
+    "bPaginate": false,
+    //don't want to sort or search the actions column
+    "aoColumnDefs": [
+      { "bSortable": false, "aTargets": [ 6 ] },
+      { "bSearchable": false, "aTargets": [ 6 ] }
+    ]
   });
 });

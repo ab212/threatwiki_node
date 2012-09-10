@@ -1,33 +1,32 @@
 !!!
-html
+html(lang="en")
   head
     title= title
-    link(rel='stylesheet', href='http://intranet.tspdev.org/libraries/tidal_lock/css/reset.css')
+    link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/global.css')
-    link(rel='stylesheet', href='/stylesheets/table.css')
-
     script(type='text/javascript', src='/javascript/jquery.min.js')
     script(type='text/javascript', src='/javascript/jquery.dataTables.min.js')
+    script(src='/lib/bootstrap/js/bootstrap.min.js')
+
     -each script in scripts
       script(type='text/javascript', src= script)
 
   - if (app.settings.env == "development" || everyauth.loggedIn)
-    #headerBackground
-      #header
-        #nav
-          #navList
-            li
-              a(href='/',class='nav') Home
-            li
-              a(href='/soc',class='nav') SOC
-            li
-              a(href='/tag',class='nav') Tag
-            li
-              a(href='/datapoint',class='nav') Datapoint
-            li
-              a(href='/logout',class='nav') Logout
-
-  #logo
-    img(src='images/logo.jpg')
-
-  body!= body
+      div(class='navbar navbar-inverse')
+        div.navbar-inner
+          div.container
+            ul(class='nav')
+              li
+                a(href='/') Home
+              li
+                a(href='/soc') SOC
+              li
+                a(href='/tag') Tag
+              li
+                a(href='/datapoint') Datapoint
+              li
+                a(href='/logout') Logout
+      div.container-fluid
+        #logo
+          img(src='/images/logo.jpg')
+        body!= body

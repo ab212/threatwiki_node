@@ -1,13 +1,18 @@
 $(document).ready(function() {
+
+var already_included_soc = $('#soc').val();
+
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
     $("#result").append("Loaded SOCs");
     console.log("Loaded SOCs");
     $.each(socs, function(key, value) {
-      $('#soc')
-      .append($("<option></option>")
-      .attr("value",value.title)
-      .text(value.title));
+      if ((already_included_soc!=value.title)) {
+        $('#soc')
+        .append($("<option></option>")
+        .attr("value",value.title)
+        .text(value.title));
+      }
     });
   });
 

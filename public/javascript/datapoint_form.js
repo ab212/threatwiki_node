@@ -2,16 +2,21 @@ $(document).ready(function() {
   $(function() {
     $('#location').autoGeocoder();
   });
+  var already_included_soc = $('#soc').val();
 
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
     $("#result").append("Loaded SOCs");
     console.log("Loaded SOCs");
     $.each(socs, function(key, value){
-      $('#soc')
-      .append($("<option></option>")
-      .attr("value",value.title)
-      .text(value.title));
+      // TODO: this is a very inefficient way of checking if the tag is already loaded, brainstorm and improve this.
+      // one idea: add all tags. then iterate through entire list and delete repetitions
+      if ((already_included_soc!=value.title)) {
+        $('#soc')
+        .append($("<option></option>")
+        .attr("value",value.title)
+        .text(value.title));
+       }
     });
   });
 
@@ -20,7 +25,7 @@ $(document).ready(function() {
     var selected_soc;
 
     var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
-      var selected_soc = $("#soc option:selected").val();
+      var selected_soc = $("#soc").val();
       var already_included_tags = $('#tag_list').val();
 
       var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
@@ -42,7 +47,7 @@ $(document).ready(function() {
 
   // on soc change, refresh tags
   var refresh_tags = $("#soc").change(function(){
-  	var selected_soc = $("#soc option:selected").val();
+  var selected_soc = $("#soc option:selected").val();
 
     var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
         $("#result").append("<br/>Loaded Tags");

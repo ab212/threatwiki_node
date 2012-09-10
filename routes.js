@@ -65,7 +65,6 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/soc/'+ obj_id +'?callback=?');
-
       jQuery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
         res.render('socForm', { locals: {
           title: 'Edit SOC',
@@ -79,11 +78,53 @@ function load_routes(app) {
     }
   };
 
+
+  exports.soc.view = function(req, res){
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+      var socname = req.query["soc"];
+      var tagname = req.query["tag"];
+
+      console.log('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?');
+      if (typeof(tagname) != 'undefined') {
+        jQuery.getJSON('http://localhost:3000/api/datapoint/tag/'+ tagname +'?callback=?', function(datapoints) {
+          jQuery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
+            jQuery.getJSON('http://localhost:3000/api/tag/'+ tagname +'?callback=?', function(tag) {
+              res.render('socView', { locals: {
+                  title: 'Edit SOC',
+                  scripts: ['/javascript/soc_view.js'],
+                  datapoints: datapoints,
+                  soc:soc,
+                  tag:tag
+              }});
+            });
+          });
+        });
+      } else {
+        jQuery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?', function(datapoints) {
+          jQuery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
+            jQuery.getJSON('http://localhost:3000/api/tag/soc/'+ socname +'?callback=?', function(tags) {
+              res.render('socView', { locals: {
+                  title: 'Edit SOC',
+                  scripts: ['/javascript/soc_view.js'],
+                  datapoints: datapoints,
+                  soc:soc,
+                  tags:tags
+              }});
+            });
+          });
+        });
+      }
+
+    } else {
+      //force logout if user doesn't meet conditions to view the page
+      res.redirect('/logout');
+    }
+  };
+
   exports.datapoint = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       jQuery.getJSON('http://localhost:3000/api/datapoint?callback=?', function(datapoints) {
         console.log(datapoints);
-
         // convert dates from ISO-8601 to string
         for(i=0; i<datapoints.length; i++) {
           datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
@@ -104,9 +145,11 @@ function load_routes(app) {
 
   exports.datapoint.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+      var socname = req.query["soc"];
       res.render('datapointForm', { locals: {
         title: 'Create Datapoint',
-        scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js']
+        scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
+        socname:socname
       }});
     } else {
       //force logout if user doesn't meet conditions to view the page

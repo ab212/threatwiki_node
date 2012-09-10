@@ -1,104 +1,86 @@
 #pageContent
-  p Run a console to see JSON data.
-    br/
-  p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
-  p Shift+Ctrl+I for Chromium
+  //
+    p Run a console to see JSON data.
+      br/
+    p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
+    p Shift+Ctrl+I for Chromium
+    hr/
+  ul.breadcrumb
+    li 
+      a(href="/soc") List of SOC
+    span.divider
+    if (typeof(socname) != 'undefined' && typeof(datapoint) == 'undefined')
+      li 
+        a(href="/soc/view?soc="+socname) SOC: #{socname}
+      span.divider
+    else if (typeof(datapoint) != 'undefined')
+      li 
+        a(href="/soc/view?soc="+datapoint.soc) SOC: #{datapoint.soc}
+      span.divider
+    if (typeof(datapoint) == 'undefined')
+      li.active New Datapoint
+    else
+      li.active #{datapoint.title}
 
-  hr/
+
   div#post_form
     span.bold
-      p New Datapoint
       - if (typeof(datapoint) != 'undefined')
         form#datapoint_form_update
-          input(type="text", name="id", value=datapoint._id)
-          br/
-          label(for="soc") SOC
-          br/
-          select(id="soc", name="soc", value=datapoint.soc)
-            option(selected=datapoint.soc) #{datapoint.soc}
-          br/
+          input(name="id", value=datapoint._id, type="hidden")
+          input(type="hidden", id="soc", name="soc", value=datapoint.soc)
           label(for="title") Title
-          br/
           input(type="text", name="title", value=datapoint.title)
-
-          br/
           label(for="location") Location
-          br/
-          input(id="location", name="location", value=datapoint.Location.title)
-
-          br/
+          input(type="text", id="location", name="location", value=datapoint.Location.title)
           label(for="latitude") Latitude
-          br/
           input(type="text", id="latitude", name="latitude", value=datapoint.Location.latitude)
-          br/
           label(for="longitude") Longitude
-          br/
           input(type="text", id="longitude", name="longitude", value=datapoint.Location.longitude)
-          br/
           label(for="description") Description
-          br/
           textarea(name="description", rows="4", cols="60") #{datapoint.description}
-          br/
           label(for="tags") Tags
-          br/
           select(multiple id="tag_list", name="tag_list")
             for tag in datapoint.tags
               option(selected=tag._id, value=tag._id) #{tag.title}
           br/
-          input(type="submit", value="save")
+          input(type="submit", value="Save")
       - else
         form#datapoint_form
-          label(for="soc") SOC
-          br/
-          select(id="soc", name="soc")
-          br/
+          //if SOC is present in the URL, it means we create a datapoint from a SOC, no need to give option to change SOC 
+          input(type="hidden", id="soc", name="soc", value=socname)
           label(for="title") Title
-          br/
           input(type="text", name="title")
-
-          br/
           label(for="location") Location
-          br/
-          input(id="location", name="location")
-
-          br/
+          input(type="text", id="location", name="location")
           label(for="latitude") Latitude
-          br/
           input(type="text", id="latitude", name="latitude")
-          br/
           label(for="longitude") Longitude
-          br/
           input(type="text", id="longitude", name="longitude")
-          br/
           label(for="description") Description
-          br/
           textarea(name="description", rows="4", cols="60")
-          br/
           label(for="tags") Tags
-          br/
           select(multiple id="tag_list", name="tag_list")
           br/
-          input(type="submit", value="save")
+          input(type="submit", value="Save")
 
-  hr/
-  div#get-div
-    input(type="submit", value="$.get()", id="get")
-
-  hr/
-  span.bold
-    p Status
-  div#status
-
-  hr/
-  span.bold
-    p Data
-  div#result
-
-  hr/
-  span.bold
-    p Poorly Consumed Data
-  div#consumed
-    table(id="consumed_table")
+  //
+    hr/
+    div#get-div
+      input(type="submit", value="$.get()", id="get")
+    hr/
+    span.bold
+      p Status
+    div#status
+    hr/
+    span.bold
+      p Data
+    div#result
+    hr/
+    span.bold
+      p Poorly Consumed Data
+    div#consumed
+      table(id="consumed_table")
 
 script
   var datapoint_form = $('#datapoint_form');

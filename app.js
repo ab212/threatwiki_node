@@ -117,6 +117,7 @@ routes.authenticate;
 app.get('/', routes.index);
 app.get('/soc', routes.soc);
 app.get('/soc/create', routes.soc.create);
+app.get('/soc/view', routes.soc.view);
 app.get('/soc/edit', routes.soc.edit);
 app.get('/datapoint', routes.datapoint);
 app.get('/datapoint/create', routes.datapoint.create);

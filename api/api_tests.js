@@ -1,4 +1,4 @@
-//To execute the tests, go in the console and type: node datapoint_api_tests.js 
+//To execute the tests, go in the console and type: node api_tests.js 
 var vows = require('vows')
 , assert = require('assert')
 , tobi = require('tobi');

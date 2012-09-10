@@ -15,8 +15,8 @@ $(document).ready(function() {
     "bPaginate": false,
     //don't want to sort the actions column
     "aoColumnDefs": [
-      { "bSortable": false, "aTargets": [ 8 ] },
-      { "bSearchable": false, "aTargets": [ 8 ] }
+      { "bSortable": false, "aTargets": [ 7 ] },
+      { "bSearchable": false, "aTargets": [ 7 ] }
     ]
   });
 });
