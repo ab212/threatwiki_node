@@ -1,6 +1,6 @@
 util = require('util');
 moment = require('moment');
-var jQuery = require('jQuery');
+var jQuery = require('jquery');
 
 // authenticate user based on the incoming request
 function authenticate(req, res){
