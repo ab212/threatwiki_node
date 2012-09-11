@@ -70,7 +70,7 @@
           label(for="description") Description
           textarea(name="description", rows="4", cols="60")
           label(for="tags") Tags
-          select(multiple id="tag_list", name="tag_list")
+          select(multiple="multiple", id="tag_list", name="tag_list")
             //if there was tag argument in URL, we auto select it when we create this datapoint
             if (typeof(tag) != 'undefined')
               option(selected=tag, value=tag._id) #{tag.title}
