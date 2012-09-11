@@ -260,6 +260,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   });
 
   // delete by id
+  /* Removing the code for now to protect our data, will re-enable when we have an admin access + authenticated API
   app.get('/api/soc/delete/:id', function (req, res) {
     return SocModel.findById(req.params.id, function (err, soc) {
       if (!err && soc){
@@ -277,7 +278,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
         return res.send(null);
      }
     });
-  });
+  });*/
 }
 
 exports.load_socApi = load_socApi;

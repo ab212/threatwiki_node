@@ -66,14 +66,17 @@ vows.describe('Test API').addBatch({
                     assert.equal(res.body._id,prevId);
                 }
             }
-    },
+    }
+          /* Removing the test code for delete now to protect our data, will re-enable when we have an admin access + authenticated API
+,
     'GET /api/datapoint/delete/ random id number that doesnt exist': {
         topic: api.get('/api/datapoint/delete/123'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
             assert.isNull(res.body);
         }
-    },
+    }*/
+    ,
     'GET /api/datapoint/date/:date from Jan 1st 1970': {
         topic: api.get('/api/datapoint/date/0'),
         'should respond with a 200 OK': assertStatus(200),
@@ -127,7 +130,6 @@ vows.describe('Test API').addBatch({
         'should be empty': function(res){
             assert.isEmpty(res.body);
         }
-/* TODO: Currently disabled as this call to the API has been disabled before 2.0 release. See issue #44*/
     },'GET /api/datapoint/tag/:tagid for a random tag id': {
         topic: api.get('/api/datapoint/tag/dummy123'),
         'should respond with a 200 OK': assertStatus(200),
@@ -223,13 +225,15 @@ vows.describe('Test API').addBatch({
         'should be empty': function(res){
             assert.isNull(res.body);
         }
-    },'GET /api/soc/delete/ random id number that doesnt exist': {
+    }
+      /* Removing the test code for delete now to protect our data, will re-enable when we have an admin access + authenticated API
+    ,'GET /api/soc/delete/ random id number that doesnt exist': {
         topic: api.get('/api/soc/delete/123'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
             assert.isNull(res.body);
         }
-    }
+    }*/
 }).addBatch({
     //SECTION TO TEST TAG API
     
@@ -306,7 +310,7 @@ vows.describe('Test API').addBatch({
         topic: api.get('/api/tag/user/dummy'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
-            assert.isNotEmpty(res.body);
+            assert.isEmpty(res.body);
         }
     },
     'POST empty data to /api/tag without being logged in': {
@@ -321,12 +325,14 @@ vows.describe('Test API').addBatch({
         'should be empty': function(res){
             assert.isNull(res.body);
         }
-    },'GET /api/tag/delete/ random id number that doesnt exist': {
+    }
+    /* Removing the test code for delete now to protect our data, will re-enable when we have an admin access + authenticated API
+    ,'GET /api/tag/delete/ random id number that doesnt exist': {
         topic: api.get('/api/tag/delete/123'),
         'should respond with a 200 OK': assertStatus(200),
         'should be empty': function(res){
             assert.isNull(res.body);
         }
-    }
+    }*/
 
 }).run(); // Run it

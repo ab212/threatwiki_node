@@ -284,6 +284,8 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   });
 
   // delete by id
+    /* Removing the code for now to protect our data, will re-enable when we have an admin access + authenticated API
+
   app.get('/api/tag/delete/:id', function (req, res) {
     return TagModel.findById(req.params.id, function (err, tag) {
       if (!err && tag){
@@ -301,7 +303,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       return res.send(null);
     }
     });
-  });
+  });*/
 }
 
 exports.load_tagApi = load_tagApi;

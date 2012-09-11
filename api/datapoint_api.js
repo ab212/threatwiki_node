@@ -78,15 +78,15 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     });
   });
 
-  // retrieve by tag and soc
+  // retrieve by tag  id(tags are unique by SOC)
   app.get('/api/datapoint/tag/:tag_id', function (req, res) {
     // first retrieve tag based on tag_title
     var tag = TagModel.findOne({ _id: req.params.tag_id}, function (err, tag) {
-      if (!err && typeof tag._id != 'undefined') {
+      if (!err && typeof(tag._id) != 'undefined') {
         // search datapoint for the tag_id that we just found
         return DataPointModel.find({tags: tag._id, soc: tag.soc}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
           if (!err && datapoint) {
-            console.log(datapoint);
+            console.log("are you undefined"+datapoint);
             return res.send(datapoint);
           } else {
             console.log(err);
@@ -95,7 +95,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         });
       } else {
         console.log(err);
-        return res.send(500);
+        return res.send(null);
       }
     });
   });
@@ -293,6 +293,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
   });
 
   // delete by id
+  /* Removing the code for now to protect our data, will re-enable when we have an admin access + authenticated API
   app.get('/api/datapoint/delete/:id', function (req, res) {
      return DataPointModel.findById(req.params.id, function (err, datapoint) {
       if (!err && datapoint){
@@ -310,7 +311,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         return res.send(null);
       }
     });
-  });
+  });*/
 }
 
 exports.load_datapointApi = load_datapointApi;
