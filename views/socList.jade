@@ -1,4 +1,8 @@
-#pageContent
+extends layout
+block head
+  script(src="/javascript/soc_list.js")
+
+block pageContent
   ul.breadcrumb
     li.active List of SOC
   a(href='soc/create',class='primaryButton',style="color:#fff") New SOC

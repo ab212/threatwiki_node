@@ -1,17 +1,15 @@
 !!!
 html(lang="en")
   head
-    title= title
+    title #{title}
     link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/global.css')
     script(type='text/javascript', src='/javascript/jquery.min.js')
     script(type='text/javascript', src='/javascript/jquery.dataTables.min.js')
     script(src='/lib/bootstrap/js/bootstrap.min.js')
+    block head
 
-    -each script in scripts
-      script(type='text/javascript', src= script)
-
-  - if (app.settings.env == "development" || everyauth.loggedIn)
+  - if (settings.env == "development" || everyauth.loggedIn)
       div(class='navbar navbar-inverse')
         div.navbar-inner
           div.container
@@ -30,4 +28,7 @@ html(lang="en")
       div.container-fluid
         #logo
           img(src='/images/logo.jpg')
-        body!= body
+        body
+          block pageContent
+    else
+      block pageContent

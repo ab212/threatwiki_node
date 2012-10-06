@@ -1,4 +1,8 @@
-#pageContent
+extends layout
+block head
+  script(src="/javascript/tag_form.js")
+
+block pageContent
   //
     p Run a console to see JSON data.
     p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
@@ -69,6 +73,6 @@
     div#consumed
       table(id="consumed_table")
 
-script
-  var tag_form = $('#tag_form');
-  var tag_form_update = $('#tag_form_update');
+  script
+    var tag_form = $('#tag_form');
+    var tag_form_update = $('#tag_form_update');

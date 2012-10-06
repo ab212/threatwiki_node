@@ -1,4 +1,9 @@
-#pageContent
+extends layout
+
+block head
+  script(src="/javascript/soc_form.js")
+
+block pageContent
   //
     p Run a console to see JSON data.
     p Ctrl+Shift+K in Firefox with 'Net' and 'JS' sources enabled
@@ -59,6 +64,6 @@
     div#consumed
       table(id="consumed_table")
 
-script
-  var soc_form = $('#soc_form');
-  var soc_form_update = $('#soc_form_update');
+  script
+    var soc_form = $('#soc_form');
+    var soc_form_update = $('#soc_form_update');

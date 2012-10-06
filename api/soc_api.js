@@ -44,7 +44,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.get('/api/soc', function (req, res){
     return SocModel.find().populate('createdBy','name').populate('modifiedBy','name').exec(function (err, socs) {
       if (!err && socs) {
-        return res.json(socs);
+        return res.jsonp(socs);
       } else {
         console.log(err);
         return res.send(null);
@@ -56,7 +56,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.get('/api/soc/:id', function (req, res) {
     return SocModel.findById(req.params.id).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
-        return res.send(soc);
+        return res.jsonp(soc);
       } else {
         console.log(err);
         return res.send(null);
@@ -72,7 +72,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     d_big.setHours(23,59,59,59);
     return SocModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
-        return res.send(soc);
+        return res.jsonp(soc);
       } else {
         console.log(err);
         return res.send(null);
@@ -86,7 +86,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     d_small.setHours(0,0,0,0);
     return SocModel.find({created: {$gte : d_small}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
-        return res.send(soc);
+        return res.jsonp(soc);
       } else {
         console.log(err);
         return res.send(null);
@@ -101,7 +101,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     d_big.setHours(23,59,59,59);
     return SocModel.find({created: {$lt : d_big}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
-        return res.send(soc);
+        return res.jsonp(soc);
       } else {
         console.log(err);
         return res.send(null);
@@ -120,7 +120,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     d_end.setHours(23,59,59,59);
     return SocModel.find({created: {$gte : d_start, $lt : d_end}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
-        return res.send(soc);
+        return res.jsonp(soc);
       } else {
         console.log(err);
         return res.send(null);
@@ -133,7 +133,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.get('/api/soc/title/:title', function (req, res) {
     return SocModel.findOne({ title: req.params.title}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
-        return res.send(soc);
+        return res.jsonp(soc);
       } else {
         console.log(err);
         return res.send(null);
@@ -150,7 +150,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
         // search soc for the user_id that we just found
         return SocModel.find({createdBy: user._id}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
           if (!err && soc) {
-            return res.send(soc);
+            return res.jsonp(soc);
           } else {
             console.log(err);
             return res.send(null);
@@ -184,14 +184,14 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
       soc.save(function (err) {
         if (!err) {
           console.log("SOC created");
-          return res.send(soc);
+          return res.jsonp(soc);
         } else {
           console.log("Could not save SOC: " + err);
           return res.send(500);
         }
       });
     }
-
+console.log('current env'+app.settings.env);
     if((app.settings.env != 'production')) {
       generateDevUser(UserModel, function(user) {
         save_soc(req, date_now, user);
@@ -207,10 +207,11 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.put('/api/soc/:id', function (req, res) {
     var date_now = new Date();
     date_now.setTimezone('UTC');
-
+    
     function update_soc(req, date_now, user) {
       SocModel.findById(req.params.id, function (err, soc) {
       if (!err && soc){
+
         oldTitle = soc.title;
         soc.title = req.body.title;
         soc.modified = date_now;
@@ -235,7 +236,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
                     console.log(err);
                   }
                  });
-            return res.send(soc);
+            return res.jsonp(soc);
           } else {
             console.log(err);
             return res.send(500);

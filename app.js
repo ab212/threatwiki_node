@@ -12,10 +12,11 @@ var application_root = __dirname
   , tag_api = require("./api/tag_api")
   //, user_api = require("./api/user_api")
 ;
-
-var app = module.exports = express.createServer();
-app.enable("jsonp callback");
-everyauth.helpExpress(app);
+var app = express();
+//express 2.x
+//var app = module.exports = express.createServer();
+//app.enable("jsonp callback");
+//everyauth.helpExpress(app);
 
 // database
 mongoose.connect('mongodb://localhost/namp', function(err) {
@@ -91,10 +92,10 @@ app.configure(function () {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
-  app.use(express.cookieParser());
+  app.use(express.cookieParser('secret'));
   //TODO: Will need to specify a memorystore to go in PROD (see warning in log when deploying in PROD)
-  app.use(express.session({ 'secret' : 'not sure what to put here' }));
-  app.use(everyauth.middleware());
+  app.use(express.session());
+  app.use(everyauth.middleware(app));
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -108,8 +109,8 @@ app.configure('production', function(){
 });
 
 // helpers
-app.helpers({
-});
+//app.helpers({
+//});
 
 // get routes
 routes.load_routes(app);

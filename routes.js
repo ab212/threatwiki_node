@@ -1,5 +1,5 @@
-util = require('util');
-moment = require('moment');
+var util = require('util');
+var moment = require('moment');
 var jquery = require('jquery');
 
 // authenticate user based on the incoming request
@@ -18,15 +18,16 @@ function authenticate(req, res){
 
 function load_routes(app) {
   exports.index = function(req, res){
-    res.render('index', { locals: {
+    res.render('index', {
       title: 'Threatwiki',
       scripts: []
-    }});
+    });
   };
 
   exports.soc = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       jquery.getJSON('http://localhost:3000/api/soc?callback=?', function(socs) {
+
         console.log(socs);
 
         // convert dates from ISO-8601 to string
@@ -37,11 +38,10 @@ function load_routes(app) {
           socs[i].modified = moment(socs[i].modified).format("MMMM Do YYYY");
         }
 
-        res.render('socList', { locals: {
+        res.render('socList', {
           title: 'Sentinel Project: SOC Manager',
-          scripts: ['/javascript/soc_list.js'],
           socs: socs
-        }});
+        });
       });
     } else {
         //force logout if user doesn't meet conditions to view the page
@@ -51,10 +51,9 @@ function load_routes(app) {
 
   exports.soc.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      res.render('socForm', { locals: {
-        title: 'Sentinel Project: Create a SOC',
-        scripts: ['/javascript/soc_form.js']
-      }});
+      res.render('socForm', {
+        title: 'Sentinel Project: Create a SOC'
+      });
     } else {
       //force logout if user doesn't meet conditions to view the page
       res.redirect('/logout');
@@ -69,11 +68,10 @@ function load_routes(app) {
         soc.created = moment(soc.created).format("MMMM Do YYYY");
         soc.modified = moment(soc.modified).format("MMMM Do YYYY");
 
-        res.render('socForm', { locals: {
+        res.render('socForm',  {
           title: 'Sentinel Project: Edit SOC '+soc.title,
-          scripts: ['/javascript/soc_form.js'],
           soc: soc
-        }});
+        });
       });
     } else {
       //force logout if user doesn't meet conditions to view the page
@@ -97,13 +95,12 @@ function load_routes(app) {
                 datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
                 datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
               }
-              res.render('socView', { locals: {
+              res.render('socView', {
                   title: 'Sentinel Project: Edit SOC '+soc.title,
-                  scripts: ['/javascript/soc_view.js'],
                   datapoints: datapoints,
                   soc:soc,
                   tag:tag
-              }});
+              });
             });
           });
         });
@@ -115,13 +112,12 @@ function load_routes(app) {
                 datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
                 datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
               }
-              res.render('socView', { locals: {
+              res.render('socView', {
                   title: 'Sentinel Project: Edit SOC '+soc.title,
-                  scripts: ['/javascript/soc_view.js'],
                   datapoints: datapoints,
                   soc:soc,
                   tags:tags
-              }});
+              });
             });
           });
         });
@@ -143,11 +139,10 @@ function load_routes(app) {
           datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
         }
 
-        res.render('datapointList', { locals: {
+        res.render('datapointList', {
           title: 'Sentinel Project: Datapoint Manager',
-          scripts: ['/javascript/datapoint_list.js'],
           datapoints: datapoints
-        }});
+        });
       });
     } else {
       //force logout if user doesn't meet conditions to view the page
@@ -161,20 +156,18 @@ function load_routes(app) {
       var tagid = req.query["tag"];
       if (typeof(tagid)!='undefined'){
         jquery.getJSON('http://localhost:3000/api/tag/'+ tagid +'?callback=?', function(tag) {
-          res.render('datapointForm', { locals: {
+          res.render('datapointForm', {
             title: 'Sentinel Project: Create Datapoint for SOC '+socname,
-            scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
             socname:socname,
             tag:tag
-          }});
+          });
         });
       } else {
-        res.render('datapointForm', { locals: {
+        res.render('datapointForm', {
             title: 'Sentinel Project: Create Datapoint for SOC '+socname,
-            scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
             socname:socname,
             tag:tagid
-          }});
+          });
       }
 
     } else {
@@ -191,11 +184,10 @@ function load_routes(app) {
       jquery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
         datapoint.created = moment(datapoint.created).format("MMMM Do YYYY");
         datapoint.modified = moment(datapoint.modified).format("MMMM Do YYYY");
-        res.render('datapointForm', { locals: {
+        res.render('datapointForm', {
           title: 'Sentinel Project: Edit Datapoint '+datapoint.title,
-          scripts: ['/javascript/datapoint_form.js', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false', '/javascript/jquery.auto-geocoder.js', '/javascript/utils.js'],
           datapoint: datapoint
-        }});
+        });
       });
     } else {
         //force logout if user doesn't meet conditions to view the page
@@ -214,11 +206,10 @@ function load_routes(app) {
           tags[i].modified = moment(tags[i].modified).format("MMMM Do YYYY");
         }
 
-        res.render('tagList', { locals: {
+        res.render('tagList', {
           title: 'Sentinel Project: Tag Manager',
-          scripts: ['/javascript/tag_list.js'],
           tags: tags
-        }});
+        });
       });
     } else {
       //force logout if user doesn't meet conditions to view the page
@@ -229,11 +220,10 @@ function load_routes(app) {
   exports.tag.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var socname = req.query["soc"];
-      res.render('tagForm', { locals: {
+      res.render('tagForm', {
         title: 'Sentinel Project: Create Tag',
-        scripts: ['/javascript/tag_form.js'],
         socname: socname
-      }});
+      });
     } else {
       //force logout if user doesn't meet conditions to view the page
       res.redirect('/logout');
@@ -245,11 +235,10 @@ function load_routes(app) {
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/tag/'+ obj_id +'?callback=?');
       jquery.getJSON('http://localhost:3000/api/tag/'+ obj_id +'?callback=?', function(tag) {
-        res.render('tagForm', { locals: {
+        res.render('tagForm', {
           title: 'Sentinel Project: Edit Tag '+tag.title,
-          scripts: ['/javascript/tag_form.js'],
           tag: tag
-        }});
+        });
       });
     } else {
       //force logout if user doesn't meet conditions to view the page

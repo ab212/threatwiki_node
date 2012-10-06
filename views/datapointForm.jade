@@ -1,4 +1,12 @@
-#pageContent
+extends layout
+block head
+  script(src="/javascript/datapoint_form.js")
+  script(src='http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false')
+  script(src='/javascript/jquery.auto-geocoder.js')
+  script(src='/javascript/utils.js')
+
+
+block pageContent
   //
     p Run a console to see JSON data.
       br/
@@ -95,6 +103,6 @@
     div#consumed
       table(id="consumed_table")
 
-script
-  var datapoint_form = $('#datapoint_form');
-  var datapoint_form_update = $('#datapoint_form_update');
+  script
+    var datapoint_form = $('#datapoint_form');
+    var datapoint_form_update = $('#datapoint_form_update');

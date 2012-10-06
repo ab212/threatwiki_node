@@ -46,7 +46,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.get('/api/tag', function (req, res){
     return TagModel.find().populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tags) {
       if (!err && tags) {
-        return res.send(tags);
+        return res.jsonp(tags);
       } else {
         console.log(err);
         return res.send(null);
@@ -58,7 +58,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   app.get('/api/tag/:id', function (req, res) {
     return TagModel.findById(req.params.id).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
       if (!err && tag) {
-        return res.send(tag);
+        return res.jsonp(tag);
       } else {
         console.log(err);
         return res.send(null);
@@ -71,7 +71,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 	console.log('TAG_API:SOC:Search by ' + req.params.soc);
     return TagModel.find({ soc: req.params.soc}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
       if (!err && tag) {
-        return res.send(tag);
+        return res.jsonp(tag);
       } else {
         console.log(err);
         return res.send(null);
@@ -85,7 +85,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     return TagModel.find({ title: req.params.title}).populate('createdBy','name').populate('modifiedBy','name').exec( function (err, tag) {
       if (!err && tag) {
         console.log("Tag found: %o", tag);
-        return res.send(tag);
+        return res.jsonp(tag);
       } else {
         console.log(err);
         return res.send(null);
@@ -102,7 +102,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
           return TagModel.find({ _id: {$in: datapoint.tags }}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
             if (!err && tag) {
               console.log("Tag found: %o", tag);
-              return res.send(tag);
+              return res.jsonp(tag);
             } else {
               console.log(err);
               return res.send(null);
@@ -110,7 +110,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
           });
         } else {
             console.log(err);
-            return res.send({});
+            return res.send(null);
         }
        });
   });
@@ -123,7 +123,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     d_big.setHours(23,59,59,59);
     return TagModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
       if (!err && tag) {
-        return res.send(tag);
+        return res.jsonp(tag);
       } else {
         console.log(err);
         return res.send(null);
@@ -137,7 +137,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     d_small.setHours(0,0,0,0);
     return TagModel.find({created: {$gte : d_small}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
       if (!err && tag) {
-        return res.send(tag);
+        return res.jsonp(tag);
       } else {
         console.log(err);
         return res.send(null);
@@ -151,7 +151,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     d_big.setHours(23,59,59,59);
     return TagModel.find({created: {$lt : d_big}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
       if (!err && tag) {
-        return res.send(tag);
+        return res.jsonp(tag);
       } else {
         console.log(err);
         return res.send(null);
@@ -170,7 +170,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     d_end.setHours(23,59,59,59);
     return TagModel.find({created: {$gte : d_start, $lt : d_end}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
       if (!err && tag) {
-        return res.send(tag);
+        return res.jsonp(tag);
       } else {
         console.log(err);
         return res.send(null);
@@ -187,7 +187,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
         // search tag for the user_id that we just found
         return TagModel.find({createdBy: user._id}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
           if (!err && tag) {
-            return res.send(tag);
+            return res.jsonp(tag);
           } else {
             console.log(err);
             return res.send(null);
@@ -223,7 +223,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
       tag.save(function (err) {
         if (!err) {
           console.log("tagcreated");
-          return res.send(tag);
+          return res.jsonp(tag);
         } else {
           console.log(err);
           return res.send(500);
@@ -263,7 +263,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
             console.log(err);
             return res.send(500);
           }
-          return res.send(tag);
+          return res.jsonp(tag);
         });
     } else {
       console.log(err);

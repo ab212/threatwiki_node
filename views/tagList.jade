@@ -1,4 +1,8 @@
-#pageContent
+extends layout
+block head
+  script(src="/javascript/tag_list.js")
+
+block pageContent
   ul.breadcrumb
     li.active List of Tags
   a(href='tag/create',class='primaryButton',style="color:#fff") New
