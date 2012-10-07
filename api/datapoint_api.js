@@ -86,7 +86,6 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         // search datapoint for the tag_id that we just found
         return DataPointModel.find({tags: tag._id, soc: tag.soc}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
           if (!err && datapoint) {
-            console.log("are you undefined"+datapoint);
             return res.jsonp(datapoint);
           } else {
             console.log(err);
