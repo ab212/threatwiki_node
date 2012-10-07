@@ -22,10 +22,6 @@ var app = express();
 mongoose.connect('mongodb://localhost/namp', function(err) {
   if (err) throw err;
 });
-//This is our mongohq database config, already created, we can switch to this webcentered database whenever we want
-//mongoose.connect('mongodb://nodejitsu:12356bd5fb33eab9ec5b9ca43ebfbab5@staff.mongohq.com:10058/nodejitsudb795685203760', function(err) {
-//if (err) throw err;
-//});
 
 
 // create model
