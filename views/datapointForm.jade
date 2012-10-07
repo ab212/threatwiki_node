@@ -105,24 +105,9 @@ block pageContent
           div(class="form-actions")
             button(type="submit", class="btn btn-primary") Save
 
-  //
-    hr/
-    div#get-div
-      input(type="submit", value="$.get()", id="get")
-    hr/
-    span.bold
-      p Status
-    div#status
-    hr/
-    span.bold
-      p Data
-    div#result
-    hr/
-    span.bold
-      p Poorly Consumed Data
-    div#consumed
-      table(id="consumed_table")
 
   script
     var datapoint_form = $('#datapoint_form');
     var datapoint_form_update = $('#datapoint_form_update');
+    var referringURL = document.referrer;
+

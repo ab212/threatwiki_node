@@ -3,6 +3,8 @@ $(document).ready(function() {
   soc_form.submit(function(){
     jQuery.post("/api/soc", soc_form.serialize(), function (data, textStatus, jqXHR) {
       console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+      //redirect to previous page after successful form submission
+      window.location=referringURL;
     });
     $("#status").html("posted");
     $('#result').html(soc_form.serialize());
@@ -19,6 +21,8 @@ $(document).ready(function() {
     }).done(function() { 
       $("#status").html("posted");
       $('#result').html(soc_form.serialize());
+      //redirect to previous page after successful form submission
+      window.location=referringURL;
     });
     return false;
   });

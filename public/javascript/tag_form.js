@@ -20,6 +20,7 @@ var already_included_soc = $('#soc').val();
   tag_form.submit(function(){
     jQuery.post("/api/tag", tag_form.serialize(), function (data, textStatus, jqXHR) {
       console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+      window.location=referringURL;
     });
     $("#status").html("posted");
     $('#result').html(tag_form.serialize());
@@ -36,6 +37,7 @@ var already_included_soc = $('#soc').val();
     }).done(function() { 
       $("#status").html("posted");
       $('#result').html(tag_form.serialize());
+      window.location=referringURL;
     });
     return false;
   });
