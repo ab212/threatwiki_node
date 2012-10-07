@@ -50,7 +50,7 @@ block pageContent
                   a(href="/soc/view?soc="+soc.title+"&tag="+tag._id) #{tag.title}
       div.span10
         if (typeof(tag) != 'undefined')
-          p Tag Description: #{tag.description}
+          p.well Tag Description: #{tag.description}
         table(class='table table-striped table-bordered')#datapoint.display
           thead
             tr

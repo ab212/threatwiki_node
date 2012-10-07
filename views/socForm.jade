@@ -21,29 +21,34 @@ block pageContent
     span.bold
       
       - if (typeof(soc) != 'undefined')
-        label Modified Date
-          p #{soc.modified}
-        label Modified By
-          p #{soc.modifiedBy.name}
-        label Created Date
-          p #{soc.created}
-        label Created By
-          p #{soc.createdBy.name}
-            //
-              td 
-              a(href="#", id="delete_"+soc._id) delete
-        form#soc_form_update
+       form(id="soc_form_update",class="form-horizontal")
           input(name="id", value=soc._id, type="hidden")
-          label(for="title") Title
-          input(type="text", name="title", value=soc.title)
-          br/
-          input(type="submit", value="Save")
+          div(class="control-group")
+            label(class="control-label",for="title") Title
+            div(class="controls")
+              input(type="text", name="title", value=soc.title)
+          div(class="control-group")
+            label.control-label Modified Date
+              p #{soc.modified}
+          div(class="control-group")
+            label.control-label Modified By
+              p #{soc.modifiedBy.name}
+          div(class="control-group")
+            label.control-label Created Date
+              p #{soc.created}
+          div(class="control-group")
+            label.control-label Created By
+              p #{soc.createdBy.name}
+          div(class="form-actions")
+            button(type="submit", class="btn btn-success") Save
       - else
-        form#soc_form
-          label(for="title") Title
-          input(type="text", name="title")
-          br/
-          input(type="submit", value="Save")
+        form(id="soc_form",class="form-horizontal")
+          div(class="control-group")
+            label(class="control-label",for="title") Title
+            div(class="controls")
+              input(type="text", name="title")
+          div(class="form-actions")    
+            button(type="submit", class="btn btn-success") Save
         
         
   //

@@ -21,8 +21,6 @@ block pageContent
     else
       li
         a(href="/soc/view?soc="+socname) SOC: #{socname}
-      
-
     span.divider
     if (typeof(tag) != 'undefined')
       li.active Edit Tag
@@ -31,30 +29,34 @@ block pageContent
   div#post_form
     span.bold
       - if (typeof(tag) != 'undefined')
-        form#tag_form_update
+        form(id="tag_form_update",class="form-horizontal")
           //we update an existing tag here
           input(name="id", value=tag._id, type="hidden")
           input(type="hidden", id="soc", name="soc", value=tag.soc)
-          //
-            label(for="soc") SOC
-            select(name="soc", id="soc")
-              option(selected=tag.soc, value=tag.soc) #{tag.soc}
-          label(for="title") Title
-          input(type="text", name="title", value=tag.title)
-          label(for="description") Description
-          textarea(name="description", rows="4", cols="60") #{tag.description}
-          br/
-          input(type="submit", value="Save")
+          div(class="control-group")
+            label(class="control-label",for="title") Title
+            div(class="controls")
+              input(type="text", name="title", value=tag.title)
+          div(class="control-group")
+            label(class="control-label",for="description") Description
+            div(class="controls")
+              textarea(name="description", rows="4", cols="60") #{tag.description}
+          div(class="form-actions")    
+            button(type="submit",class="btn btn-success") Save
       - else
         //we create the tag here
-        form#tag_form
+        form(id="tag_form",class="form-horizontal")
           input(type="hidden", id="soc", name="soc", value=socname)
-          label(for="title") Title
-          input(type="text", name="title")
-          label(for="description") Description
-          textarea(name="description", rows="4", cols="60")
-          br/
-          input(type="submit", value="Save")
+          div(class="control-group")
+            label(class="control-label",for="title") Title
+            div(class="controls")
+              input(type="text", name="title")
+          div(class="control-group")
+            label(class="control-label",for="description") Description
+            div(class="controls")
+              textarea(name="description", rows="4", cols="60")
+          div(class="form-actions")    
+            button(type="submit",class="btn btn-success") Save
   //
     hr/
     div#get-div

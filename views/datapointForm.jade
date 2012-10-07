@@ -24,7 +24,7 @@ block pageContent
       if (typeof(tag) != 'undefined')
         li 
           a(href="/soc/view?soc="+socname+"&tag="+tag._id) Tag: #{tag.title}
-      span.divider
+        span.divider
     else if (typeof(datapoint) != 'undefined')
       li 
         a(href="/soc/view?soc="+datapoint.soc) SOC: #{datapoint.soc}
@@ -32,7 +32,7 @@ block pageContent
       if (typeof(tag) != 'undefined')
         li 
           a(href="/soc/view?soc="+datapoint.soc+"&tag="+tag._id) Tag: #{tag.title}
-       span.divider
+        span.divider
     if (typeof(datapoint) == 'undefined')
       li.active New Datapoint
     else
@@ -42,48 +42,68 @@ block pageContent
   div#post_form
     span.bold
       - if (typeof(datapoint) != 'undefined')
-        form#datapoint_form_update
+        form(id="datapoint_form_update",class="form-horizontal")
           //update datapoint
           input(name="id", value=datapoint._id, type="hidden")
           input(type="hidden", id="soc", name="soc", value=datapoint.soc)
-          label(for="title") Title
-          input(type="text", name="title", value=datapoint.title)
-          label(for="location") Location
-          input(type="text", id="location", name="location", value=datapoint.Location.title)
-          label(for="latitude") Latitude
-          input(type="text", id="latitude", name="latitude", value=datapoint.Location.latitude)
-          label(for="longitude") Longitude
-          input(type="text", id="longitude", name="longitude", value=datapoint.Location.longitude)
-          label(for="description") Description
-          textarea(name="description", rows="4", cols="60") #{datapoint.description}
-          label(for="tags") Tags
-          select(multiple id="tag_list", name="tag_list")
-            for tag in datapoint.tags
-              option(selected=tag._id, value=tag._id) #{tag.title}
-          br/
-          input(type="submit", value="Save")
+          div(class="control-group")
+            label(class="control-label",for="title") Title
+            div(class="controls")
+              input(type="text", name="title", value=datapoint.title)
+          div(class="control-group")
+            label(class="control-label",for="location") Location
+            div(class="controls")
+              input(type="text", id="location", name="location", value=datapoint.Location.title)
+          div(class="control-group")
+            label(class="control-label",for="latitude") Latitude/Longitude
+            div(class="controls controls-row")
+              input(type="text", class="span2",id="latitude", name="latitude", value=datapoint.Location.latitude)
+              input(type="text", class="span2",id="longitude", name="longitude", value=datapoint.Location.longitude)
+              span(class="help-inline") Only change those values if you want to adjust the position on the map manually
+          div(class="control-group")
+            label(class="control-label",for="description") Description
+            div(class="controls")
+              textarea(name="description", rows="4", cols="60" ) #{datapoint.description}
+          div(class="control-group")
+            label(class="control-label",for="tags") Tags
+            div(class="controls")
+              select(multiple id="tag_list", name="tag_list")
+                for tag in datapoint.tags
+                  option(selected=tag._id, value=tag._id) #{tag.title}
+          div(class="form-actions")
+            button(type="submit", class="btn btn-success") Save
       - else
-        form#datapoint_form
+        form(id="datapoint_form", class="form-horizontal")
           //if SOC is present in the URL, it means we create a datapoint from a SOC, no need to give option to change SOC 
           //create datapoint
           input(type="hidden", id="soc", name="soc", value=socname)
-          label(for="title") Title
-          input(type="text", name="title")
-          label(for="location") Location
-          input(type="text", id="location", name="location")
-          label(for="latitude") Latitude
-          input(type="text", id="latitude", name="latitude")
-          label(for="longitude") Longitude
-          input(type="text", id="longitude", name="longitude")
-          label(for="description") Description
-          textarea(name="description", rows="4", cols="60")
-          label(for="tags") Tags
-          select(multiple="multiple", id="tag_list", name="tag_list")
-            //if there was tag argument in URL, we auto select it when we create this datapoint
-            if (typeof(tag) != 'undefined')
-              option(selected=tag, value=tag._id) #{tag.title}
-          br/
-          input(type="submit", value="Save")
+          div(class="control-group")
+            label(class="control-label", for="title") Title
+            div(class="controls")
+              input(type="text", name="title")
+          div(class="control-group")
+            label(class="control-label", for="location") Location
+            div(class="controls")
+              input(type="text", id="location", name="location")
+          div(class="control-group")
+            label(class="control-label",for="latitude") Latitude/Longitude
+            div(class="controls controls-row")
+              input(type="text", class="span2", id="latitude", name="latitude")
+              input(type="text", class="span2", id="longitude", name="longitude")
+              span(class="help-inline") Only change those values if you want to adjust the position on the map manually
+          div(class="control-group")
+            label(class="control-label",for="description") Description
+            div(class="controls")
+              textarea(name="description", rows="4", cols="60")
+          div(class="control-group")
+            label(class="control-label",for="tags") Tags
+              div(class="controls")
+                select(multiple="multiple", id="tag_list", name="tag_list")
+              //if there was tag argument in URL, we auto select it when we create this datapoint
+                if (typeof(tag) != 'undefined')
+                  option(selected=tag, value=tag._id) #{tag.title}
+          div(class="form-actions")
+            button(type="submit", class="btn btn-primary") Save
 
   //
     hr/
