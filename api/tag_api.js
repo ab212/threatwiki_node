@@ -201,6 +201,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
   });
 
   // create
+  //TODO: verify tag name does not exist in that SOC before saving it
   app.post('/api/tag', function (req, res) {
     var tag;
     console.log("POST: ");
@@ -222,7 +223,7 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
       tag.save(function (err) {
         if (!err) {
-          console.log("tagcreated");
+          console.log("tag created");
           return res.jsonp(tag);
         } else {
           console.log(err);
@@ -230,16 +231,28 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
         }
       });
     }
+    //we make sure there is not another tag with same title in that specific SOC before saving
+    TagModel.count({ soc: req.body.soc, title: req.body.title},function (err, count) {
+      if (!err && count>0) {
+        console.log('Cant have more than 1 tag with same name in the same SOC');
+        return res.send(400);
+      } else if (!err) {
+        if((app.settings.env != 'production')) {
+          generateDevUser(UserModel, function(user) {
+            save_tag(req, date_now, user);
+          });
+        } else {
+          authenticate(req, res, UserModel, function(user) {
+            save_tag(req, date_now, user);
+          });
+        }
+      }else {
+        console.log(err);
+        return res.send(null);
+      }
+    });
 
-    if((app.settings.env != 'production')) {
-      generateDevUser(UserModel, function(user) {
-        save_tag(req, date_now, user);
-      });
-    } else {
-      authenticate(req, res, UserModel, function(user) {
-        save_tag(req, date_now, user);
-      });
-    }
+    
   });
 
   // update
