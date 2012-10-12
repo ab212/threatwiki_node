@@ -42,6 +42,26 @@ var already_included_soc = $('#soc').val();
     return false;
   });
 
+   // #.put()
+  //someone clicked Archive on the update form
+  //TODO: Add confirmation dialog
+  $("#archive").click(function(){
+    var obj_id = $("input[name=id]").val();
+    var soc_name = $("input[name=socname]").val();
+
+    jQuery.ajax({
+      url: "/api/tag/"+obj_id+"/archive",
+      data: "archive=true",
+      type: 'PUT'
+    }).done(function() {
+     // $("#status").html("posted");
+      //$('#result').html(datapoint_form_update.serialize());
+      //redirect to previous page after successful form submission
+      window.location='/soc/view?soc='+soc_name;
+    });
+    return false;
+  });
+
   // $.get()
   $("#get").click(function() {
     $("#result").html('');

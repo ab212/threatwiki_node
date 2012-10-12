@@ -72,6 +72,8 @@ block pageContent
                   option(selected=tag._id, value=tag._id) #{tag.title}
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save
+            p   
+            button(type="button",  id="archive", class="btn btn-danger") Archive
       - else
         form(id="datapoint_form", class="form-horizontal")
           //if SOC is present in the URL, it means we create a datapoint from a SOC, no need to give option to change SOC 
@@ -103,7 +105,7 @@ block pageContent
                 if (typeof(tag) != 'undefined')
                   option(selected=tag, value=tag._id) #{tag.title}
           div(class="form-actions")
-            button(type="submit", class="btn btn-primary") Save
+            button(type="submit", class="btn btn-success") Save
 
 
   script

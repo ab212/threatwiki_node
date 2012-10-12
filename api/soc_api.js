@@ -42,7 +42,8 @@ function authenticate(req, res, UserModel, callback) {
 function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   // retrieve all
   app.get('/api/soc', function (req, res){
-    return SocModel.find().populate('createdBy','name').populate('modifiedBy','name').exec(function (err, socs) {
+    //return everything excepts the ones that are archive = true
+    return SocModel.find({archive: {$ne: true}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, socs) {
       if (!err && socs) {
         return res.jsonp(socs);
       } else {
@@ -70,7 +71,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
-    return SocModel.find({created: {$gte : d_small, $lt : d_big}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
+    return SocModel.find({created: {$gte : d_small, $lt : d_big},archive: {$ne: true}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.jsonp(soc);
       } else {
@@ -84,7 +85,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.get('/api/soc/date/after/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date,10));
     d_small.setHours(0,0,0,0);
-    return SocModel.find({created: {$gte : d_small}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
+    return SocModel.find({created: {$gte : d_small},archive: {$ne: true}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.jsonp(soc);
       } else {
@@ -99,7 +100,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.get('/api/soc/date/before/:date', function (req, res) {
     var d_big = new Date(parseInt(req.params.date,10));
     d_big.setHours(23,59,59,59);
-    return SocModel.find({created: {$lt : d_big}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
+    return SocModel.find({created: {$lt : d_big},archive: {$ne: true}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.jsonp(soc);
       } else {
@@ -118,7 +119,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
-    return SocModel.find({created: {$gte : d_start, $lt : d_end}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
+    return SocModel.find({created: {$gte : d_start, $lt : d_end},archive: {$ne: true}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.jsonp(soc);
       } else {
@@ -148,7 +149,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search soc for the user_id that we just found
-        return SocModel.find({createdBy: user._id}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
+        return SocModel.find({createdBy: user._id,archive: {$ne: true}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
           if (!err && soc) {
             return res.jsonp(soc);
           } else {
@@ -191,7 +192,6 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
         }
       });
     }
-console.log('current env'+app.settings.env);
     if((app.settings.env != 'production')) {
       generateDevUser(UserModel, function(user) {
         save_soc(req, date_now, user);
@@ -280,6 +280,42 @@ console.log('current env'+app.settings.env);
      }
     });
   });*/
+
+//archive datapoint by ID
+  app.put('/api/soc/:id/archive', function (req, res) {
+    return SocModel.findById(req.params.id, function (err,soc) {
+console.log("time to archive"+req.body.archive);
+       if (!err && soc){
+
+        soc.archive=req.body.archive;
+
+        return soc.save(function (err) {
+          if (!err) {
+            //Now that SOC record is updated, we want to update all datapoints part of that SOC
+            //Disabled for now, since SOC are disabled from UI, datapoints would never be visible anyway?
+            /*
+            var searchConditions = { soc: soc.title},
+             update = {   archive_from_soc: true },
+             options = { multi: true };
+             //Update datapoints
+             DataPointModel.update(searchConditions, update, options, function(err) {
+                  if (err){
+                    console.log(err);
+                  }
+              });*/
+              return res.send(200);
+           } else {
+            console.log('Cant save soc '+err);
+            return res.send(500);
+          }
+         });
+
+    } else {
+      console.log('Cant archive the SOC'+req.params.id);
+      return res.send(500);
+    }
+  });
+});
 }
 
 exports.load_socApi = load_socApi;

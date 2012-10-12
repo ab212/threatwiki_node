@@ -32,6 +32,7 @@ block pageContent
         form(id="tag_form_update",class="form-horizontal")
           //we update an existing tag here
           input(name="id", value=tag._id, type="hidden")
+          input(name="socname", value=tag.soc, type="hidden")
           input(type="hidden", id="soc", name="soc", value=tag.soc)
           div(class="control-group")
             label(class="control-label",for="title") Title
@@ -43,6 +44,8 @@ block pageContent
               textarea(name="description", rows="4", cols="60") #{tag.description}
           div(class="form-actions")    
             button(type="submit",class="btn btn-success") Save
+            p   
+            button(type="button",  id="archive", class="btn btn-danger") Archive
       - else
         //we create the tag here
         form(id="tag_form",class="form-horizontal")

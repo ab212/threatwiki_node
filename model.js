@@ -18,6 +18,7 @@ function createModel() {
     , tags      : [{ type: ObjectId, ref: 'Tag' }]   
     , createdBy : { type: ObjectId, ref: 'User' }
     , modifiedBy : { type: ObjectId, ref: 'User' }
+    , archive: { type: Boolean}
   });
 
   var Soc = new Schema ({
@@ -26,6 +27,7 @@ function createModel() {
     , created: { type: Date, required: true }
     , createdBy : { type: ObjectId, ref: 'User' }
     , modifiedBy : { type: ObjectId, ref: 'User' }
+    , archive: { type: Boolean}
     });
 
 
@@ -37,6 +39,8 @@ function createModel() {
     , soc: { type: String, required: true }
     , createdBy : { type: ObjectId, ref: 'User' }
     , modifiedBy : { type: ObjectId, ref: 'User' }
+    , archive: { type: Boolean}
+
   });
 
   //used for user authentication, can't have more than 1 user with same email

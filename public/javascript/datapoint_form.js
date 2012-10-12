@@ -95,6 +95,25 @@ $(document).ready(function() {
     return false;
   });
 
+  // #.put()
+  //someone clicked Archive on the update form
+  //TODO: Add confirmation dialog
+  $("#archive").click(function(){
+    var obj_id = $("input[name=id]").val();
+
+    jQuery.ajax({
+      url: "/api/datapoint/"+obj_id+"/archive",
+      data: "archive=true",
+      type: 'PUT'
+    }).done(function() {
+     // $("#status").html("posted");
+      //$('#result').html(datapoint_form_update.serialize());
+      //redirect to previous page after successful form submission
+      window.location=referringURL;
+    });
+    return false;
+  });
+
   // $.get()
   $("#get").click(function() {
     $("#result").html('');

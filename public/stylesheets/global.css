@@ -57,6 +57,11 @@ div.dataTables_paginate {
   margin: 0;
 }
 
+.form-actions input {
+    margin: 0 2px;
+}
+
+
 table.table {
   clear: both;
   margin-bottom: 6px !important;

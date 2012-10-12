@@ -41,6 +41,8 @@ block pageContent
               p #{soc.createdBy.name}
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save
+            p   
+            button(type="button",  id="archive", class="btn btn-danger") Archive
       - else
         form(id="soc_form",class="form-horizontal")
           div(class="control-group")
