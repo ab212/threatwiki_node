@@ -21,8 +21,8 @@ $(document).ready(function() {
     }).done(function() { 
       $("#status").html("posted");
       $('#result').html(soc_form.serialize());
-      //redirect to previous page after successful form submission
-      window.location=referringURL;
+      //redirect to soc list after renaming it
+      window.location='/soc/';
     });
     return false;
   });
@@ -40,7 +40,7 @@ $(document).ready(function() {
     }).done(function() {
      // $("#status").html("posted");
       //$('#result').html(datapoint_form_update.serialize());
-      //redirect to previous page after successful form submission
+      //redirect to soc list after archiving a soc
       window.location='/soc/';
     });
     return false;
