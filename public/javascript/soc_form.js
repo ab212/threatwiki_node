@@ -32,17 +32,19 @@ $(document).ready(function() {
   //TODO: Add confirmation dialog
   $("#archive").click(function(){
     var obj_id = $("input[name=id]").val();
-
-    jQuery.ajax({
-      url: "/api/soc/"+obj_id+"/archive",
-      data: "archive=true",
-      type: 'PUT'
-    }).done(function() {
-     // $("#status").html("posted");
-      //$('#result').html(datapoint_form_update.serialize());
-      //redirect to soc list after archiving a soc
-      window.location='/soc/';
-    });
+    var confirm = window.confirm("Are you sure you want to Archive this SOC? You won't have access to the datapoints and tags associated with it anymore.");
+    if (confirm==true){
+      jQuery.ajax({
+        url: "/api/soc/"+obj_id+"/archive",
+        data: "archive=true",
+        type: 'PUT'
+      }).done(function() {
+       // $("#status").html("posted");
+        //$('#result').html(datapoint_form_update.serialize());
+        //redirect to soc list after archiving a soc
+        window.location='/soc/';
+      });
+    }
     return false;
   });
 
