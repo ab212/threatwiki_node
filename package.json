@@ -7,7 +7,6 @@
     "jade": ">= 0.0.1",
     "mongoose": ">= 3.0.0",
     "location": ">= 0.0.1",
-    //"everyauth": ">= 0.2.32",
     "everyauth": "git://github.com/bnoguchi/everyauth.git#express3",
     "navigator": ">= 1.0.1",
     "jquery": ">= 1.7.2",
