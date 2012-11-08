@@ -3,6 +3,8 @@ $(document).ready(function() {
     $('#location').autoGeocoder();
   });
   var already_included_soc = $('#soc').val();
+  $('#event_date').datepicker();
+
 
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
@@ -86,7 +88,7 @@ $(document).ready(function() {
       url: "/api/datapoint/"+obj_id,
       data: datapoint_form_update.serialize(),
       type: 'PUT'
-    }).done(function() { 
+    }).done(function() {
       $("#status").html("posted");
       $('#result').html(datapoint_form_update.serialize());
       //redirect to previous page after successful form submission

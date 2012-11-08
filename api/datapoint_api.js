@@ -219,6 +219,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         tags: req.body.tag_list,
         created: date_now,
         modified: date_now,
+        event_date: req.body.event_date,
         //save the _id of the current user in the new datapoint
         createdBy: user._id,
         modifiedBy: user._id
@@ -264,6 +265,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         datapoint.tags = req.body.tag_list;
         datapoint.modified = date_now;
         datapoint.modifiedBy = user._id;
+        datapoint.event_date = req.body.event_date;
 
         return datapoint.save(function (err) {
           if (!err) {

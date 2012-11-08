@@ -57,6 +57,7 @@ block pageContent
               th Title
               th Location
               th Tags
+              th Event Date
               th Modified
               th By
               th Created
@@ -72,6 +73,8 @@ block pageContent
                 td
                   each tags in datapoint.tags
                     span #{tags.title} <br />
+                td
+                  span #{datapoint.event_date}
                 td
                   span #{datapoint.modified}
                 td

@@ -50,6 +50,10 @@ block pageContent
             label(class="control-label",for="title") Title
             div(class="controls")
               input(type="text", name="title", value=datapoint.title)
+           div(class="control-group")
+            label(class="control-label", for="event_date") Event Date
+            div(class="controls")
+              input(type="text", class="span2", name="event_date", id="event_date", value=datapoint.event_date)
           div(class="control-group")
             label(class="control-label",for="location") Location
             div(class="controls")
@@ -63,7 +67,7 @@ block pageContent
           div(class="control-group")
             label(class="control-label",for="description") Description
             div(class="controls")
-              textarea(name="description", rows="4", cols="60" ) #{datapoint.description}
+              textarea(name="description", rows="6", class="span6" ) #{datapoint.description}
           div(class="control-group")
             label(class="control-label",for="tags") Tags
             div(class="controls")
@@ -84,6 +88,10 @@ block pageContent
             div(class="controls")
               input(type="text", name="title")
           div(class="control-group")
+            label(class="control-label", for="event_date") Event Date
+            div(class="controls")
+              input(type="text", class="span2", name="event_date", id="event_date")
+          div(class="control-group")
             label(class="control-label", for="location") Location
             div(class="controls")
               input(type="text", id="location", name="location")
@@ -96,7 +104,7 @@ block pageContent
           div(class="control-group")
             label(class="control-label",for="description") Description
             div(class="controls")
-              textarea(name="description", rows="4", cols="60")
+              textarea(name="description", rows="6", class="span6")
           div(class="control-group")
             label(class="control-label",for="tags") Tags
               div(class="controls")

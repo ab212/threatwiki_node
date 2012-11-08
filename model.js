@@ -14,6 +14,7 @@ function createModel() {
     , soc: { type: String, required: true }
     , modified: { type: Date, required: true }
     , created: { type: Date, required: true }
+    , event_date: {type: Date, required: true }
     // foreign key
     , tags      : [{ type: ObjectId, ref: 'Tag' }]   
     , createdBy : { type: ObjectId, ref: 'User' }

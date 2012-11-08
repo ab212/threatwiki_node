@@ -94,6 +94,7 @@ function load_routes(app) {
               for(i=0; i<datapoints.length; i++) {
                 datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
                 datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
+                datapoints[i].event_date = moment(datapoints[i].event_date).format("MMMM Do YYYY");
               }
               res.render('socView', {
                   title: 'Sentinel Project: Edit SOC '+soc.title,
@@ -111,6 +112,7 @@ function load_routes(app) {
               for(i=0; i<datapoints.length; i++) {
                 datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
                 datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
+                datapoints[i].event_date = moment(datapoints[i].event_date).format("MMMM Do YYYY");
               }
               res.render('socView', {
                   title: 'Sentinel Project: Edit SOC '+soc.title,
@@ -137,6 +139,7 @@ function load_routes(app) {
         for(i=0; i<datapoints.length; i++) {
           datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
           datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
+          datapoints[i].event_date = moment(datapoints[i].event_date).format("MM/DD/YYYY");
         }
 
         res.render('datapointList', {
@@ -184,6 +187,8 @@ function load_routes(app) {
       jquery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
         datapoint.created = moment(datapoint.created).format("MMMM Do YYYY");
         datapoint.modified = moment(datapoint.modified).format("MMMM Do YYYY");
+        datapoint.event_date = moment(datapoint.event_date).format("MM/DD/YYYY");
+
         res.render('datapointForm', {
           title: 'Sentinel Project: Edit Datapoint '+datapoint.title,
           datapoint: datapoint

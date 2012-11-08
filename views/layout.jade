@@ -4,9 +4,11 @@ html(lang="en")
     title #{title}
     link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/global.css')
+    link(rel='stylesheet', href='/stylesheets/datepicker.css')
     script(type='text/javascript', src='/javascript/jquery.min.js')
     script(type='text/javascript', src='/javascript/jquery.dataTables.min.js')
     script(src='/lib/bootstrap/js/bootstrap.min.js')
+    script(src='/javascript/bootstrap-datepicker.js')
     block head
 
   - if (settings.env == "development" || everyauth.loggedIn)
