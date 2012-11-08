@@ -1,11 +1,21 @@
 $(document).ready(function() {
-  // delete
-  $("[id*=delete]").click(function() {
-    var id = $(this).attr("id").split("_");
-    $.get("/api/datapoint/delete/"+id[1], function() {
-      $("#row_"+id[1]).fadeOut('slow', function() {});
-    }).error(function() { alert("delete failed");});
+
+  // #.put()
+  //someone clicked Archive on the update form
+  //TODO: Add confirmation dialog
+  $("[id*=archive]").click(function(){
+    var obj_id = $(this).attr("id").split("_");
+
+    jQuery.ajax({
+      url: "/api/datapoint/"+obj_id[1]+"/archive",
+      data: "archive=true",
+      type: 'PUT'
+    }).done(function() {
+      $("#row_"+obj_id[1]).fadeOut('slow', function() {});
+    });
+    return false;
   });
+  
   $.extend( $.fn.dataTableExt.oStdClasses, {
       "sWrapper": "dataTables_wrapper form-inline"
   } );
