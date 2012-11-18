@@ -20,8 +20,9 @@ block pageContent
           thead
             tr
               th Situation of Concerns
-              th Last Modified Date
+              th Last Modified Datapoint
               th Last Modified by User
+              th Last Modified Date
               //
                 th created
                 th by
@@ -32,9 +33,15 @@ block pageContent
                 td
                   a(href="/soc/view?soc="+soc.title) #{soc.title}
                 td
-                  span #{soc.modified}
+                  if (typeof(datapoints[i]) != 'undefined')
+                    span #{datapoints[i].title}
                 td
-                  span #{soc.modifiedBy.name}
+                  if (typeof(datapoints[i]) != 'undefined')
+                    span #{datapoints[i].modifiedBy.name}
+                td
+                  if (typeof(datapoints[i]) != 'undefined')
+                    span #{datapoints[i].modified}
+
                 //         
                   td
                     span #{soc.created}

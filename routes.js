@@ -27,21 +27,32 @@ function load_routes(app) {
   exports.soc = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       jquery.getJSON('http://localhost:3000/api/soc?callback=?', function(socs) {
-
-        console.log(socs);
-
+        //Render the page with list of SOCs only when we are done getting info about each datapoint
+        function render() {
+          res.render('socList', {
+            title: 'Sentinel Project: SOC Manager',
+            socs: socs,
+            datapoints: resultsDatapoints
+          });
+        }
         // convert dates from ISO-8601 to string
         // consider doing this in a better way
         // one way is the write a virtual method for mongo date itself, but that is kinda sloppy
+        var resultsDatapoints = [];
         for(i=0; i<socs.length; i++) {
           socs[i].created = moment(socs[i].created).format("MMMM Do YYYY");
           socs[i].modified = moment(socs[i].modified).format("MMMM Do YYYY");
+          jquery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socs[i].title +'?callback=?', function(datapoints) {
+            //sort DESC date by created date to get the most recent datapoint created
+            datapoints.sort(function(a,b){return new Date(b.created)-new Date(a.created);});
+            resultsDatapoints.push(datapoints[0]);
+            //Call render only when we are done with all the API calls
+            if(resultsDatapoints.length == socs.length) {
+              render();
+            }
+          });
         }
 
-        res.render('socList', {
-          title: 'Sentinel Project: SOC Manager',
-          socs: socs
-        });
       });
     } else {
         //force logout if user doesn't meet conditions to view the page
@@ -67,7 +78,6 @@ function load_routes(app) {
       jquery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
         soc.created = moment(soc.created).format("MMMM Do YYYY");
         soc.modified = moment(soc.modified).format("MMMM Do YYYY");
-
         res.render('socForm',  {
           title: 'Sentinel Project: Edit SOC '+soc.title,
           soc: soc
@@ -85,8 +95,6 @@ function load_routes(app) {
       var socname = req.query["soc"];
       var tagname = req.query["tag"];
 
-
-      console.log('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?');
       if (typeof(tagname) != 'undefined') {
         jquery.getJSON('http://localhost:3000/api/datapoint/tag/'+ tagname +'?callback=?', function(datapoints) {
           jquery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
