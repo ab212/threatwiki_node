@@ -4,6 +4,7 @@ block head
   script(src='http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false')
   script(src='/javascript/jquery.auto-geocoder.js')
   script(src='/javascript/utils.js')
+  script(src='/javascript/select2.min.js')
 
 
 block pageContent
@@ -49,7 +50,7 @@ block pageContent
           div(class="control-group")
             label(class="control-label",for="title") Title
             div(class="controls")
-              input(type="text", name="title", value=datapoint.title)
+              input(type="text", name="title", value=datapoint.title, class="span6")
            div(class="control-group")
             label(class="control-label", for="event_date") Event Date
             div(class="controls")
@@ -86,7 +87,7 @@ block pageContent
           div(class="control-group")
             label(class="control-label", for="title") Title
             div(class="controls")
-              input(type="text", name="title")
+              input(type="text", name="title",class="span6")
           div(class="control-group")
             label(class="control-label", for="event_date") Event Date
             div(class="controls")

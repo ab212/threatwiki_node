@@ -4,7 +4,7 @@ $(document).ready(function() {
   });
   var already_included_soc = $('#soc').val();
   $('#event_date').datepicker();
-
+  $('#tag_list').select2({ width: 'resolve' });
 
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
