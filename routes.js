@@ -40,8 +40,8 @@ function load_routes(app) {
         // one way is the write a virtual method for mongo date itself, but that is kinda sloppy
         var resultsDatapoints = [];
         for(i=0; i<socs.length; i++) {
-          socs[i].created = moment(socs[i].created).format("MMMM Do YYYY");
-          socs[i].modified = moment(socs[i].modified).format("MMMM Do YYYY");
+          socs[i].created = moment(socs[i].created).format("YYYY-MM-DD");
+          socs[i].modified = moment(socs[i].modified).format("YYYY-MM-DD");
           jquery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socs[i].title +'?callback=?', function(datapoints) {
             //sort DESC date by created date to get the most recent datapoint created
             datapoints.sort(function(a,b){return new Date(b.created)-new Date(a.created);});
@@ -76,8 +76,8 @@ function load_routes(app) {
       var obj_id = req.query["id"];
       console.log('http://localhost:3000/api/soc/'+ obj_id +'?callback=?');
       jquery.getJSON('http://localhost:3000/api/soc/'+ obj_id +'?callback=?', function(soc) {
-        soc.created = moment(soc.created).format("MMMM Do YYYY");
-        soc.modified = moment(soc.modified).format("MMMM Do YYYY");
+        soc.created = moment(soc.created).format("YYYY-MM-DD");
+        soc.modified = moment(soc.modified).format("YYYY-MM-DD");
         res.render('socForm',  {
           title: 'Sentinel Project: Edit SOC '+soc.title,
           soc: soc
@@ -100,9 +100,9 @@ function load_routes(app) {
           jquery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
             jquery.getJSON('http://localhost:3000/api/tag/'+ tagname +'?callback=?', function(tag) {
               for(i=0; i<datapoints.length; i++) {
-                datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
-                datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
-                datapoints[i].event_date = moment(datapoints[i].event_date).format("MMMM Do YYYY");
+                datapoints[i].created = moment(datapoints[i].created).format("YYYY-MM-DD");
+                datapoints[i].modified = moment(datapoints[i].modified).format("YYYY-MM-DD");
+                datapoints[i].event_date = moment(datapoints[i].event_date).format("YYYY-MM-DD");
               }
               res.render('socView', {
                   title: 'Sentinel Project: Edit SOC '+soc.title,
@@ -118,9 +118,9 @@ function load_routes(app) {
           jquery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
             jquery.getJSON('http://localhost:3000/api/tag/soc/'+ socname +'?callback=?', function(tags) {
               for(i=0; i<datapoints.length; i++) {
-                datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
-                datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
-                datapoints[i].event_date = moment(datapoints[i].event_date).format("MMMM Do YYYY");
+                datapoints[i].created = moment(datapoints[i].created).format("YYYY-MM-DD");
+                datapoints[i].modified = moment(datapoints[i].modified).format("YYYY-MM-DD");
+                datapoints[i].event_date = moment(datapoints[i].event_date).format("YYYY-MM-DD");
               }
               res.render('socView', {
                   title: 'Sentinel Project: Edit SOC '+soc.title,
@@ -145,9 +145,9 @@ function load_routes(app) {
         console.log(datapoints);
         // convert dates from ISO-8601 to string
         for(i=0; i<datapoints.length; i++) {
-          datapoints[i].created = moment(datapoints[i].created).format("MMMM Do YYYY");
-          datapoints[i].modified = moment(datapoints[i].modified).format("MMMM Do YYYY");
-          datapoints[i].event_date = moment(datapoints[i].event_date).format("MM/DD/YYYY");
+          datapoints[i].created = moment(datapoints[i].created).format("YYYY-MM-DD");
+          datapoints[i].modified = moment(datapoints[i].modified).format("YYYY-MM-DD");
+          datapoints[i].event_date = moment(datapoints[i].event_date).format("YYYY-MM-DD");
         }
 
         res.render('datapointList', {
@@ -193,9 +193,9 @@ function load_routes(app) {
       console.log('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?');
 
       jquery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
-        datapoint.created = moment(datapoint.created).format("MMMM Do YYYY");
-        datapoint.modified = moment(datapoint.modified).format("MMMM Do YYYY");
-        datapoint.event_date = moment(datapoint.event_date).format("MM/DD/YYYY");
+        datapoint.created = moment(datapoint.created).format("YYYY-MM-DD");
+        datapoint.modified = moment(datapoint.modified).format("YYYY-MM-DD");
+        datapoint.event_date = moment(datapoint.event_date).format("YYYY-MM-DD");
 
         res.render('datapointForm', {
           title: 'Sentinel Project: Edit Datapoint '+datapoint.title,
@@ -215,8 +215,8 @@ function load_routes(app) {
 
         // convert dates from ISO-8601 to string
         for(i=0; i<tags.length; i++) {
-          tags[i].created = moment(tags[i].created).format("MMMM Do YYYY");
-          tags[i].modified = moment(tags[i].modified).format("MMMM Do YYYY");
+          tags[i].created = moment(tags[i].created).format("YYYY-MM-DD");
+          tags[i].modified = moment(tags[i].modified).format("YYYY-MM-DD");
         }
 
         res.render('tagList', {
