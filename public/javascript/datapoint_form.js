@@ -1,7 +1,4 @@
 $(document).ready(function() {
-  $(function() {
-    $('#location').autoGeocoder();
-  });
   var already_included_soc = $('#soc').val();
   $('#event_date').datepicker();
   $('#tag_list').select2({ width: 'resolve' });
@@ -144,5 +141,8 @@ $(document).ready(function() {
       });
 
     });
+  });
+  $(function() {
+    $('#location').autoGeocoder();
   });
 });
