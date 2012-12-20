@@ -13,10 +13,13 @@ var application_root = __dirname
   //, user_api = require("./api/user_api")
 ;
 var app = express();
+//express 2.x
+//var app = module.exports = express.createServer();
+//app.enable("jsonp callback");
+//everyauth.helpExpress(app);
 
 // database
-var mongoOptions = { db: { safe: true }};
-mongoose.connect('mongodb://localhost/namp', mongoOptions, function(err) {
+mongoose.connect('mongodb://localhost/namp', function(err) {
   if (err) throw err;
 });
 
