@@ -45,6 +45,9 @@ function load_routes(app) {
           jquery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socs[i].title +'?callback=?', function(datapoints) {
             //sort DESC date by created date to get the most recent datapoint created
             datapoints.sort(function(a,b){return new Date(b.created)-new Date(a.created);});
+            if (typeof(datapoints[0]) != 'undefined')  {
+                datapoints[0].modified = moment(datapoints[0].modified).format("YYYY-MM-DD");
+            }
             resultsDatapoints.push(datapoints[0]);
             //Call render only when we are done with all the API calls
             if(resultsDatapoints.length == socs.length) {
