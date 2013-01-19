@@ -7,13 +7,13 @@ block pageContent
   ul.breadcrumb
     li 
       a(href="/soc") List of SOC
-    span.divider
+      span.divider
     if (typeof(tags) != 'undefined')
       li.active SOC: #{soc.title}
     else
       li 
         a(href="/soc/view?soc="+soc.title) SOC: #{soc.title}
-      span.divider
+        span.divider
       li.active Tag: #{tag.title}
   //
     div.row-fluid

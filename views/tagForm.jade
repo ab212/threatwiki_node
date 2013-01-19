@@ -11,17 +11,17 @@ block pageContent
   ul.breadcrumb
     li
       a(href="/soc") List of SOC
-    span.divider
+      span.divider
     if (typeof(socname) == 'undefined' && typeof(tag) != 'undefined')
       li 
         a(href="/soc/view?soc="+tag.soc) SOC: #{tag.soc}
-      span.divider        
+        span.divider        
       li 
         a(href="/soc/view?soc="+tag.soc+"&tag="+tag._id) Tag: #{tag.title}
     else
       li
         a(href="/soc/view?soc="+socname) SOC: #{socname}
-    span.divider
+        span.divider
     if (typeof(tag) != 'undefined')
       li.active Edit Tag
     else

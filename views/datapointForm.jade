@@ -17,23 +17,23 @@ block pageContent
   ul.breadcrumb
     li 
       a(href="/soc") List of SOC
-    span.divider
+      span.divider
     if (typeof(socname) != 'undefined' && typeof(datapoint) == 'undefined')
       li 
         a(href="/soc/view?soc="+socname) SOC: #{socname}
-      span.divider
+        span.divider
       if (typeof(tag) != 'undefined')
         li 
           a(href="/soc/view?soc="+socname+"&tag="+tag._id) Tag: #{tag.title}
-        span.divider
+          span.divider
     else if (typeof(datapoint) != 'undefined')
       li 
         a(href="/soc/view?soc="+datapoint.soc) SOC: #{datapoint.soc}
-      span.divider
+        span.divider
       if (typeof(tag) != 'undefined')
         li 
           a(href="/soc/view?soc="+datapoint.soc+"&tag="+tag._id) Tag: #{tag.title}
-        span.divider
+          span.divider
     if (typeof(datapoint) == 'undefined')
       li.active New Datapoint
     else
