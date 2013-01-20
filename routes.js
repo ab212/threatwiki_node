@@ -55,6 +55,9 @@ function load_routes(app) {
             }
           });
         }
+        if (socs.length < 1) {
+          render();
+        }
 
       });
     } else {

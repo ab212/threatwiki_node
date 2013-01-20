@@ -32,15 +32,16 @@ block pageContent
               tr(id="row_"+soc._id)
                 td
                   a(href="/soc/view?soc="+soc.title) #{soc.title}
-                td
-                  if (typeof(datapoints[i]) != 'undefined')
-                    span #{datapoints[i].title}
-                td
-                  if (typeof(datapoints[i]) != 'undefined')
-                    span #{datapoints[i].modifiedBy.name}
-                td
-                  if (typeof(datapoints[i]) != 'undefined')
-                    span #{datapoints[i].modified}
+                if (typeof(datapoints) != 'undefined')
+                  td
+                    if (typeof(datapoints[i]) != 'undefined')
+                      span #{datapoints[i].title}
+                  td
+                    if (typeof(datapoints[i]) != 'undefined')
+                      span #{datapoints[i].modifiedBy.name}
+                  td
+                    if (typeof(datapoints[i]) != 'undefined')
+                      span #{datapoints[i].modified}
 
                 //         
                   td
