@@ -54,7 +54,7 @@ block pageContent
         table(class='table table-striped table-bordered')#datapoint.display
           thead
             tr
-              th Title
+              th Event
               th Location
               th Tags
               th Event Date
@@ -62,7 +62,6 @@ block pageContent
               th By
               th Created
               th By
-              th Actions
           tbody
            each datapoint, i in datapoints
               tr(id="row_"+datapoint._id)
@@ -83,5 +82,3 @@ block pageContent
                   span #{datapoint.created}
                 td
                   span #{datapoint.createdBy.name}
-                td 
-                  a(href="#", id="archive_"+datapoint._id) Archive
