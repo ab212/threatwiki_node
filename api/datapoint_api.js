@@ -78,20 +78,12 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     });
   });
 
-  // retrieve by tag  id(tags are unique by SOC)
-  app.get('/api/datapoint/tag/:tag_id', function (req, res) {
-    // first retrieve tag based on tag_title
-    var tag = TagModel.findOne({ _id: req.params.tag_id}, function (err, tag) {
-      if (!err && typeof(tag._id) != 'undefined') {
-        // search datapoint for the tag_id that we just found
-        return DataPointModel.find({tags: tag._id, soc: tag.soc,archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
-          if (!err && datapoint) {
-            return res.jsonp(datapoint);
-          } else {
-            console.log(err);
-            return res.send(null);
-          }
-        });
+   // retrieve by tagids, if multiple tags specified under /api/datapoint/tag/tagidnumberone,tagidnumbertwo then datapoint must contain ALL tags specified (not OR)
+  app.get('/api/datapoint/tag/:tagsid', function (req, res) {
+    var tagsid=req.params.tagsid.split(',');
+    return DataPointModel.find({ archive: {$ne: true}}).where('tags').all(tagsid).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
+      if (!err && datapoints) {
+        return res.jsonp(datapoints);
       } else {
         console.log(err);
         return res.send(null);

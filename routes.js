@@ -100,21 +100,38 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var socname = req.query["soc"];
       var tagname = req.query["tag"];
-
       if (typeof(tagname) != 'undefined') {
+        //support multiple tag in the URL, delimited by commas
+        tagname = tagname.split(',');
         jquery.getJSON('http://localhost:3000/api/datapoint/tag/'+ tagname +'?callback=?', function(datapoints) {
           jquery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
             jquery.getJSON('http://localhost:3000/api/tag/'+ tagname +'?callback=?', function(tag) {
+              var tagsavailable=[];
+              var tagstitle = [];
               for(i=0; i<datapoints.length; i++) {
                 datapoints[i].created = moment(datapoints[i].created).format("YYYY-MM-DD");
                 datapoints[i].modified = moment(datapoints[i].modified).format("YYYY-MM-DD");
                 datapoints[i].event_date = moment(datapoints[i].event_date).format("YYYY-MM-DD");
+                if (typeof(datapoints[i].tags) != 'undefined'){
+                  //We create the list of tags on the left for the subset of datapoints that are currently presented
+                  //we make sure we don't double the tags and don't include the tag already use for refinement
+                  //IE 7-8 not compatible
+                  for (j=0;j<datapoints[i].tags.length;j++){
+                    if (tagstitle.indexOf(datapoints[i].tags[j].title) == -1 && tagname.indexOf(datapoints[i].tags[j]._id) == -1){
+                      tagsavailable.push(datapoints[i].tags[j]);
+                      tagstitle.push(datapoints[i].tags[j].title);
+                    }
+                  }
+                  
+                }
               }
               res.render('socView', {
                   title: 'Sentinel Project: Edit SOC '+soc.title,
                   datapoints: datapoints,
                   soc:soc,
-                  tag:tag
+                  tag:tag,
+                  tagsavailable:tagsavailable,
+                  tagurl:req.query["tag"]
               });
             });
           });
@@ -122,7 +139,7 @@ function load_routes(app) {
       } else {
         jquery.getJSON('http://localhost:3000/api/datapoint/soc/'+ socname +'?callback=?', function(datapoints) {
           jquery.getJSON('http://localhost:3000/api/soc/title/'+ socname +'?callback=?', function(soc) {
-            jquery.getJSON('http://localhost:3000/api/tag/soc/'+ socname +'?callback=?', function(tags) {
+            jquery.getJSON('http://localhost:3000/api/tag/soc/'+ socname +'?callback=?', function(tagsavailable) {
               for(i=0; i<datapoints.length; i++) {
                 datapoints[i].created = moment(datapoints[i].created).format("YYYY-MM-DD");
                 datapoints[i].modified = moment(datapoints[i].modified).format("YYYY-MM-DD");
@@ -132,7 +149,7 @@ function load_routes(app) {
                   title: 'Sentinel Project: Edit SOC '+soc.title,
                   datapoints: datapoints,
                   soc:soc,
-                  tags:tags
+                  tagsavailable:tagsavailable
               });
             });
           });

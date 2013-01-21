@@ -14,10 +14,11 @@ block pageContent
       span.divider
     if (typeof(socname) == 'undefined' && typeof(tag) != 'undefined')
       li 
-        a(href="/soc/view?soc="+tag.soc) SOC: #{tag.soc}
+        a(href="/soc/view?soc="+tag[0].soc) SOC: #{tag[0].soc}
         span.divider        
       li 
-        a(href="/soc/view?soc="+tag.soc+"&tag="+tag._id) Tag: #{tag.title}
+        a(href="/soc/view?soc="+tag[0].soc+"&tag="+tag[0]._id) Tag: #{tag[0].title}
+        span.divider
     else
       li
         a(href="/soc/view?soc="+socname) SOC: #{socname}
@@ -31,17 +32,17 @@ block pageContent
       - if (typeof(tag) != 'undefined')
         form(id="tag_form_update",class="form-horizontal")
           //we update an existing tag here
-          input(name="id", value=tag._id, type="hidden")
-          input(name="socname", value=tag.soc, type="hidden")
-          input(type="hidden", id="soc", name="soc", value=tag.soc)
+          input(name="id", value=tag[0]._id, type="hidden")
+          input(name="socname", value=tag[0].soc, type="hidden")
+          input(type="hidden", id="soc", name="soc", value=tag[0].soc)
           div(class="control-group")
             label(class="control-label",for="title") Title
             div(class="controls")
-              input(type="text", name="title", value=tag.title)
+              input(type="text", name="title", value=tag[0].title)
           div(class="control-group")
             label(class="control-label",for="description") Description
             div(class="controls")
-              textarea(name="description", rows="4", cols="60") #{tag.description}
+              textarea(name="description", rows="4", cols="60") #{tag[0].description}
           div(class="form-actions")    
             button(type="submit",class="btn btn-success") Save
             p   
@@ -60,23 +61,6 @@ block pageContent
               textarea(name="description", rows="4", cols="60")
           div(class="form-actions")    
             button(type="submit",class="btn btn-success") Save
-  //
-    hr/
-    div#get-div
-      input(type="submit", value="$.get()", id="get")
-    hr/
-    span.bold
-      p Status
-    div#status
-    hr/
-    span.bold
-      p Data
-    div#result
-    hr/
-    span.bold
-      p Poorly Consumed Data
-    div#consumed
-      table(id="consumed_table")
 
   script
     var tag_form = $('#tag_form');

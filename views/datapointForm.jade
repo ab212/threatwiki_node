@@ -24,7 +24,7 @@ block pageContent
         span.divider
       if (typeof(tag) != 'undefined')
         li 
-          a(href="/soc/view?soc="+socname+"&tag="+tag._id) Tag: #{tag.title}
+          a(href="/soc/view?soc="+socname+"&tag="+tag[0]._id) Tag: #{tag[0].title}
           span.divider
     else if (typeof(datapoint) != 'undefined')
       li 
@@ -32,7 +32,7 @@ block pageContent
         span.divider
       if (typeof(tag) != 'undefined')
         li 
-          a(href="/soc/view?soc="+datapoint.soc+"&tag="+tag._id) Tag: #{tag.title}
+          a(href="/soc/view?soc="+datapoint.soc+"&tag="+tag[0]._id) Tag: #{tag[0].title}
           span.divider
     if (typeof(datapoint) == 'undefined')
       li.active New Datapoint
@@ -113,7 +113,7 @@ block pageContent
               select(multiple="multiple", id="tag_list", name="tag_list")
               //if there was tag argument in URL, we auto select it when we create this datapoint
               if (typeof(tag) != 'undefined')
-                option(selected=tag, value=tag._id) #{tag.title}
+                option(selected=tag, value=tag[0]._id) #{tag[0].title}
               button(type="button", class="btn btn-small", data-toggle="modal", data-target="#myModal") Add New Tag
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save

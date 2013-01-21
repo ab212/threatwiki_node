@@ -54,11 +54,12 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     });
   });
 
-  // retrieve by id
-  app.get('/api/tag/:id', function (req, res) {
-    return TagModel.findById(req.params.id).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tag) {
-      if (!err && tag) {
-        return res.jsonp(tag);
+  // retrieve by list of id format /api/tag/idnumberone,idnumbertwo,idnumberthree
+  app.get('/api/tag/:tagsid', function (req, res) {
+   var tagsid=req.params.tagsid.split(',');
+    return TagModel.find().where('_id').in(tagsid).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, tags) {
+      if (!err && tags) {
+        return res.jsonp(tags);
       } else {
         console.log(err);
         return res.send(null);
