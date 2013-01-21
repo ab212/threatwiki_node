@@ -1,7 +1,39 @@
 $(document).ready(function() {
   var already_included_soc = $('#soc').val();
   $('#event_date').datepicker();
-  $('#tag_list').select2({ width: 'resolve' });
+  $('#tag_list').select2({
+      width: 'resolve',
+      placeholder: "Select Tags"
+       });
+  //After someone finished the "Add new tag" inside a datapoint
+  $('#tag_form').submit(function(){
+    jQuery.post("/api/tag", $('#tag_form').serialize(), function (data, textStatus, jqXHR) {
+      console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+      //New tag just got created, hiding the modal dialog and adding new tag to the list of tags available in the datapoint
+      $('#myModal').modal('toggle');
+      var selected_soc = $("#soc").val();
+      var already_included_tags=[];
+      //Get list of existing tags in the select
+      $("#tag_list option").each(function(key,value){
+        already_included_tags.push(value.value);
+      });
+      var tags = jQuery.get("/api/tag/soc/" + selected_soc, function (tags, textStatus, jqXHR) {
+        $("#result").append("<br/>Loaded Initial Tags");
+        console.log("Loaded initial tags");
+        $.each(tags, function(key, value) {
+          //We call all the tags from the API, we compare with the ones already present in the select, if not there, we add it
+          if (!ifInArray(already_included_tags, value._id)) {
+            $('#tag_list')
+            .append($("<option></option>")
+            .attr("value",value._id)
+            .text(value.title));
+          }
+        });
+      });
+
+    });
+    return false;
+  });
 
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {

@@ -75,13 +75,14 @@ block pageContent
               select(multiple id="tag_list", name="tag_list")
                 for tag in datapoint.tags
                   option(selected=tag._id, value=tag._id) #{tag.title}
+              button(type="button", class="btn btn-small", data-toggle="modal", data-target="#myModal") Add New Tag
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save
             p   
             button(type="button",  id="archive", class="btn btn-danger") Archive
       - else
         form(id="datapoint_form", class="form-horizontal")
-          //if SOC is present in the URL, it means we create a datapoint from a SOC, no need to give option to change SOC 
+          //if SOC is present in the URL, it means we create a datapoint from a SOC
           //create datapoint
           input(type="hidden", id="soc", name="soc", value=socname)
           div(class="control-group")
@@ -108,14 +109,37 @@ block pageContent
               textarea(name="description", rows="6", class="span6")
           div(class="control-group")
             label(class="control-label",for="tags") Tags
-              div(class="controls")
-                select(multiple="multiple", id="tag_list", name="tag_list")
+            div(class="controls")
+              select(multiple="multiple", id="tag_list", name="tag_list")
               //if there was tag argument in URL, we auto select it when we create this datapoint
-                if (typeof(tag) != 'undefined')
-                  option(selected=tag, value=tag._id) #{tag.title}
+              if (typeof(tag) != 'undefined')
+                option(selected=tag, value=tag._id) #{tag.title}
+              button(type="button", class="btn btn-small", data-toggle="modal", data-target="#myModal") Add New Tag
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save
-
+  //Modal to create tag from inside the datapoint          
+  div(id="myModal",class="modal hide fade",tabindex="-1",role="dialog",aria-labelledby="myModalLabel",aria-hidden="true")
+    form(id="tag_form",class="form-horizontal")
+      div(class="modal-header")
+        button(type="button",class="close",data-dismiss="modal",aria-hidden="true") x
+        h4(id="myModalLabel") New Tag
+      div(class="modal-body")
+          //datapoint.soc if we update datapoint instead of socname
+          if (typeof(datapoint) != 'undefined')
+            input(type="hidden", id="soc", name="soc", value=datapoint.soc)
+          else
+            input(type="hidden", id="soc", name="soc", value=socname)
+          div(class="control-group")
+            label(class="control-label",for="title") Title
+            div(class="controls")
+              input(type="text", name="title", id="tagtitle")
+          div(class="control-group")
+            label(class="control-label",for="description") Description
+            div(class="controls")
+              textarea(name="description", rows="4", cols="60")
+      div(class="modal-footer")
+        button(class="btn",data-dismiss="modal",aria-hidden="true") Cancel
+        button(type="submit",class="btn btn-success") Create New Tag
 
   script
     var datapoint_form = $('#datapoint_form');
