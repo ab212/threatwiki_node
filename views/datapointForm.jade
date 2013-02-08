@@ -74,7 +74,7 @@ block pageContent
             div(class="controls")
               select(name="stage",id="stage")
                 if (typeof(datapoint.stage) == 'undefined')
-                  option(selected=true) -Choose Genocide Stage-
+                  option(selected=true,value="") -Choose Genocide Stage-
                   option(value="Symbolization") Symbolization
                   option(value="Discrimination") Discrimination
                   option(value="Dehumanization") Dehumanization
@@ -138,7 +138,7 @@ block pageContent
             label(class="control-label",for="stage") Stage
             div(class="controls")
               select(name="stage")
-                option(selected=true) -Choose Genocide Stage-
+                option(selected=true,value="") -Choose Genocide Stage-
                 option(value="Symbolization") Symbolization
                 option(value="Discrimination") Discrimination
                 option(value="Dehumanization") Dehumanization
