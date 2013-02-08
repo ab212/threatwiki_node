@@ -180,7 +180,8 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
         modified: date_now,
         //save the _id of the current user in the new SOC
         createdBy: user._id,
-        modifiedBy: user._id
+        modifiedBy: user._id,
+        nextSerialNumber: 1
       });
       soc.save(function (err) {
         if (!err) {

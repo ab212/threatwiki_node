@@ -40,7 +40,7 @@ function authenticate(req, res, UserModel, callback) {
   }
 }
 
-function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
+function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
     return DataPointModel.find({archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
@@ -212,32 +212,43 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     date_now.setTimezone('UTC');
 
     function save_datapoint (req, date_now, user) {
-      datapoint = new DataPointModel({
-        title: req.body.title,
-        description: req.body.description,
-        soc: req.body.soc,
-        Location: {
-          title: req.body.location,
-          latitude: req.body.latitude,
-          longitude: req.body.longitude
-        },
-        tags: req.body.tag_list,
-        stage: req.body.stage,
-        created: date_now,
-        modified: date_now,
-        event_date: req.body.event_date,
-        //save the _id of the current user in the new datapoint
-        createdBy: user._id,
-        modifiedBy: user._id
-      });
+      //get the SOC most recent serial number available, assign it to the datapoint and increment the value in the SOC
+      SocModel.findOneAndUpdate({$inc: { nextSerialNumber: 1 }}).where('title',req.body.soc).setOptions({ new: false }).exec(function (err, soc) {
+        if (!err && soc) {
+          datapoint = new DataPointModel({
+            title: req.body.title,
+            description: req.body.description,
+            soc: req.body.soc,
+            Location: {
+              title: req.body.location,
+              latitude: req.body.latitude,
+              longitude: req.body.longitude
+            },
+            tags: req.body.tag_list,
+            stage: req.body.stage,
+            created: date_now,
+            modified: date_now,
+            event_date: req.body.event_date,
+            serialNumber: soc.nextSerialNumber,
+            //save the _id of the current user in the new datapoint
+            createdBy: user._id,
+            modifiedBy: user._id
+          });
 
-      return datapoint.save(function (err) {
-        if (!err) {
-          console.log("Datapoint created");
-          return res.jsonp(datapoint);
+          return datapoint.save(function (err) {
+            if (!err) {
+              //console.log("Datapoint created");
+              return res.jsonp(datapoint);
+            } else {
+              console.log("Error creating datapoint:"+err);
+              return res.send(500);
+            }
+          });
+
+
         } else {
-          console.log(err);
-          return res.send(500);
+          console.log("Error finding SOC while creating datapoint:"+err);
+          return res.send(null);
         }
       });
     }

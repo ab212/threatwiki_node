@@ -20,6 +20,7 @@ function createModel() {
     , tags      : [{ type: ObjectId, ref: 'Tag' }]   
     , createdBy : { type: ObjectId, ref: 'User' }
     , modifiedBy : { type: ObjectId, ref: 'User' }
+    , serialNumber: {type: Number, required: true}
     , archive: { type: Boolean}
   });
 
@@ -29,7 +30,9 @@ function createModel() {
     , created: { type: Date, required: true }
     , createdBy : { type: ObjectId, ref: 'User' }
     , modifiedBy : { type: ObjectId, ref: 'User' }
+    , nextSerialNumber: {type: Number, required:true }
     , archive: { type: Boolean}
+    ,
     });
 
 
