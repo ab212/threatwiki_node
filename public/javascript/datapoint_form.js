@@ -1,5 +1,4 @@
 $(document).ready(function() {
-  var already_included_soc = $('#soc').val();
   $('#event_date').datepicker();
   $('#tag_list').select2({
       width: 'resolve',
@@ -33,22 +32,6 @@ $(document).ready(function() {
 
     });
     return false;
-  });
-
-  // get socs
-  var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
-    $("#result").append("Loaded SOCs");
-    console.log("Loaded SOCs");
-    $.each(socs, function(key, value){
-      // TODO: this is a very inefficient way of checking if the tag is already loaded, brainstorm and improve this.
-      // one idea: add all tags. then iterate through entire list and delete repetitions
-      if ((already_included_soc!=value.title)) {
-        $('#soc')
-        .append($("<option></option>")
-        .attr("value",value.title)
-        .text(value.title));
-       }
-    });
   });
 
   // get tags for selected soc
@@ -100,7 +83,7 @@ $(document).ready(function() {
   // $.post()
   datapoint_form.submit(function(){
     jQuery.post("/api/datapoint", datapoint_form.serialize(), function (data, textStatus, jqXHR) {
-      console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+      //console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
       //redirect to previous page after successful form submission
       window.location=referringURL;
     });

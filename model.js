@@ -12,6 +12,7 @@ function createModel() {
       , longitude: { type: String, required: true }
       }
     , soc: { type: String, required: true }
+    , stage: { type: String, required: true }
     , modified: { type: Date, required: true }
     , created: { type: Date, required: true }
     , event_date: {type: Date, required: true }

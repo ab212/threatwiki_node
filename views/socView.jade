@@ -53,6 +53,7 @@ block pageContent
             tr
               th Event
               th Location
+              th Stage
               th Tags
               th Event Date
               th Modified
@@ -66,6 +67,8 @@ block pageContent
                   a(href="/datapoint/edit?id="+datapoint._id) #{datapoint.title}
                 td
                   span #{datapoint.Location.title}
+                td
+                  span #{datapoint.stage}
                 td
                   each tags in datapoint.tags
                     span #{tags.title} <br />

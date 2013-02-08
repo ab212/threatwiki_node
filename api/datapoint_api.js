@@ -78,6 +78,19 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
     });
   });
 
+  // retrieve by stage of genocide
+  app.get('/api/datapoint/stage/:stage', function (req, res) {
+    console.log("DATAPOINT_API:SOC:Search by: " + req.params.soc);
+    return DataPointModel.find({stage: req.params.stage,archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
+      if (!err && datapoints) {
+        return res.jsonp(datapoints);
+      } else {
+        console.log(err);
+        return res.send(null);
+      }
+    });
+  });
+
    // retrieve by tagids, if multiple tags specified under /api/datapoint/tag/tagidnumberone,tagidnumbertwo then datapoint must contain ALL tags specified (not OR)
   app.get('/api/datapoint/tag/:tagsid', function (req, res) {
     var tagsid=req.params.tagsid.split(',');
@@ -209,6 +222,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
           longitude: req.body.longitude
         },
         tags: req.body.tag_list,
+        stage: req.body.stage,
         created: date_now,
         modified: date_now,
         event_date: req.body.event_date,
@@ -255,6 +269,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel) {
         datapoint.Location.latitude = req.body.latitude;
         datapoint.Location.longitude = req.body.longitude;
         datapoint.tags = req.body.tag_list;
+        datapoint.stage= req.body.stage;
         datapoint.modified = date_now;
         datapoint.modifiedBy = user._id;
         datapoint.event_date = req.body.event_date;
