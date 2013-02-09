@@ -24,12 +24,7 @@ $(document).ready(function() {
     "sPaginationType": "bootstrap",
     "bPaginate": false,
     //sort by Event date
-    "aaSorting": [[ 3, "desc" ]],
+    "aaSorting": [[ 5, "desc" ]]
 
-    //don't want to sort the actions column
-    "aoColumnDefs": [
-      { "bSortable": false, "aTargets": [ 7 ] },
-      { "bSearchable": false, "aTargets": [ 7 ] }
-    ]
   });
 });
