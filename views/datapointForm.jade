@@ -70,6 +70,11 @@ block pageContent
             div(class="controls")
               textarea(name="description", rows="6", class="span6" ) #{datapoint.description}
           div(class="control-group")
+            label(class="control-label",for="comment") Comment
+            div(class="controls")
+              textarea(name="comment", rows="4", class="span6") #{datapoint.comment}
+              span(class="help-inline") This field is for analysts' comments and questions about the event. It is not open to the public. 
+          div(class="control-group")
             label(class="control-label",for="stage") Stage
             div(class="controls")
               select(name="stage",id="stage")
@@ -135,6 +140,11 @@ block pageContent
             div(class="controls")
               textarea(name="description", rows="6", class="span6")
           div(class="control-group")
+            label(class="control-label",for="comment") Comment
+            div(class="controls")
+              textarea(name="comment", rows="4", class="span6")
+              span(class="help-inline") This field is for analysts' comments and questions about the event. It is not open to the public. 
+          div(class="control-group")
             label(class="control-label",for="stage") Stage
             div(class="controls")
               select(name="stage")
@@ -189,4 +199,3 @@ block pageContent
     var datapoint_form = $('#datapoint_form');
     var datapoint_form_update = $('#datapoint_form_update');
     var referringURL = document.referrer;
-
