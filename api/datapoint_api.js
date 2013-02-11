@@ -218,6 +218,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
           datapoint = new DataPointModel({
             title: req.body.title,
             description: req.body.description,
+            comment: req.body.comment,
             soc: req.body.soc,
             Location: {
               title: req.body.location,
@@ -275,6 +276,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
         datapoint.title = req.body.title;
         datapoint.description = req.body.description;
+        datapoint.comment = req.body.comment;
         datapoint.soc = req.body.soc;
         datapoint.Location.title = req.body.location;
         datapoint.Location.latitude = req.body.latitude;
