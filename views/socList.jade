@@ -20,9 +20,9 @@ block pageContent
           thead
             tr
               th Situation of Concerns
-              th Last Modified Datapoint
-              th Last Modified by User
-              th Last Modified Date
+              th Last Created Datapoint
+              th Last Created by User
+              th Last Created Date
               //
                 th created
                 th by
@@ -38,10 +38,10 @@ block pageContent
                       span #{datapoints[i].title}
                   td
                     if (typeof(datapoints[i]) != 'undefined')
-                      span #{datapoints[i].modifiedBy.name}
+                      span #{datapoints[i].createdBy.name}
                   td
                     if (typeof(datapoints[i]) != 'undefined')
-                      span #{datapoints[i].modified}
+                      span #{datapoints[i].created}
 
                 //         
                   td

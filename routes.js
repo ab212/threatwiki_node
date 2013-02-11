@@ -46,7 +46,7 @@ function load_routes(app) {
             //sort DESC date by created date to get the most recent datapoint created
             datapoints.sort(function(a,b){return new Date(b.created)-new Date(a.created);});
             if (typeof(datapoints[0]) != 'undefined')  {
-                datapoints[0].modified = moment(datapoints[0].modified).format("YYYY-MM-DD");
+                datapoints[0].created = moment(datapoints[0].created).format("YYYY-MM-DD");
             }
             resultsDatapoints.push(datapoints[0]);
             //Call render only when we are done with all the API calls
