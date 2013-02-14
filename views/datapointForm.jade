@@ -108,6 +108,23 @@ block pageContent
                 for tag in datapoint.tags
                   option(selected=tag._id, value=tag._id) #{tag.title}
               button(type="button", class="btn btn-small", data-toggle="modal", data-target="#myModal") Create New Tag
+          div(class="control-group")
+            label(class="control-label",for="source") Sources
+            div(class="controls",id="sourcelist")
+              input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")
+              select(name="sourcetype",id="sourcetype")
+                  option(selected=true,value="") -Choose Source Type-
+                  option(value="Newspaper") Newspaper
+                  option(value="TV") TV
+                  option(value="Radio") Radio
+                  option(value="Blog") Blog
+                  option(value="NGO") NGO
+                  option(value="Government") Government
+                  option(value="Social Media") Social Media
+                  option(value="Informant") Informant
+                  option(value="Other") Other
+              a(class="btn",id="addbutton")
+                    i(class="icon-plus-sign")
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save
             p   
@@ -169,6 +186,23 @@ block pageContent
                 option(selected=tag, value=tag[0]._id) #{tag[0].title}
               span(class="help-inline")
                 button(type="button", class="btn btn-small", data-toggle="modal", data-target="#myModal") Create New Tag
+          div(class="control-group")
+            label(class="control-label",for="source") Sources
+            div(class="controls",id="sourcelist")
+              input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")
+              select(name="sourcetype",id="sourcetype")
+                  option(selected=true,value="") -Choose Source Type-
+                  option(value="Newspaper") Newspaper
+                  option(value="TV") TV
+                  option(value="Radio") Radio
+                  option(value="Blog") Blog
+                  option(value="NGO") NGO
+                  option(value="Government") Government
+                  option(value="Social Media") Social Media
+                  option(value="Informant") Informant
+                  option(value="Other") Other
+              a(class="btn",id="addbutton")
+                    i(class="icon-plus-sign")
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save
   //Modal to create tag from inside the datapoint          

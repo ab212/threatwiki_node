@@ -128,35 +128,20 @@ $(document).ready(function() {
     return false;
   });
 
-  // $.get()
-  $("#get").click(function() {
-    $("#result").html('');
-    $("#status").html('');
-    $('#consumed_table').html('');
-
-    var datapoints = jQuery.get("/api/datapoint/", function (datapoints, textStatus, jqXHR) {
-      console.log("Get response:");
-      console.dir(datapoints);
-      console.log(textStatus);
-      console.dir(jqXHR);
-
-      $("#result").html(JSON.stringify(datapoints));
-      // return data in tabular format
-      $.each(datapoints, function(key, value) {
-        $('#consumed_table')
-        .append($("<tr></tr>")
-        .append($("<td></td>")
-        .append($("<a></a>")
-        .attr("href","/api/datapoint/"+value._id)
-        .text(value.title)))
-        .append($("<td></td>")
-        .append($("<a></a>")
-        .attr("href","/api/datapoint/delete/"+value._id)
-        .text("delete"))));
-      });
-
-    });
+  //When clicking on add button, adding a new line to add more sources
+  $("#addbutton").click(function(){
+    var lastInput = $("#sourcelist").find("input").eq(-1);
+    var lastSelect = $("#sourcelist").find("select").eq(-1);
+    //Make a copy of the inputURL on the next line
+    lastSelect.after('<br/>',lastInput.clone());
+    var newInput =  $("#sourcelist").find("input").eq(-1);
+    //Add a copy of the last Select menu after the new inputURL
+    newInput.after(lastSelect.clone());
+    //Make sure those new elements are empty
+    newInput.val("");
+    $("#sourcelist").find("select").eq(-1).val("");
   });
+
   $(function() {
     $('#location').autoGeocoder();
   });
