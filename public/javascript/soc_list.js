@@ -12,7 +12,8 @@ $(document).ready(function() {
   } );
 
   $('#soc').dataTable({
-    "bPaginate": false
+    "bPaginate": false,
+    "bFilter": false
     //don't want to sort the actions column
    // "aoColumnDefs": [
    //   { "bSortable": false, "aTargets": [ 5 ] },
