@@ -37,7 +37,6 @@ $(document).ready(function() {
   // get tags for selected soc
   $(function() {
     var selected_soc;
-
     var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
       var selected_soc = $("#soc").val();
       var already_included_tags = $('#tag_list').val();
@@ -130,15 +129,19 @@ $(document).ready(function() {
 
   //When clicking on add button, adding a new line to add more sources
   $("#addbutton").click(function(){
-    var lastInput = $("#sourcelist").find("input").eq(-1);
+    var lastInput = $("#sourcelist").find("input").eq(-2);
+    var lastId = lastInput.next();
     var lastSelect = $("#sourcelist").find("select").eq(-1);
+
     //Make a copy of the inputURL on the next line
     lastSelect.after('<br/>',lastInput.clone());
     var newInput =  $("#sourcelist").find("input").eq(-1);
     //Add a copy of the last Select menu after the new inputURL
     newInput.after(lastSelect.clone());
+    newInput.after(lastId.clone());
     //Make sure those new elements are empty
     newInput.val("");
+    newInput.next().val("");
     $("#sourcelist").find("select").eq(-1).val("");
   });
 

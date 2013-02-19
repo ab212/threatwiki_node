@@ -1,5 +1,7 @@
 var express = require("express");
 var time = require('time')(Date);
+var jquery = require('jquery');
+var mongoose = require('mongoose');
 
 function generateDevUser(UserModel, callback) {
   //we generate a random dev user during DEV mode (not using Google Apps auth)
@@ -235,6 +237,14 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
             createdBy: user._id,
             modifiedBy: user._id
           });
+          //save each source as subdocument individually
+          if (jquery.isArray(req.body.sourceurl)){
+            for (i=0;i<req.body.sourceurl.length;i++){
+              datapoint.sources.push({url: req.body.sourceurl[i],sourcetype: req.body.sourcetype[i]});
+            }
+          } else if (req.body.sourceurl!=='' && req.body.sourcetype!==''){
+            datapoint.sources.push({url: req.body.sourceurl,sourcetype: req.body.sourcetype});
+          }
 
           return datapoint.save(function (err) {
             if (!err) {
@@ -286,6 +296,46 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
         datapoint.modified = date_now;
         datapoint.modifiedBy = user._id;
         datapoint.event_date = req.body.event_date;
+        //to update/add/remove sources in a datapoint
+        if (jquery.isArray(req.body.sourceurl)){
+          for (j=0;j<req.body.sourceurl.length;j++){
+            if (req.body.sourceurl[j]!=='' && req.body.sourcetype[j]!==''){
+              if (req.body.sourceid[j]!==''){
+                //update existing source
+                var id = mongoose.Types.ObjectId(req.body.sourceid[j]);
+                var source = datapoint.sources.id(id);
+                source.url= req.body.sourceurl[j];
+                source.sourcetype= req.body.sourcetype[j];
+              } else {
+                //create new source
+                datapoint.sources.addToSet({url: req.body.sourceurl[j],sourcetype: req.body.sourcetype[j]});
+              }
+            } else if (req.body.sourceurl[j]==='' && req.body.sourceid[j]!==''){
+              //delete source
+              var id_to_delete = mongoose.Types.ObjectId(req.body.sourceid[j]);
+              var source_to_delete = datapoint.sources.id(id_to_delete);
+              source_to_delete.remove();
+            }
+          }
+        }else if (req.body.sourceurl!=='' && req.body.sourcetype!==''){
+          if (req.body.sourceid!==''){
+            //update source
+            var id_to_update = mongoose.Types.ObjectId(req.body.sourceid);
+            var source_to_update = datapoint.sources.id(id_to_update);
+            source_to_update.url=req.body.sourceurl;
+            source_to_update.sourcetype=req.body.sourcetype;
+          } else {
+            //create new source
+            datapoint.sources.addToSet({url: req.body.sourceurl,sourcetype: req.body.sourcetype});
+          }
+        } else if (req.body.sourceurl==='' && req.body.sourceid!=='') {
+          //delete source
+          var id_delete = mongoose.Types.ObjectId(req.body.sourceid);
+          var source_delete = datapoint.sources.id(id_delete);
+          source_delete.remove();
+        }
+        
+        
 
         return datapoint.save(function (err) {
           if (!err) {

@@ -111,20 +111,39 @@ block pageContent
           div(class="control-group")
             label(class="control-label",for="source") Sources
             div(class="controls",id="sourcelist")
-              input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")
-              select(name="sourcetype",id="sourcetype")
-                  option(selected=true,value="") -Choose Source Type-
-                  option(value="Newspaper") Newspaper
-                  option(value="TV") TV
-                  option(value="Radio") Radio
-                  option(value="Blog") Blog
-                  option(value="NGO") NGO
-                  option(value="Government") Government
-                  option(value="Social Media") Social Media
-                  option(value="Informant") Informant
-                  option(value="Other") Other
+              if (typeof(datapoint.sources[0]) != 'undefined')
+                for source in datapoint.sources
+                  input(type="text", name="sourceurl", id="sourceurl", class="span5",value=source.url,placeholder="Type URL here")
+                  input(name="sourceid", value=source._id, type="hidden")
+                  select(name="sourcetype",id="sourcetype")
+                    option(selected=true,value="") -Choose Source Type-
+                    option(value="Newspaper",selected=(source.sourcetype=="Newspaper")) Newspaper
+                    option(value="TV",selected=(source.sourcetype=="TV")) TV
+                    option(value="Radio",selected=(source.sourcetype=="Radio")) Radio
+                    option(value="Blog",selected=(source.sourcetype=="Blog")) Blog
+                    option(value="NGO",selected=(source.sourcetype=="NGO")) NGO
+                    option(value="Government",selected=(source.sourcetype=="Government")) Government
+                    option(value="Social Media",selected=(source.sourcetype=="Social Media")) Social Media
+                    option(value="Informant",selected=(source.sourcetype=="Informant")) Informant
+                    option(value="Other",selected=(source.sourcetype=="Other")) Other
+                  br/
+              else
+                input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")
+                input(name="sourceid", value="", type="hidden")
+                select(name="sourcetype",id="sourcetype")
+                    option(selected=true,value="") -Choose Source Type-
+                    option(value="Newspaper") Newspaper
+                    option(value="TV") TV
+                    option(value="Radio") Radio
+                    option(value="Blog") Blog
+                    option(value="NGO") NGO
+                    option(value="Government") Government
+                    option(value="Social Media") Social Media
+                    option(value="Informant") Informant
+                    option(value="Other") Other
+                br/
               a(class="btn",id="addbutton")
-                    i(class="icon-plus-sign")
+                i(class="icon-plus-sign")
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save
             p   
@@ -201,8 +220,9 @@ block pageContent
                   option(value="Social Media") Social Media
                   option(value="Informant") Informant
                   option(value="Other") Other
+              br/
               a(class="btn",id="addbutton")
-                    i(class="icon-plus-sign")
+                i(class="icon-plus-sign")
           div(class="form-actions")
             button(type="submit", class="btn btn-success") Save
   //Modal to create tag from inside the datapoint          

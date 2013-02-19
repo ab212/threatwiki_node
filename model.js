@@ -19,6 +19,7 @@ function createModel() {
     , event_date: {type: Date, required: true }
     // foreign key
     , tags      : [{ type: ObjectId, ref: 'Tag' }]   
+    , sources: [ {url: {type: String }, sourcetype: {type: String} } ]
     , createdBy : { type: ObjectId, ref: 'User' }
     , modifiedBy : { type: ObjectId, ref: 'User' }
     , serialNumber: {type: Number, required: true}
