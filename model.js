@@ -28,6 +28,7 @@ function createModel() {
 
   var Soc = new Schema ({
       title: { type: String, required: true, unique: true }
+    , isocountry: {type: String, required: true, unique: true}
     , modified: { type: Date, required: true }
     , created: { type: Date, required: true }
     , createdBy : { type: ObjectId, ref: 'User' }

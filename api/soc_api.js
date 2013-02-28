@@ -176,6 +176,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     function save_soc (req, date_now, user) {
       soc = new SocModel({
         title: req.body.title,
+        isocountry: req.body.titlecode,
         created: date_now,
         modified: date_now,
         //save the _id of the current user in the new SOC
@@ -208,13 +209,13 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   app.put('/api/soc/:id', function (req, res) {
     var date_now = new Date();
     date_now.setTimezone('UTC');
-    
     function update_soc(req, date_now, user) {
       SocModel.findById(req.params.id, function (err, soc) {
       if (!err && soc){
 
         oldTitle = soc.title;
         soc.title = req.body.title;
+        soc.isocountry= req.body.titlecode;
         soc.modified = date_now;
         soc.modifiedBy = user._id;
 

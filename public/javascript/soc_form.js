@@ -1,26 +1,24 @@
 $(document).ready(function() {
   // $.post()
   soc_form.submit(function(){
+    $("#title").val($("#titlecode option:selected").text());
     jQuery.post("/api/soc", soc_form.serialize(), function (data, textStatus, jqXHR) {
       console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
       //redirect to previous page after successful form submission
       window.location=referringURL;
     });
-    $("#status").html("posted");
-    $('#result').html(soc_form.serialize());
     return false;
   });
 
   // #.put()
   soc_form_update.submit(function(){
     var obj_id = $("input[name=id]").val();
+    $("#title").val($("#titlecode option:selected").text());
     jQuery.ajax({
       url: "/api/soc/"+obj_id,
       data: soc_form_update.serialize(),
       type: 'PUT'
-    }).done(function() { 
-      $("#status").html("posted");
-      $('#result').html(soc_form.serialize());
+    }).done(function() {
       //redirect to soc list after renaming it
       window.location='/soc/';
     });
@@ -29,11 +27,10 @@ $(document).ready(function() {
 
    // #.put()
   //someone clicked Archive on the update form
-  //TODO: Add confirmation dialog
   $("#archive").click(function(){
     var obj_id = $("input[name=id]").val();
     var confirm = window.confirm("Are you sure you want to Archive this SOC? You won't have access to the datapoints and tags associated with it anymore.");
-    if (confirm==true){
+    if (confirm===true){
       jQuery.ajax({
         url: "/api/soc/"+obj_id+"/archive",
         data: "archive=true",
@@ -48,36 +45,5 @@ $(document).ready(function() {
     return false;
   });
 
-  // $.get()
-  $("#get").click(function() {
-    $("#result").html('');
-    $("#status").html('');
-    $('#consumed_table').html('');
-
-    var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
-      console.log("Get resposne:");
-      console.dir(socs);
-      console.log(textStatus);
-      console.dir(jqXHR);
-
-      $("#result").html(JSON.stringify(socs));
-        // return data in tabular format
-        $.each(socs, function(key, value) {
-          $('#consumed_table')
-          .append($("<tr></tr>")
-          .append($("<td></td>")
-          .append($("<a></a>")
-          .attr("href","/api/soc/"+value._id)
-          .text(value.title)))
-          .append($("<td></td>")
-          .append($("<a></a>")
-          .attr("href","/api/soc/delete/"+value._id)
-          .text("delete"))));
-        });
-    });
-
-    $("#status").append("received");
-    // consume JSON
-    $("#status").append("<br/>consumed");
-  });
+  
 });

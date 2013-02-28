@@ -216,13 +216,17 @@ function load_routes(app) {
       console.log('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?');
 
       jquery.getJSON('http://localhost:3000/api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
-        datapoint.created = moment(datapoint.created).format("YYYY-MM-DD");
-        datapoint.modified = moment(datapoint.modified).format("YYYY-MM-DD");
-        datapoint.event_date = moment(datapoint.event_date).format("YYYY-MM-DD");
+        jquery.getJSON('http://localhost:3000/api/soc/title/'+ datapoint.soc +'?callback=?', function(soc) {
 
-        res.render('datapointForm', {
-          title: 'Sentinel Project: Edit Datapoint '+datapoint.title,
-          datapoint: datapoint
+          datapoint.created = moment(datapoint.created).format("YYYY-MM-DD");
+          datapoint.modified = moment(datapoint.modified).format("YYYY-MM-DD");
+          datapoint.event_date = moment(datapoint.event_date).format("YYYY-MM-DD");
+
+          res.render('datapointForm', {
+            title: 'Sentinel Project: Edit Datapoint '+datapoint.title,
+            datapoint: datapoint,
+            soc:soc
+          });
         });
       });
     } else {

@@ -24,9 +24,256 @@ block pageContent
        form(id="soc_form_update",class="form-horizontal")
           input(name="id", value=soc._id, type="hidden")
           div(class="control-group")
-            label(class="control-label",for="title") Title
+            label(class="control-label",for="titlecode") Country Name
+            input(name="title",id="title",type="hidden",value=soc.title)
             div(class="controls")
-              input(type="text", name="title", value=soc.title)
+              select(name="titlecode",id="titlecode")
+                option(value="AFG",selected=(soc.isocountry=="AFG")) Afghanistan
+                option(value="ALA",selected=(soc.isocountry=="ALA")) &Aring;land Islands
+                option(value="ALB",selected=(soc.isocountry=="ALB")) Albania
+                option(value="DZA",selected=(soc.isocountry=="DZA")) Algeria
+                option(value="ASM",selected=(soc.isocountry=="ASM")) American Samoa
+                option(value="AND",selected=(soc.isocountry=="AND")) Andorra
+                option(value="AGO",selected=(soc.isocountry=="AGO")) Angola
+                option(value="AIA",selected=(soc.isocountry=="AIA")) Anguilla
+                option(value="ATA",selected=(soc.isocountry=="ATA")) Antarctica
+                option(value="ATG",selected=(soc.isocountry=="ATG")) Antigua and Barbuda
+                option(value="ARG",selected=(soc.isocountry=="ARG")) Argentina
+                option(value="ARM",selected=(soc.isocountry=="ARM")) Armenia
+                option(value="ABW",selected=(soc.isocountry=="ABW")) Aruba
+                option(value="AUS",selected=(soc.isocountry=="AUS")) Australia
+                option(value="AUT",selected=(soc.isocountry=="AUT")) Austria
+                option(value="AZE",selected=(soc.isocountry=="AZE")) Azerbaijan
+                option(value="BHS",selected=(soc.isocountry=="BHS")) Bahamas
+                option(value="BHR",selected=(soc.isocountry=="BHR")) Bahrain
+                option(value="BGD",selected=(soc.isocountry=="BGD")) Bangladesh
+                option(value="BRB",selected=(soc.isocountry=="BRB")) Barbados
+                option(value="BLR",selected=(soc.isocountry=="BLR")) Belarus
+                option(value="BEL",selected=(soc.isocountry=="BEL")) Belgium
+                option(value="BLZ",selected=(soc.isocountry=="BLZ")) Belize
+                option(value="BEN",selected=(soc.isocountry=="BEN")) Benin
+                option(value="BMU",selected=(soc.isocountry=="BMU")) Bermuda
+                option(value="BTN",selected=(soc.isocountry=="BTN")) Bhutan
+                option(value="BOL",selected=(soc.isocountry=="BOL")) Bolivia, Plurinational State of
+                option(value="BIH",selected=(soc.isocountry=="BIH")) Bosnia and Herzegovina
+                option(value="BWA",selected=(soc.isocountry=="BWA")) Botswana
+                option(value="BVT",selected=(soc.isocountry=="BVT")) Bouvet Island
+                option(value="BRA",selected=(soc.isocountry=="BRA")) Brazil
+                option(value="IOT",selected=(soc.isocountry=="IOT")) British Indian Ocean Territory
+                option(value="BRN",selected=(soc.isocountry=="BRN")) Brunei Darussalam
+                option(value="BGR",selected=(soc.isocountry=="BGR")) Bulgaria
+                option(value="BFA",selected=(soc.isocountry=="BFA")) Burkina Faso
+                option(value="BDI",selected=(soc.isocountry=="BDI")) Burundi
+                option(value="KHM",selected=(soc.isocountry=="KHM")) Cambodia
+                option(value="CMR",selected=(soc.isocountry=="CMR")) Cameroon
+                option(value="CAN",selected=(soc.isocountry=="CAN")) Canada
+                option(value="CPV",selected=(soc.isocountry=="CPV")) Cape Verde
+                option(value="CYM",selected=(soc.isocountry=="CYM")) Cayman Islands
+                option(value="CAF",selected=(soc.isocountry=="CAF")) Central African Republic
+                option(value="TCD",selected=(soc.isocountry=="TCD")) Chad
+                option(value="CHL",selected=(soc.isocountry=="CHL")) Chile
+                option(value="CHN",selected=(soc.isocountry=="CHN")) China
+                option(value="CXR",selected=(soc.isocountry=="CXR")) Christmas Island
+                option(value="CCK",selected=(soc.isocountry=="CCK")) Cocos (Keeling) Islands
+                option(value="COL",selected=(soc.isocountry=="COL")) Colombia
+                option(value="COM",selected=(soc.isocountry=="COM")) Comoros
+                option(value="COG",selected=(soc.isocountry=="COG")) Congo
+                option(value="COD",selected=(soc.isocountry=="COD")) Congo, the Democratic Republic of the
+                option(value="COK",selected=(soc.isocountry=="COK")) Cook Islands
+                option(value="CRI",selected=(soc.isocountry=="CRI")) Costa Rica
+                option(value="CIV",selected=(soc.isocountry=="CIV")) C&ocirc;te d'Ivoire
+                option(value="HRV",selected=(soc.isocountry=="HRV")) Croatia
+                option(value="CUB",selected=(soc.isocountry=="CUB")) Cuba
+                option(value="CYP",selected=(soc.isocountry=="CYP")) Cyprus
+                option(value="CZE",selected=(soc.isocountry=="CZE")) Czech Republic
+                option(value="DNK",selected=(soc.isocountry=="DNK")) Denmark
+                option(value="DJI",selected=(soc.isocountry=="DJI")) Djibouti
+                option(value="DMA",selected=(soc.isocountry=="DMA")) Dominica
+                option(value="DOM",selected=(soc.isocountry=="DOM")) Dominican Republic
+                option(value="ECU",selected=(soc.isocountry=="ECU")) Ecuador
+                option(value="EGY",selected=(soc.isocountry=="EGY")) Egypt
+                option(value="SLV",selected=(soc.isocountry=="SLV")) El Salvador
+                option(value="GNQ",selected=(soc.isocountry=="GNQ")) Equatorial Guinea
+                option(value="ERI",selected=(soc.isocountry=="ERI")) Eritrea
+                option(value="EST",selected=(soc.isocountry=="EST")) Estonia
+                option(value="ETH",selected=(soc.isocountry=="ETH")) Ethiopia
+                option(value="FLK",selected=(soc.isocountry=="FLK")) Falkland Islands (Malvinas)
+                option(value="FRO",selected=(soc.isocountry=="FRO")) Faroe Islands
+                option(value="FJI",selected=(soc.isocountry=="FJI")) Fiji
+                option(value="FIN",selected=(soc.isocountry=="FIN")) Finland
+                option(value="FRA",selected=(soc.isocountry=="FRA")) France
+                option(value="GUF",selected=(soc.isocountry=="GUF")) French Guiana
+                option(value="PYF",selected=(soc.isocountry=="PYF")) French Polynesia
+                option(value="ATF",selected=(soc.isocountry=="ATF")) French Southern Territories
+                option(value="GAB",selected=(soc.isocountry=="GAB")) Gabon
+                option(value="GMB",selected=(soc.isocountry=="GMB")) Gambia
+                option(value="GEO",selected=(soc.isocountry=="GEO")) Georgia
+                option(value="DEU",selected=(soc.isocountry=="DEU")) Germany
+                option(value="GHA",selected=(soc.isocountry=="GHA")) Ghana
+                option(value="GIB",selected=(soc.isocountry=="GIB")) Gibraltar
+                option(value="GRC",selected=(soc.isocountry=="GRC")) Greece
+                option(value="GRL",selected=(soc.isocountry=="GRL")) Greenland
+                option(value="GRD",selected=(soc.isocountry=="GRD")) Grenada
+                option(value="GLP",selected=(soc.isocountry=="GLP")) Guadeloupe
+                option(value="GUM",selected=(soc.isocountry=="GUM")) Guam
+                option(value="GTM",selected=(soc.isocountry=="GTM")) Guatemala
+                option(value="GGY",selected=(soc.isocountry=="GGY")) Guernsey
+                option(value="GIN",selected=(soc.isocountry=="GIN")) Guinea
+                option(value="GNB",selected=(soc.isocountry=="GNB")) Guinea-Bissau
+                option(value="GUY",selected=(soc.isocountry=="GUY")) Guyana
+                option(value="HTI",selected=(soc.isocountry=="HTI")) Haiti
+                option(value="HMD",selected=(soc.isocountry=="HMD")) Heard Island and McDonald Islands
+                option(value="VAT",selected=(soc.isocountry=="VAT")) Holy See (Vatican City State)
+                option(value="HND",selected=(soc.isocountry=="HND")) Honduras
+                option(value="HKG",selected=(soc.isocountry=="HKG")) Hong Kong
+                option(value="HUN",selected=(soc.isocountry=="HUN")) Hungary
+                option(value="ISL",selected=(soc.isocountry=="ISL")) Iceland
+                option(value="IND",selected=(soc.isocountry=="IND")) India
+                option(value="IDN",selected=(soc.isocountry=="IDN")) Indonesia
+                option(value="IRN",selected=(soc.isocountry=="IRN")) Iran, Islamic Republic of
+                option(value="IRQ",selected=(soc.isocountry=="IRQ")) Iraq
+                option(value="IRL",selected=(soc.isocountry=="IRL")) Ireland
+                option(value="IMN",selected=(soc.isocountry=="IMN")) Isle of Man
+                option(value="ISR",selected=(soc.isocountry=="ISR")) Israel
+                option(value="ITA",selected=(soc.isocountry=="ITA")) Italy
+                option(value="JAM",selected=(soc.isocountry=="JAM")) Jamaica
+                option(value="JPN",selected=(soc.isocountry=="JPN")) Japan
+                option(value="JEY",selected=(soc.isocountry=="JEY")) Jersey
+                option(value="JOR",selected=(soc.isocountry=="JOR")) Jordan
+                option(value="KAZ",selected=(soc.isocountry=="KAZ")) Kazakhstan
+                option(value="KEN",selected=(soc.isocountry=="KEN")) Kenya
+                option(value="KIR",selected=(soc.isocountry=="KIR")) Kiribati
+                option(value="PRK",selected=(soc.isocountry=="PRK")) Korea, Democratic People's Republic of
+                option(value="KOR",selected=(soc.isocountry=="KOR")) Korea, Republic of
+                option(value="KWT",selected=(soc.isocountry=="KWT")) Kuwait
+                option(value="KGZ",selected=(soc.isocountry=="KGZ")) Kyrgyzstan
+                option(value="LAO",selected=(soc.isocountry=="LAO")) Lao People's Democratic Republic
+                option(value="LVA",selected=(soc.isocountry=="LVA")) Latvia
+                option(value="LBN",selected=(soc.isocountry=="LBN")) Lebanon
+                option(value="LSO",selected=(soc.isocountry=="LSO")) Lesotho
+                option(value="LBR",selected=(soc.isocountry=="LBR")) Liberia
+                option(value="LBY",selected=(soc.isocountry=="LBY")) Libyan Arab Jamahiriya
+                option(value="LIE",selected=(soc.isocountry=="LIE")) Liechtenstein
+                option(value="LTU",selected=(soc.isocountry=="LTU")) Lithuania
+                option(value="LUX",selected=(soc.isocountry=="LUX")) Luxembourg
+                option(value="MAC",selected=(soc.isocountry=="MAC")) Macao
+                option(value="MKD",selected=(soc.isocountry=="MKD")) Macedonia, the former Yugoslav Republic of
+                option(value="MDG",selected=(soc.isocountry=="MDG")) Madagascar
+                option(value="MWI",selected=(soc.isocountry=="MWI")) Malawi
+                option(value="MYS",selected=(soc.isocountry=="MYS")) Malaysia
+                option(value="MDV",selected=(soc.isocountry=="MDV")) Maldives
+                option(value="MLI",selected=(soc.isocountry=="MLI")) Mali
+                option(value="MLT",selected=(soc.isocountry=="MLT")) Malta
+                option(value="MHL",selected=(soc.isocountry=="MHL")) Marshall Islands
+                option(value="MTQ",selected=(soc.isocountry=="MTQ")) Martinique
+                option(value="MRT",selected=(soc.isocountry=="MRT")) Mauritania
+                option(value="MUS",selected=(soc.isocountry=="MUS")) Mauritius
+                option(value="MYT",selected=(soc.isocountry=="MYT")) Mayotte
+                option(value="MEX",selected=(soc.isocountry=="MEX")) Mexico
+                option(value="FSM",selected=(soc.isocountry=="FSM")) Micronesia, Federated States of
+                option(value="MDA",selected=(soc.isocountry=="MDA")) Moldova, Republic of
+                option(value="MCO",selected=(soc.isocountry=="MCO")) Monaco
+                option(value="MNG",selected=(soc.isocountry=="MNG")) Mongolia
+                option(value="MNE",selected=(soc.isocountry=="MNE")) Montenegro
+                option(value="MSR",selected=(soc.isocountry=="MSR")) Montserrat
+                option(value="MAR",selected=(soc.isocountry=="MAR")) Morocco
+                option(value="MOZ",selected=(soc.isocountry=="MOZ")) Mozambique
+                option(value="MMR",selected=(soc.isocountry=="MMR")) Myanmar
+                option(value="NAM",selected=(soc.isocountry=="NAM")) Namibia
+                option(value="NRU",selected=(soc.isocountry=="NRU")) Nauru
+                option(value="NPL",selected=(soc.isocountry=="NPL")) Nepal
+                option(value="NLD",selected=(soc.isocountry=="NLD")) Netherlands
+                option(value="ANT",selected=(soc.isocountry=="ANT")) Netherlands Antilles
+                option(value="NCL",selected=(soc.isocountry=="NCL")) New Caledonia
+                option(value="NZL",selected=(soc.isocountry=="NZL")) New Zealand
+                option(value="NIC",selected=(soc.isocountry=="NIC")) Nicaragua
+                option(value="NER",selected=(soc.isocountry=="NER")) Niger
+                option(value="NGA",selected=(soc.isocountry=="NGA")) Nigeria
+                option(value="NIU",selected=(soc.isocountry=="NIU")) Niue
+                option(value="NFK",selected=(soc.isocountry=="NFK")) Norfolk Island
+                option(value="MNP",selected=(soc.isocountry=="MNP")) Northern Mariana Islands
+                option(value="NOR",selected=(soc.isocountry=="NOR")) Norway
+                option(value="OMN",selected=(soc.isocountry=="OMN")) Oman
+                option(value="PAK",selected=(soc.isocountry=="PAK")) Pakistan
+                option(value="PLW",selected=(soc.isocountry=="PLW")) Palau
+                option(value="PSE",selected=(soc.isocountry=="PSE")) Palestinian Territory, Occupied
+                option(value="PAN",selected=(soc.isocountry=="PAN")) Panama
+                option(value="PNG",selected=(soc.isocountry=="PNG")) Papua New Guinea
+                option(value="PRY",selected=(soc.isocountry=="PRY")) Paraguay
+                option(value="PER",selected=(soc.isocountry=="PER")) Peru
+                option(value="PHL",selected=(soc.isocountry=="PHL")) Philippines
+                option(value="PCN",selected=(soc.isocountry=="PCN")) Pitcairn
+                option(value="POL",selected=(soc.isocountry=="POL")) Poland
+                option(value="PRT",selected=(soc.isocountry=="PRT")) Portugal
+                option(value="PRI",selected=(soc.isocountry=="PRI")) Puerto Rico
+                option(value="QAT",selected=(soc.isocountry=="QAT")) Qatar
+                option(value="REU",selected=(soc.isocountry=="REU")) R&eacute;union
+                option(value="ROU",selected=(soc.isocountry=="ROU")) Romania
+                option(value="RUS",selected=(soc.isocountry=="RUS")) Russian Federation
+                option(value="RWA",selected=(soc.isocountry=="RWA")) Rwanda
+                option(value="BLM",selected=(soc.isocountry=="BLM")) Saint Barth&eacute;lemy
+                option(value="SHN",selected=(soc.isocountry=="SHN")) Saint Helena, Ascension and Tristan da Cunha
+                option(value="KNA",selected=(soc.isocountry=="KNA")) Saint Kitts and Nevis
+                option(value="LCA",selected=(soc.isocountry=="LCA")) Saint Lucia
+                option(value="MAF",selected=(soc.isocountry=="MAF")) Saint Martin (French part)
+                option(value="SPM",selected=(soc.isocountry=="SPM")) Saint Pierre and Miquelon
+                option(value="VCT",selected=(soc.isocountry=="VCT")) Saint Vincent and the Grenadines
+                option(value="WSM",selected=(soc.isocountry=="WSM")) Samoa
+                option(value="SMR",selected=(soc.isocountry=="SMR")) San Marino
+                option(value="STP",selected=(soc.isocountry=="STP")) Sao Tome and Principe
+                option(value="SAU",selected=(soc.isocountry=="SAU")) Saudi Arabia
+                option(value="SEN",selected=(soc.isocountry=="SEN")) Senegal
+                option(value="SRB",selected=(soc.isocountry=="SRB")) Serbia
+                option(value="SYC",selected=(soc.isocountry=="SYC")) Seychelles
+                option(value="SLE",selected=(soc.isocountry=="SLE")) Sierra Leone
+                option(value="SGP",selected=(soc.isocountry=="SGP")) Singapore
+                option(value="SVK",selected=(soc.isocountry=="SVK")) Slovakia
+                option(value="SVN",selected=(soc.isocountry=="SVN")) Slovenia
+                option(value="SLB",selected=(soc.isocountry=="SLB")) Solomon Islands
+                option(value="SOM",selected=(soc.isocountry=="SOM")) Somalia
+                option(value="ZAF",selected=(soc.isocountry=="ZAF")) South Africa
+                option(value="SGS",selected=(soc.isocountry=="SGS")) South Georgia and the South Sandwich Islands
+                option(value="ESP",selected=(soc.isocountry=="ESP")) Spain
+                option(value="LKA",selected=(soc.isocountry=="LKA")) Sri Lanka
+                option(value="SDN",selected=(soc.isocountry=="SDN")) Sudan
+                option(value="SUR",selected=(soc.isocountry=="SUR")) Suriname
+                option(value="SJM",selected=(soc.isocountry=="SJM")) Svalbard and Jan Mayen
+                option(value="SWZ",selected=(soc.isocountry=="SWZ")) Swaziland
+                option(value="SWE",selected=(soc.isocountry=="SWE")) Sweden
+                option(value="CHE",selected=(soc.isocountry=="CHE")) Switzerland
+                option(value="SYR",selected=(soc.isocountry=="SYR")) Syrian Arab Republic
+                option(value="TWN",selected=(soc.isocountry=="TWN")) Taiwan, Province of China
+                option(value="TJK",selected=(soc.isocountry=="TJK")) Tajikistan
+                option(value="TZA",selected=(soc.isocountry=="TZA")) Tanzania, United Republic of
+                option(value="THA",selected=(soc.isocountry=="THA")) Thailand
+                option(value="TLS",selected=(soc.isocountry=="TLS")) Timor-Leste
+                option(value="TGO",selected=(soc.isocountry=="TGO")) Togo
+                option(value="TKL",selected=(soc.isocountry=="TKL")) Tokelau
+                option(value="TON",selected=(soc.isocountry=="TON")) Tonga
+                option(value="TTO",selected=(soc.isocountry=="TTO")) Trinidad and Tobago
+                option(value="TUN",selected=(soc.isocountry=="TUN")) Tunisia
+                option(value="TUR",selected=(soc.isocountry=="TUR")) Turkey
+                option(value="TKM",selected=(soc.isocountry=="TKM")) Turkmenistan
+                option(value="TCA",selected=(soc.isocountry=="TCA")) Turks and Caicos Islands
+                option(value="TUV",selected=(soc.isocountry=="TUV")) Tuvalu
+                option(value="UGA",selected=(soc.isocountry=="UGA")) Uganda
+                option(value="UKR",selected=(soc.isocountry=="UKR")) Ukraine
+                option(value="ARE",selected=(soc.isocountry=="ARE")) United Arab Emirates
+                option(value="GBR",selected=(soc.isocountry=="GBR")) United Kingdom
+                option(value="USA",selected=(soc.isocountry=="USA")) United States
+                option(value="UMI",selected=(soc.isocountry=="UMI")) United States Minor Outlying Islands
+                option(value="URY",selected=(soc.isocountry=="URY")) Uruguay
+                option(value="UZB",selected=(soc.isocountry=="UZB")) Uzbekistan
+                option(value="VUT",selected=(soc.isocountry=="VUT")) Vanuatu
+                option(value="VEN",selected=(soc.isocountry=="VEN")) Venezuela, Bolivarian Republic of
+                option(value="VNM",selected=(soc.isocountry=="VNM")) Viet Nam
+                option(value="VGB",selected=(soc.isocountry=="VGB")) Virgin Islands, British
+                option(value="VIR",selected=(soc.isocountry=="VIR")) Virgin Islands, U.S.
+                option(value="WLF",selected=(soc.isocountry=="WLF")) Wallis and Futuna
+                option(value="ESH",selected=(soc.isocountry=="ESH")) Western Sahara
+                option(value="YEM",selected=(soc.isocountry=="YEM")) Yemen
+                option(value="ZMB",selected=(soc.isocountry=="ZMB")) Zambia
+                option(value="ZWE",selected=(soc.isocountry=="ZWE")) Zimbabwe
           div(class="control-group")
             label.control-label Modified Date
               p #{soc.modified}
@@ -46,10 +293,257 @@ block pageContent
       - else
         form(id="soc_form",class="form-horizontal")
           div(class="control-group")
-            label(class="control-label",for="title") Title
+            label(class="control-label",for="titlecode") Country Name
+            input(name="title",id="title",type="hidden")
             div(class="controls")
-              input(type="text", name="title")
-          div(class="form-actions")    
+              select(name="titlecode",id="titlecode")
+                    option(value="AFG") Afghanistan
+                    option(value="ALA") &Aring;land Islands
+                    option(value="ALB") Albania
+                    option(value="DZA") Algeria
+                    option(value="ASM") American Samoa
+                    option(value="AND") Andorra
+                    option(value="AGO") Angola
+                    option(value="AIA") Anguilla
+                    option(value="ATA") Antarctica
+                    option(value="ATG") Antigua and Barbuda
+                    option(value="ARG") Argentina
+                    option(value="ARM") Armenia
+                    option(value="ABW") Aruba
+                    option(value="AUS") Australia
+                    option(value="AUT") Austria
+                    option(value="AZE") Azerbaijan
+                    option(value="BHS") Bahamas
+                    option(value="BHR") Bahrain
+                    option(value="BGD") Bangladesh
+                    option(value="BRB") Barbados
+                    option(value="BLR") Belarus
+                    option(value="BEL") Belgium
+                    option(value="BLZ") Belize
+                    option(value="BEN") Benin
+                    option(value="BMU") Bermuda
+                    option(value="BTN") Bhutan
+                    option(value="BOL") Bolivia, Plurinational State of
+                    option(value="BIH") Bosnia and Herzegovina
+                    option(value="BWA") Botswana
+                    option(value="BVT") Bouvet Island
+                    option(value="BRA") Brazil
+                    option(value="IOT") British Indian Ocean Territory
+                    option(value="BRN") Brunei Darussalam
+                    option(value="BGR") Bulgaria
+                    option(value="BFA") Burkina Faso
+                    option(value="BDI") Burundi
+                    option(value="KHM") Cambodia
+                    option(value="CMR") Cameroon
+                    option(value="CAN") Canada
+                    option(value="CPV") Cape Verde
+                    option(value="CYM") Cayman Islands
+                    option(value="CAF") Central African Republic
+                    option(value="TCD") Chad
+                    option(value="CHL") Chile
+                    option(value="CHN") China
+                    option(value="CXR") Christmas Island
+                    option(value="CCK") Cocos (Keeling) Islands
+                    option(value="COL") Colombia
+                    option(value="COM") Comoros
+                    option(value="COG") Congo
+                    option(value="COD") Congo, the Democratic Republic of the
+                    option(value="COK") Cook Islands
+                    option(value="CRI") Costa Rica
+                    option(value="CIV") C&ocirc;te d'Ivoire
+                    option(value="HRV") Croatia
+                    option(value="CUB") Cuba
+                    option(value="CYP") Cyprus
+                    option(value="CZE") Czech Republic
+                    option(value="DNK") Denmark
+                    option(value="DJI") Djibouti
+                    option(value="DMA") Dominica
+                    option(value="DOM") Dominican Republic
+                    option(value="ECU") Ecuador
+                    option(value="EGY") Egypt
+                    option(value="SLV") El Salvador
+                    option(value="GNQ") Equatorial Guinea
+                    option(value="ERI") Eritrea
+                    option(value="EST") Estonia
+                    option(value="ETH") Ethiopia
+                    option(value="FLK") Falkland Islands (Malvinas)
+                    option(value="FRO") Faroe Islands
+                    option(value="FJI") Fiji
+                    option(value="FIN") Finland
+                    option(value="FRA") France
+                    option(value="GUF") French Guiana
+                    option(value="PYF") French Polynesia
+                    option(value="ATF") French Southern Territories
+                    option(value="GAB") Gabon
+                    option(value="GMB") Gambia
+                    option(value="GEO") Georgia
+                    option(value="DEU") Germany
+                    option(value="GHA") Ghana
+                    option(value="GIB") Gibraltar
+                    option(value="GRC") Greece
+                    option(value="GRL") Greenland
+                    option(value="GRD") Grenada
+                    option(value="GLP") Guadeloupe
+                    option(value="GUM") Guam
+                    option(value="GTM") Guatemala
+                    option(value="GGY") Guernsey
+                    option(value="GIN") Guinea
+                    option(value="GNB") Guinea-Bissau
+                    option(value="GUY") Guyana
+                    option(value="HTI") Haiti
+                    option(value="HMD") Heard Island and McDonald Islands
+                    option(value="VAT") Holy See (Vatican City State)
+                    option(value="HND") Honduras
+                    option(value="HKG") Hong Kong
+                    option(value="HUN") Hungary
+                    option(value="ISL") Iceland
+                    option(value="IND") India
+                    option(value="IDN") Indonesia
+                    option(value="IRN") Iran, Islamic Republic of
+                    option(value="IRQ") Iraq
+                    option(value="IRL") Ireland
+                    option(value="IMN") Isle of Man
+                    option(value="ISR") Israel
+                    option(value="ITA") Italy
+                    option(value="JAM") Jamaica
+                    option(value="JPN") Japan
+                    option(value="JEY") Jersey
+                    option(value="JOR") Jordan
+                    option(value="KAZ") Kazakhstan
+                    option(value="KEN") Kenya
+                    option(value="KIR") Kiribati
+                    option(value="PRK") Korea, Democratic People's Republic of
+                    option(value="KOR") Korea, Republic of
+                    option(value="KWT") Kuwait
+                    option(value="KGZ") Kyrgyzstan
+                    option(value="LAO") Lao People's Democratic Republic
+                    option(value="LVA") Latvia
+                    option(value="LBN") Lebanon
+                    option(value="LSO") Lesotho
+                    option(value="LBR") Liberia
+                    option(value="LBY") Libyan Arab Jamahiriya
+                    option(value="LIE") Liechtenstein
+                    option(value="LTU") Lithuania
+                    option(value="LUX") Luxembourg
+                    option(value="MAC") Macao
+                    option(value="MKD") Macedonia, the former Yugoslav Republic of
+                    option(value="MDG") Madagascar
+                    option(value="MWI") Malawi
+                    option(value="MYS") Malaysia
+                    option(value="MDV") Maldives
+                    option(value="MLI") Mali
+                    option(value="MLT") Malta
+                    option(value="MHL") Marshall Islands
+                    option(value="MTQ") Martinique
+                    option(value="MRT") Mauritania
+                    option(value="MUS") Mauritius
+                    option(value="MYT") Mayotte
+                    option(value="MEX") Mexico
+                    option(value="FSM") Micronesia, Federated States of
+                    option(value="MDA") Moldova, Republic of
+                    option(value="MCO") Monaco
+                    option(value="MNG") Mongolia
+                    option(value="MNE") Montenegro
+                    option(value="MSR") Montserrat
+                    option(value="MAR") Morocco
+                    option(value="MOZ") Mozambique
+                    option(value="MMR") Myanmar
+                    option(value="NAM") Namibia
+                    option(value="NRU") Nauru
+                    option(value="NPL") Nepal
+                    option(value="NLD") Netherlands
+                    option(value="ANT") Netherlands Antilles
+                    option(value="NCL") New Caledonia
+                    option(value="NZL") New Zealand
+                    option(value="NIC") Nicaragua
+                    option(value="NER") Niger
+                    option(value="NGA") Nigeria
+                    option(value="NIU") Niue
+                    option(value="NFK") Norfolk Island
+                    option(value="MNP") Northern Mariana Islands
+                    option(value="NOR") Norway
+                    option(value="OMN") Oman
+                    option(value="PAK") Pakistan
+                    option(value="PLW") Palau
+                    option(value="PSE") Palestinian Territory, Occupied
+                    option(value="PAN") Panama
+                    option(value="PNG") Papua New Guinea
+                    option(value="PRY") Paraguay
+                    option(value="PER") Peru
+                    option(value="PHL") Philippines
+                    option(value="PCN") Pitcairn
+                    option(value="POL") Poland
+                    option(value="PRT") Portugal
+                    option(value="PRI") Puerto Rico
+                    option(value="QAT") Qatar
+                    option(value="REU") R&eacute;union
+                    option(value="ROU") Romania
+                    option(value="RUS") Russian Federation
+                    option(value="RWA") Rwanda
+                    option(value="BLM") Saint Barth&eacute;lemy
+                    option(value="SHN") Saint Helena, Ascension and Tristan da Cunha
+                    option(value="KNA") Saint Kitts and Nevis
+                    option(value="LCA") Saint Lucia
+                    option(value="MAF") Saint Martin (French part)
+                    option(value="SPM") Saint Pierre and Miquelon
+                    option(value="VCT") Saint Vincent and the Grenadines
+                    option(value="WSM") Samoa
+                    option(value="SMR") San Marino
+                    option(value="STP") Sao Tome and Principe
+                    option(value="SAU") Saudi Arabia
+                    option(value="SEN") Senegal
+                    option(value="SRB") Serbia
+                    option(value="SYC") Seychelles
+                    option(value="SLE") Sierra Leone
+                    option(value="SGP") Singapore
+                    option(value="SVK") Slovakia
+                    option(value="SVN") Slovenia
+                    option(value="SLB") Solomon Islands
+                    option(value="SOM") Somalia
+                    option(value="ZAF") South Africa
+                    option(value="SGS") South Georgia and the South Sandwich Islands
+                    option(value="ESP") Spain
+                    option(value="LKA") Sri Lanka
+                    option(value="SDN") Sudan
+                    option(value="SUR") Suriname
+                    option(value="SJM") Svalbard and Jan Mayen
+                    option(value="SWZ") Swaziland
+                    option(value="SWE") Sweden
+                    option(value="CHE") Switzerland
+                    option(value="SYR") Syrian Arab Republic
+                    option(value="TWN") Taiwan, Province of China
+                    option(value="TJK") Tajikistan
+                    option(value="TZA") Tanzania, United Republic of
+                    option(value="THA") Thailand
+                    option(value="TLS") Timor-Leste
+                    option(value="TGO") Togo
+                    option(value="TKL") Tokelau
+                    option(value="TON") Tonga
+                    option(value="TTO") Trinidad and Tobago
+                    option(value="TUN") Tunisia
+                    option(value="TUR") Turkey
+                    option(value="TKM") Turkmenistan
+                    option(value="TCA") Turks and Caicos Islands
+                    option(value="TUV") Tuvalu
+                    option(value="UGA") Uganda
+                    option(value="UKR") Ukraine
+                    option(value="ARE") United Arab Emirates
+                    option(value="GBR") United Kingdom
+                    option(value="USA") United States
+                    option(value="UMI") United States Minor Outlying Islands
+                    option(value="URY") Uruguay
+                    option(value="UZB") Uzbekistan
+                    option(value="VUT") Vanuatu
+                    option(value="VEN") Venezuela, Bolivarian Republic of
+                    option(value="VNM") Viet Nam
+                    option(value="VGB") Virgin Islands, British
+                    option(value="VIR") Virgin Islands, U.S.
+                    option(value="WLF") Wallis and Futuna
+                    option(value="ESH") Western Sahara
+                    option(value="YEM") Yemen
+                    option(value="ZMB") Zambia
+                    option(value="ZWE") Zimbabwe
+             div(class="form-actions")    
             button(type="submit", class="btn btn-success") Save
         
         

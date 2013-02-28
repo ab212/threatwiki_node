@@ -62,7 +62,7 @@ block pageContent
           tbody
            each datapoint, i in datapoints
               tr(id="row_"+datapoint._id)
-                td #{datapoint.serialNumber}
+                td #{soc.isocountry}-#{datapoint.serialNumber}
                 td
                   a(href="/datapoint/edit?id="+datapoint._id) #{datapoint.title}
                 td
