@@ -8,6 +8,9 @@ $(document).ready(function() {
   $('#tag_form').submit(function(){
     jQuery.post("/api/tag", $('#tag_form').serialize(), function (data, textStatus, jqXHR) {
       console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
+      //Empty title and description after the tag has been saved in case someone wants to add a second tag     
+      $('#tagtitle').val("");
+      $('#tagdescription').val("");
       //New tag just got created, hiding the modal dialog and adding new tag to the list of tags available in the datapoint
       $('#myModal').modal('toggle');
       var selected_soc = $("#soc").val();
