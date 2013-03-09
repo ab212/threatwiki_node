@@ -126,11 +126,10 @@ function load_routes(app) {
                       tagstitle.push(datapoints[i].tags[j].title);
                     }
                   }
-                  
                 }
               }
               res.render('socView', {
-                  title: 'Sentinel Project: Edit SOC '+soc.title,
+                  title: 'Sentinel Project: View SOC '+soc.title,
                   datapoints: datapoints,
                   soc:soc,
                   tag:tag,
@@ -150,7 +149,7 @@ function load_routes(app) {
                 datapoints[i].event_date = moment(datapoints[i].event_date).format("YYYY-MM-DD");
               }
               res.render('socView', {
-                  title: 'Sentinel Project: Edit SOC '+soc.title,
+                  title: 'Sentinel Project: View SOC '+soc.title,
                   datapoints: datapoints,
                   soc:soc,
                   tagsavailable:tagsavailable
