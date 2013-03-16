@@ -1,0 +1,31 @@
+.subunit-boundary {
+  fill: none;
+  stroke: #777;
+  stroke-dasharray: 2,2;
+  stroke-linejoin: round;
+}
+.place-label {
+  font-size: 12px;
+  font-weight: 300;
+  text-anchor: middle;
+}
+
+#datapoint-list .datapoint {
+   margin-bottom: .4em;
+   line-height: 1.5em;
+   background: #eee;
+   width: 800px;
+   margin-bottom: 1px;
+}
+
+#tag-list {
+	float: left;
+}
+#datapoint-list {
+	float: right;
+}
+
+.datapoint div {
+	display: inline-block;
+	width: 200px;
+}

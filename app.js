@@ -122,6 +122,7 @@ app.get('/datapoint/edit', routes.datapoint.edit);
 app.get('/tag', routes.tag);
 app.get('/tag/create', routes.tag.create);
 app.get('/tag/edit', routes.tag.edit);
+app.get('/visualization',routes.visualization);
 
 // import socApi
 var socApi = soc_api.load_socApi(app, SocModel,UserModel,DataPointModel,TagModel);

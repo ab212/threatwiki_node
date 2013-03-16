@@ -1,0 +1,20 @@
+extends layout
+block head
+    script(src="/javascript/d3.v3.min.js")
+    script(src="http://d3js.org/topojson.v0.min.js")
+    script(src="/javascript/crossfilter-dev.js")
+    script(src="/javascript/visualization.js")
+    script(src="/javascript/moment.min.js")
+    link(rel='stylesheet', href='/stylesheets/visualization.css')
+block pageContent
+    a(href="javascript:reset(0)") Reset
+    div(id="date-chart",class="chart")
+       div(class="title") Date Chart
+    div(id="totals")
+        span(id="active")
+        span  of 
+        span(id="total")
+        span  selected
+    div(id="lists")
+        div(id="datapoint-list", class="list")
+        div(id="tag-list", class="list")
