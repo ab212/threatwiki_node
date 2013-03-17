@@ -14,7 +14,7 @@
    margin-bottom: .4em;
    line-height: 1.5em;
    background: #eee;
-   width: 800px;
+   width: 680px;
    margin-bottom: 1px;
 }
 
@@ -27,5 +27,8 @@
 
 .datapoint div {
 	display: inline-block;
-	width: 200px;
+	width: 170px;
+}
+
+circle.points {
 }

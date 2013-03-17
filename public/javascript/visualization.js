@@ -1,61 +1,7 @@
 $(document).ready(function() {
 	
-	/*
-	var width = 960,
-	height = 760;
+	
 
-	//centered on nairobi
-	//1.2833° S, 36.8167° E
-	var projection = d3.geo.albers()
-		.scale(3000)
-		.center([0, -1.2833])
-		.parallels([-5,0])
-		.rotate([-36.8167, 0])
-		.translate([width / 2, height / 2]);
-
-	var path = d3.geo.path().projection(projection);
-
-	var svg = d3.select("body").append("svg")
-		.attr("width", width)
-		.attr("height", height);
-		//load the kenya maps we created
-		
-	d3.json("/mapfiles/kenya.json", function(error, kenya) {
-		console.log(kenya);
-		
-		svg.selectAll(".subunit")
-			.data(topojson.object(kenya, kenya.objects.subunits).geometries)
-			.enter().append("path")
-			//class name based on name of region
-			.attr("class", function(d) { return "subunit " + d.properties.name; })
-			.attr("d", path)
-			//random color for each region of Kenya
-			.style("fill", function() {
-			return "hsl(" + Math.random() * 360 + ",100%,50%)";
-		});
-		//border between the regions
-		svg.append("path")
-			.datum(topojson.mesh(kenya, kenya.objects.subunits, function(a, b) { return a != b; }))
-			.attr("d", path)
-			.attr("class", "subunit-boundary");
-		//This will draw a small circle for each city. 
-		svg.append("path")
-			.datum(topojson.object(kenya, kenya.objects.places))
-			.attr("d", path)
-			.attr("class", "place");
-		//label for places
-		svg.selectAll(".place-label")
-			.data(topojson.object(kenya, kenya.objects.places).geometries)
-			.enter().append("text")
-			.attr("class", "place-label")
-			.attr("transform", function(d) { return "translate(" + projection(d.coordinates) + ")"; })
-			.attr("dy", ".35em")
-			.text(function(d) { return d.properties.name; });
-		//A convenient trick is to use right-aligned labels on the left side of the map, and left-aligned labels on the right side of the map, here using 36.8°E as the threshold:
-		svg.selectAll(".place-label")
-			.attr("x", function(d) { return d.coordinates[0] > 36.8 ? 6 : -6; })
-			.style("text-anchor", function(d) { return d.coordinates[0] > 36.8 ? "start" : "end"; });
-	});*/
 		
 	jQuery.getJSON("http://threatwiki.thesentinelproject.org/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
 		//console.log(datapoints);
@@ -106,20 +52,81 @@ $(document).ready(function() {
 		var byEventMonthGrouping = byEventMonth.group();
 
 		var byCreatedMonth = crossdatapoints.dimension(function(p) { return d3.time.month(p.created); });
-		byCreatedMonth.group().top(Infinity).forEach(function(p, i) {
+		byId.group().top(Infinity).forEach(function(p, i) {
 			//console.log(p.key + ": " + p.value);
 		});
 
 		// Render the initial list of tag.
 		var listtag = d3.select("#tag-list").data([taglist]);
 
-		// Render the initial lists.
-		var list = d3.selectAll(".list").data([datapointlist]);
 
 		// Render the total.
 		d3.selectAll("#total").text(crossdatapoints.groupAll().reduceCount().value());
 
-		// Renders the specified chart or list.
+
+
+		var width = 600,
+		height = 730;
+
+		//Geographic coordinates: 32 00 N, 53 00 E
+		//todo calculate projection and scale automatically
+		//http://stackoverflow.com/questions/14492284/center-a-map-in-d3-given-a-geojson-object
+		var projection = d3.geo.albers()
+			.scale(2000)
+			.center([0, 32])
+			//.parallels([-5,0])
+			.rotate([-54, 0])
+			.translate([width / 2, height / 2]);
+
+		var path = d3.geo.path().projection(projection);
+
+		path = path.projection(projection);
+
+		var svg = d3.select(".container-fluid").append("svg")
+			.attr("width", width)
+			.attr("height", height)
+			.data([iranjson]);
+		
+		function iranjson(div) {
+			div.each(function() {
+				d3.json("/mapfiles/iran.json", function(error, data) {
+
+					console.log(byId);
+					
+					svg.selectAll(".subunit")
+						.data(topojson.object(data, data.objects.iranprovinces).geometries)
+						.enter().append("path")
+						//class name based on name of region
+						.attr("class", function(d) { return "subunit " + d.properties.name; })
+						.attr("d", path)
+						//random color for each region of iran
+						.style("fill", function() {
+						return "hsl(" + Math.random() * 360 + ",100%,50%)";
+					});
+					//border between the regions
+					svg.append("path")
+						.datum(topojson.mesh(data, data.objects.iranprovinces, function(a, b) { return a != b; }))
+						.attr("d", path)
+						.attr("class", "subunit-boundary");
+
+					svg.selectAll("circle.points")
+						.data(byId.top(Infinity),function(d) { return d._id; })
+						.enter()
+						.append("circle")
+						.attr("class","points")
+						.attr("r",4)
+						.attr("transform", function(d) {
+							return "translate(" + projection([d.Location.longitude,d.Location.latitude]) + ")";
+						});
+				});
+			});
+		}
+
+
+		// Render the initial lists.
+		var list = d3.selectAll(".list").data([datapointlist]);
+
+// Renders the specified chart or list.
 		function render(method) {
 			d3.select(this).call(method);
 		}
@@ -127,7 +134,24 @@ $(document).ready(function() {
 		function renderAll() {
 			list.each(render);
 			listtag.each(render);
+
+
+			//svg.each(render);
+			
 			d3.select("#active").text((all.value()));
+		}
+		function updateAllPoints(){
+			//TO CHANGE
+			d3.selectAll("circle").remove();
+			svg.selectAll("circle.points")
+						.data(byId.top(Infinity),function(d) { return d._id; })
+						.enter()
+						.append("circle")
+						.attr("class","points")
+						.attr("r",4)
+						.attr("transform", function(d) {
+							return "translate(" + projection([d.Location.longitude,d.Location.latitude]) + ")";
+						});
 		}
 
 		window.filter = function(tagname) {
@@ -140,16 +164,18 @@ $(document).ready(function() {
 				return false;
 			});
 			renderAll();
+			updateAllPoints();
 		};
 
 		window.reset = function(i) {
 			byTags.filterAll(null);
 			renderAll();
 		};
-
+		svg.each(render);
 
 
 		renderAll();
+
 
 // The table at the bottom of the page
 		function datapointlist(div) {
@@ -197,6 +223,8 @@ $(document).ready(function() {
 					tags.order();
 			});
 		}
+
+
 	});
 
 
