@@ -1,8 +1,4 @@
 $(document).ready(function() {
-	
-	
-
-		
 	jQuery.getJSON("http://threatwiki.thesentinelproject.org/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
 		//console.log(datapoints);
 		//2012-11-04T00:00:00.000Z
@@ -14,7 +10,7 @@ $(document).ready(function() {
 			//normalize tags
 			p.tags.forEach(function(tag){
 				tags.push({title: tag.title,total: 1});
-			});			
+			});
 		});
 		var crossdatapoints = crossfilter(datapoints);
 		var all = crossdatapoints.groupAll();
@@ -46,6 +42,7 @@ $(document).ready(function() {
 		tagList.group().top(Infinity).forEach(function(p, i) {
 			//console.log(p.key + ": " + p.value);
 		});
+		var byLocation = crossdatapoints.dimension(function(p) {return [p.Location.latitude,p.Location.longitude]; });
 
 		//Round to the month
 		var byEventMonth = crossdatapoints.dimension(function(p) { return d3.time.month(p.event_date); });
@@ -90,35 +87,57 @@ $(document).ready(function() {
 		function iranjson(div) {
 			div.each(function() {
 				d3.json("/mapfiles/iran.json", function(error, data) {
-
-					console.log(byId);
-					
+					//console.log(byId);
 					svg.selectAll(".subunit")
 						.data(topojson.object(data, data.objects.iranprovinces).geometries)
 						.enter().append("path")
 						//class name based on name of region
-						.attr("class", function(d) { return "subunit " + d.properties.name; })
+						.attr("class", function(d) { return "subunit";})
 						.attr("d", path)
 						//random color for each region of iran
 						.style("fill", function() {
-						return "hsl(" + Math.random() * 360 + ",100%,50%)";
-					});
+							return "hsl(" + Math.random() * 360 + ",100%,50%)";
+						});
 					//border between the regions
 					svg.append("path")
 						.datum(topojson.mesh(data, data.objects.iranprovinces, function(a, b) { return a != b; }))
 						.attr("d", path)
 						.attr("class", "subunit-boundary");
 
-					svg.selectAll("circle.points")
-						.data(byId.top(Infinity),function(d) { return d._id; })
-						.enter()
+					//Datapoints mapping
+					data = svg.selectAll("circle.points")
+						.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
+
+					//draw circles
+					circleenter=data.enter()
 						.append("circle")
 						.attr("class","points")
-						.attr("r",4)
+						.attr("id",function(d) { return d.title; })
+						.attr("r",function(d) {
+							//console.log(d);
+							//console.log(100*(d.value/crossdatapoints.groupAll().reduceCount().value()));
+							var ratio = 200*(d.value/crossdatapoints.groupAll().reduceCount().value());
+							if (ratio<3){
+								return 3;
+							} else {
+								return ratio;
+							}
+						})
 						.attr("transform", function(d) {
-							return "translate(" + projection([d.Location.longitude,d.Location.latitude]) + ")";
+							return "translate(" + projection([d.key[1],d.key[0]]) + ")";
 						});
+					//add number of datapoints in the circle as text elements
+					/*textenter=data.enter()
+						.append("text")
+						.attr("class", "points-label")
+						.attr("transform", function(d) {
+								return "translate(" + projection([d.key[1],d.key[0]]) + ")";
+							
+						})
+						.attr("dy", ".35em")
+						.text(function(d) { return d.value; });*/
 				});
+
 			});
 		}
 
@@ -137,21 +156,48 @@ $(document).ready(function() {
 
 
 			//svg.each(render);
-			
+
 			d3.select("#active").text((all.value()));
 		}
 		function updateAllPoints(){
 			//TO CHANGE
 			d3.selectAll("circle").remove();
-			svg.selectAll("circle.points")
-						.data(byId.top(Infinity),function(d) { return d._id; })
-						.enter()
-						.append("circle")
-						.attr("class","points")
-						.attr("r",4)
-						.attr("transform", function(d) {
-							return "translate(" + projection([d.Location.longitude,d.Location.latitude]) + ")";
-						});
+
+			d3.selectAll(".points-label").remove();
+			data = svg.selectAll("circle.points")
+				//get all the remaining datapoints, we filter because crossfilter returns also datapoints with value 0 (if they have been filtered out)
+				//see https://github.com/square/crossfilter/issues/12 for more details
+				.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
+			//draw circles
+			circleenter=data.enter()
+				.append("circle")
+				.attr("class","points")
+				.attr("id",function(d) { return d.title; })
+				.attr("r",function(d) {
+					var ratio = 50*(d.value/all.value());
+					if (ratio<3 && ratio >0){
+						return 3;
+					} else if (ratio>20){
+						return 20;
+					} else {
+						return ratio;
+					}
+
+				})
+				.attr("transform", function(d) {
+						return "translate(" + projection([d.key[1],d.key[0]]) + ")";
+				});
+			//add number of datapoints in the circle as text elements
+			/*textenter=data.enter()
+				.append("text")
+				.attr("class", "points-label")
+				.attr("transform", function(d) {
+						return "translate(" + projection([d.key[1],d.key[0]]) + ")";
+					
+				})
+				.attr("dy", ".35em")
+				.text(function(d) { return d.value; });*/
+
 		}
 
 		window.filter = function(tagname) {
@@ -170,6 +216,7 @@ $(document).ready(function() {
 		window.reset = function(i) {
 			byTags.filterAll(null);
 			renderAll();
+			updateAllPoints();
 		};
 		svg.each(render);
 
@@ -184,6 +231,10 @@ $(document).ready(function() {
 
 				var datapointsEnter = datapoints.enter().append("div").attr("class","datapoint");
 				var dateformat = d3.time.format("%B %d, %Y");
+
+				datapointsEnter.append("div")
+					.attr("class", "serialnumber")
+					.text(function(d) { return d.serialNumber; });
 
 				datapointsEnter.append("div")
 					.attr("class", "title")

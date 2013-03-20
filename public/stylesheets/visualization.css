@@ -4,10 +4,11 @@
   stroke-dasharray: 2,2;
   stroke-linejoin: round;
 }
-.place-label {
-  font-size: 12px;
+.points-label {
+  font-size: 18px;
   font-weight: 300;
   text-anchor: middle;
+  fill: #FF0000;
 }
 
 #datapoint-list .datapoint {
@@ -25,10 +26,19 @@
 	float: right;
 }
 
+.datapoint .serialnumber{
+	width: 35px;
+}
+
+.datapoint .stage{
+	width: 120px;
+}
+
 .datapoint div {
 	display: inline-block;
 	width: 170px;
 }
+
 
 circle.points {
 }
