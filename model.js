@@ -35,7 +35,6 @@ function createModel() {
     , modifiedBy : { type: ObjectId, ref: 'User' }
     , nextSerialNumber: {type: Number, required:true }
     , archive: { type: Boolean}
-    ,
     });
 
 
