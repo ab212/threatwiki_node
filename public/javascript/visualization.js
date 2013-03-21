@@ -113,12 +113,17 @@ $(document).ready(function() {
 			d3.selectAll("circle").remove();
 			var data = svg.selectAll("circle.points")
 				.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
+			
+			var radius = d3.scale.sqrt()
+			    .domain([1, 36])
+			    .range([4, 16]);
+
 			//draw circles
 			circleenter=data.enter()
 				.append("circle")
 				.attr("class","points")
 				.attr("r",function(d) {
-					return (4*Math.sqrt(d.value));
+					return radius(d.value);
 				})
 				.attr("transform", function(d) {
 					return "translate(" + projection([d.key[1],d.key[0]]) + ")";
@@ -172,7 +177,7 @@ $(document).ready(function() {
 		};
 		iranjson();
 		renderAll();
-
+		//TODO order by date
 		// The table at the bottom of the page
 		function datapointlist(div) {
 			div.each(function() {
@@ -209,7 +214,6 @@ $(document).ready(function() {
 				datapoints.order();
 			});
 		}
-		//TODO sort list alphabetical order
 		function taglist(div) {
 			div.each(function() {
 				var tags = d3.select(this).selectAll(".tag").data(tagList.group().top(Infinity),function(d) { return d.key; });
