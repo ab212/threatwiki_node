@@ -83,110 +83,47 @@ $(document).ready(function() {
 			.attr("width", width)
 			.attr("height", height)
 			.data([iranjson]);
-		
-		function iranjson(div) {
-			div.each(function() {
-				d3.json("/mapfiles/iran.json", function(error, data) {
-					//console.log(byId);
-					svg.selectAll(".subunit")
-						.data(topojson.object(data, data.objects.iranprovinces).geometries)
-						.enter().append("path")
-						//class name based on name of region
-						.attr("class", function(d) { return "subunit";})
-						.attr("d", path)
-						//random color for each region of iran
-						.style("fill", function() {
-							return "hsl(" + Math.random() * 360 + ",100%,50%)";
-						});
-					//border between the regions
-					svg.append("path")
-						.datum(topojson.mesh(data, data.objects.iranprovinces, function(a, b) { return a != b; }))
-						.attr("d", path)
-						.attr("class", "subunit-boundary");
 
-					//Datapoints mapping
-					data = svg.selectAll("circle.points")
-						.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
-
-					//draw circles
-					circleenter=data.enter()
-						.append("circle")
-						.attr("class","points")
-						.attr("id",function(d) { return d.title; })
-						.attr("r",function(d) {
-							//console.log(d);
-							//console.log(100*(d.value/crossdatapoints.groupAll().reduceCount().value()));
-							var ratio = 200*(d.value/crossdatapoints.groupAll().reduceCount().value());
-							if (ratio<3){
-								return 3;
-							} else {
-								return ratio;
-							}
-						})
-						.attr("transform", function(d) {
-							return "translate(" + projection([d.key[1],d.key[0]]) + ")";
-						});
-					//add number of datapoints in the circle as text elements
-					/*textenter=data.enter()
-						.append("text")
-						.attr("class", "points-label")
-						.attr("transform", function(d) {
-								return "translate(" + projection([d.key[1],d.key[0]]) + ")";
-							
-						})
-						.attr("dy", ".35em")
-						.text(function(d) { return d.value; });*/
-				});
-
+		//the actual map
+		function iranjson() {
+			d3.json("/mapfiles/iran.json", function(error, data) {
+				svg.selectAll(".subunit")
+					.data(topojson.object(data, data.objects.iranprovinces).geometries)
+					.enter().append("path")
+					//class name based on name of region
+					.attr("class", function(d) { return "subunit";})
+					.attr("d", path)
+					//random color for each region of iran
+					.style("fill", function() {
+						return "hsl(" + Math.random() * 360 + ",100%,50%)";
+					});
+				//border between the regions
+				svg.append("path")
+					.datum(topojson.mesh(data, data.objects.iranprovinces, function(a, b) { return a != b; }))
+					.attr("d", path)
+					.attr("class", "subunit-boundary");
+				//because we want datapoints to be drawn AFTER the map
+				updateDatapoints();
 			});
+
 		}
-
-
-		// Render the initial lists.
-		var list = d3.selectAll(".list").data([datapointlist]);
-
-// Renders the specified chart or list.
-		function render(method) {
-			d3.select(this).call(method);
-		}
-
-		function renderAll() {
-			list.each(render);
-			listtag.each(render);
-
-
-			//svg.each(render);
-
-			d3.select("#active").text((all.value()));
-		}
-		function updateAllPoints(){
-			//TO CHANGE
+		//the datapoints on the map
+		function updateDatapoints() {
+			//Datapoints mapping
 			d3.selectAll("circle").remove();
-
-			d3.selectAll(".points-label").remove();
-			data = svg.selectAll("circle.points")
-				//get all the remaining datapoints, we filter because crossfilter returns also datapoints with value 0 (if they have been filtered out)
-				//see https://github.com/square/crossfilter/issues/12 for more details
+			var data = svg.selectAll("circle.points")
 				.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
 			//draw circles
 			circleenter=data.enter()
 				.append("circle")
 				.attr("class","points")
-				.attr("id",function(d) { return d.title; })
 				.attr("r",function(d) {
-					var ratio = 50*(d.value/all.value());
-					if (ratio<3 && ratio >0){
-						return 3;
-					} else if (ratio>20){
-						return 20;
-					} else {
-						return ratio;
-					}
-
+					return (4*Math.sqrt(d.value));
 				})
 				.attr("transform", function(d) {
-						return "translate(" + projection([d.key[1],d.key[0]]) + ")";
+					return "translate(" + projection([d.key[1],d.key[0]]) + ")";
 				});
+			data.exit().remove();
 			//add number of datapoints in the circle as text elements
 			/*textenter=data.enter()
 				.append("text")
@@ -197,7 +134,22 @@ $(document).ready(function() {
 				})
 				.attr("dy", ".35em")
 				.text(function(d) { return d.value; });*/
+		}
 
+
+		// Render the initial list of datapoints
+		var list = d3.selectAll(".list").data([datapointlist]);
+
+		// Renders the specified chart or list.
+		function render(method) {
+			d3.select(this).call(method);
+		}
+
+		function renderAll() {
+			list.each(render);
+			listtag.each(render);
+			//svg.each(render);
+			d3.select("#active").text((all.value()));
 		}
 
 		window.filter = function(tagname) {
@@ -210,21 +162,18 @@ $(document).ready(function() {
 				return false;
 			});
 			renderAll();
-			updateAllPoints();
+			updateDatapoints();
 		};
 
 		window.reset = function(i) {
 			byTags.filterAll(null);
 			renderAll();
-			updateAllPoints();
+			updateDatapoints();
 		};
-		svg.each(render);
-
-
+		iranjson();
 		renderAll();
 
-
-// The table at the bottom of the page
+		// The table at the bottom of the page
 		function datapointlist(div) {
 			div.each(function() {
 				var datapoints = d3.select(this).selectAll(".datapoint").data(byId.top(Infinity),function(d) { return d._id; });
@@ -242,11 +191,14 @@ $(document).ready(function() {
 
 				datapointsEnter.append("div")
 					.attr("class", "title")
+					.append("a")
+					.attr("href",function(d) { return "/datapoint/edit?id="+d._id; })
+					.attr("target","_blank")
 					.text(function(d) { return d.title; });
 
 				datapointsEnter.append("div")
 					.attr("class", "stage")
-					.text(function(d) { return d.stage; });	
+					.text(function(d) { return d.stage; });
 
 				datapointsEnter.append("div")
 					.attr("class", "title")
@@ -257,21 +209,20 @@ $(document).ready(function() {
 				datapoints.order();
 			});
 		}
-
+		//TODO sort list alphabetical order
 		function taglist(div) {
 			div.each(function() {
 				var tags = d3.select(this).selectAll(".tag").data(tagList.group().top(Infinity),function(d) { return d.key; });
-				
+
 				var tagsEnter = tags.enter().append("div").attr("class","tag");
 
 				tagsEnter.append("a")
 					.attr("class", "title")
 					//TODO not have javascript directly in the link
 					.attr("href",function(d) { return ("javascript:filter('"+d.key+"')"); })
-					.text(function(d) { return d.key; });
-					tags.exit().remove();
-
-					tags.order();
+					.text(function(d) { return d.key+" ("+d.value+")"; });
+				tags.exit().remove();
+				tags.order();
 			});
 		}
 

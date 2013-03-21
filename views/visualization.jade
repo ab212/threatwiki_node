@@ -7,12 +7,11 @@ block head
     script(src="/javascript/moment.min.js")
     link(rel='stylesheet', href='/stylesheets/visualization.css')
 block pageContent
-    a(href="javascript:reset(0)") Reset
+    a(href="javascript:reset(0)") Reset Filter
     div(id="totals")
         span(id="active")
-        span  of 
+        span  datapoints out of a total of 
         span(id="total")
-        span  selected
     div(id="lists")
         div(id="datapoint-list", class="list")
         div(id="tag-list", class="list")
