@@ -38,11 +38,13 @@ $(document).ready(function() {
 
 		var crosstags = crossfilter(tags);
 
+
 		var tagList = crosstags.dimension(function(p){return p.title;});
 		tagList.group().top(Infinity).forEach(function(p, i) {
 			//console.log(p.key + ": " + p.value);
 		});
 		var byLocation = crossdatapoints.dimension(function(p) {return [p.Location.latitude,p.Location.longitude]; });
+		var byFullLocation = crossdatapoints.dimension(function(p) {return p.Location; });
 
 		//Round to the month
 		var byEventMonth = crossdatapoints.dimension(function(p) { return d3.time.month(p.event_date); });
@@ -61,15 +63,14 @@ $(document).ready(function() {
 		d3.selectAll("#total").text(crossdatapoints.groupAll().reduceCount().value());
 
 
-
-		var width = 600,
+		var width = 680,
 		height = 730;
 
 		//Geographic coordinates: 32 00 N, 53 00 E
 		//todo calculate projection and scale automatically
 		//http://stackoverflow.com/questions/14492284/center-a-map-in-d3-given-a-geojson-object
 		var projection = d3.geo.albers()
-			.scale(2000)
+			.scale(2300)
 			.center([0, 32])
 			//.parallels([-5,0])
 			.rotate([-54, 0])
@@ -113,13 +114,15 @@ $(document).ready(function() {
 			d3.selectAll("circle").remove();
 			var data = svg.selectAll("circle.points")
 				.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
-			
+			//nb of datapoints per location could be from 1 to 36
 			var radius = d3.scale.sqrt()
 			    .domain([1, 36])
 			    .range([4, 16]);
 
 			//draw circles
 			circleenter=data.enter()
+				.append("svg:a")
+				.attr("xlink:href",function(d) { return ("javascript:filterLocation('"+d.key+"')"); })
 				.append("circle")
 				.attr("class","points")
 				.attr("r",function(d) {
@@ -166,14 +169,48 @@ $(document).ready(function() {
 				}
 				return false;
 			});
+			d3.select("#activefilter").text(tagname);
 			renderAll();
 			updateDatapoints();
 		};
 
+		window.filterLocation = function(location) {
+			var locationname;
+			byFullLocation.filterFunction(function (datapointlocation) {
+				var newlocation = location;
+				var locationarray=newlocation.split(',');
+				if (datapointlocation.latitude==locationarray[0] && datapointlocation.longitude==locationarray[1]){
+					locationname=datapointlocation.title;
+					return true;
+				}
+				return false;
+			});
+			updateDatapoints();
+			redoTagList();
+			renderAll();
+			d3.select("#activelocation").text(locationname);
+		};
+
+		function redoTagList() {
+			var tags=[];
+			byId.top(Infinity).forEach(function(p, i) {
+				p.tags.forEach(function(tag){
+					tags.push({title: tag.title,total: 1});
+				});
+			});
+			crosstags = crossfilter(tags);
+			tagList = crosstags.dimension(function(p){return p.title;});
+		}
+
 		window.reset = function(i) {
 			byTags.filterAll(null);
+			byFullLocation.filterAll(null);
+			redoTagList();
 			renderAll();
 			updateDatapoints();
+			d3.select("#activefilter").text('');
+			d3.select("#activelocation").text('');
+
 		};
 		iranjson();
 		renderAll();
@@ -189,10 +226,6 @@ $(document).ready(function() {
 				datapointsEnter.append("div")
 					.attr("class", "serialnumber")
 					.text(function(d) { return d.serialNumber; });
-
-				datapointsEnter.append("div")
-					.attr("class", "title")
-					.text(function(d) { return d.soc; });
 
 				datapointsEnter.append("div")
 					.attr("class", "title")
@@ -216,10 +249,9 @@ $(document).ready(function() {
 		}
 		function taglist(div) {
 			div.each(function() {
-				var tags = d3.select(this).selectAll(".tag").data(tagList.group().top(Infinity),function(d) { return d.key; });
-
+				//d3.selectAll(this.childNodes).remove();
+				var tags = d3.select(this).selectAll(".tag").data(tagList.group().top(Infinity),function(d) { return d.key+d.value; });
 				var tagsEnter = tags.enter().append("div").attr("class","tag");
-
 				tagsEnter.append("a")
 					.attr("class", "title")
 					//TODO not have javascript directly in the link

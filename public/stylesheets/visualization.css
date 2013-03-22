@@ -15,12 +15,13 @@
    margin-bottom: .4em;
    line-height: 1.5em;
    background: #eee;
-   width: 680px;
+   width: 510px;
    margin-bottom: 1px;
 }
 
 #tag-list {
-	float: left;
+  float: left;
+  width:218px;
 }
 #datapoint-list {
 	float: right;
