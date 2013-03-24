@@ -70,8 +70,9 @@ block pageContent
                 td
                   span #{datapoint.stage}
                 td
-                  each tags in datapoint.tags
-                    span #{tags.title} <br />
+                  if (typeof(datapoint.tags) != 'undefined'
+                      each tags in datapoint.tags
+                        span #{tags.title} <br />
                 td
                   span #{datapoint.event_date}
                 td
