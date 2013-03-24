@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	//var host = "http://threatwiki.thesentinelproject.org";
-	var host = "http://localhost:3000"
+	var host = "http://localhost:3000";
 	jQuery.getJSON(host+"/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
 		//console.log(datapoints);
 		//2012-11-04T00:00:00.000Z
