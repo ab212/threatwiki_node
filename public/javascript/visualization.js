@@ -45,14 +45,14 @@ $(document).ready(function() {
 		// Render the total.
 		d3.selectAll("#total").text(crossdatapoints.groupAll().reduceCount().value());
 
-		var width = 650,
+		var width = 535,
 		height = 730;
 
 		//Geographic coordinates: 32 00 N, 53 00 E
 		//todo calculate projection and scale automatically
 		//http://stackoverflow.com/questions/14492284/center-a-map-in-d3-given-a-geojson-object
 		var projection = d3.geo.albers()
-			.scale(2300)
+			.scale(1900)
 			.center([0, 32])
 			//.parallels([-5,0])
 			.rotate([-54.5, 0])
@@ -227,7 +227,7 @@ $(document).ready(function() {
 					.text(function(d) { return d.stage; });
 
 				datapointsEnter.append("div")
-					.attr("class", "title")
+					.attr("class", "date")
 					.text(function(d) { return dateformat(d.event_date); });
 
 				datapoints.exit().remove();
