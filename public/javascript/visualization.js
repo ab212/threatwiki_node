@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	jQuery.getJSON("http://threatwiki.thesentinelproject.org/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
+	//var host = "http://threatwiki.thesentinelproject.org";
+	var host = "http://localhost:3000"
+	jQuery.getJSON(host+"/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
 		//console.log(datapoints);
 		//2012-11-04T00:00:00.000Z
 		tags = [];
@@ -18,21 +20,9 @@ $(document).ready(function() {
 
 		var byStage = crossdatapoints.dimension(function(p) { return p.stage; });
 
-		byStage.group().top(Infinity).forEach(function(p, i) {
-			//console.log(p.key + ": " + p.value);
-		});
-
 		var byCreator = crossdatapoints.dimension(function(p) { return p.createdBy.name; });
 
-		byCreator.group().top(Infinity).forEach(function(p, i) {
-			//console.log(p.key + ": " + p.value);
-		});
-
 		var bySoc = crossdatapoints.dimension(function(p) { return p.soc; });
-
-		bySoc.group().top(Infinity).forEach(function(p, i) {
-			//console.log(p.key + ": " + p.value);
-		});
 
 		var byTags = crossdatapoints.dimension(function(p){return p.tags;});
 
@@ -40,30 +30,22 @@ $(document).ready(function() {
 
 
 		var tagList = crosstags.dimension(function(p){return p.title;});
-		tagList.group().top(Infinity).forEach(function(p, i) {
-			//console.log(p.key + ": " + p.value);
-		});
+
 		var byLocation = crossdatapoints.dimension(function(p) {return [p.Location.latitude,p.Location.longitude]; });
 		var byFullLocation = crossdatapoints.dimension(function(p) {return p.Location; });
-
+		var tagsFiltered = false;
 		//Round to the month
 		var byEventMonth = crossdatapoints.dimension(function(p) { return d3.time.month(p.event_date); });
 		var byEventMonthGrouping = byEventMonth.group();
-
 		var byCreatedMonth = crossdatapoints.dimension(function(p) { return d3.time.month(p.created); });
-		byId.group().top(Infinity).forEach(function(p, i) {
-			//console.log(p.key + ": " + p.value);
-		});
 
 		// Render the initial list of tag.
 		var listtag = d3.select("#tag-list").data([taglist]);
 
-
 		// Render the total.
 		d3.selectAll("#total").text(crossdatapoints.groupAll().reduceCount().value());
 
-
-		var width = 680,
+		var width = 650,
 		height = 730;
 
 		//Geographic coordinates: 32 00 N, 53 00 E
@@ -73,7 +55,7 @@ $(document).ready(function() {
 			.scale(2300)
 			.center([0, 32])
 			//.parallels([-5,0])
-			.rotate([-54, 0])
+			.rotate([-54.5, 0])
 			.translate([width / 2, height / 2]);
 
 		var path = d3.geo.path().projection(projection);
@@ -83,6 +65,7 @@ $(document).ready(function() {
 		var svg = d3.select(".container-fluid").append("svg")
 			.attr("width", width)
 			.attr("height", height)
+			.attr("class","map")
 			.data([iranjson]);
 
 		//the actual map
@@ -146,7 +129,7 @@ $(document).ready(function() {
 
 
 		// Render the initial list of datapoints
-		var list = d3.selectAll(".list").data([datapointlist]);
+		var list = d3.selectAll("#datapoint-list").data([datapointlist]);
 
 		// Renders the specified chart or list.
 		function render(method) {
@@ -170,8 +153,10 @@ $(document).ready(function() {
 				return false;
 			});
 			d3.select("#activefilter").text(tagname);
+			//redoTagList();
 			renderAll();
 			updateDatapoints();
+			tagsFiltered = true;
 		};
 
 		window.filterLocation = function(location) {
@@ -189,6 +174,9 @@ $(document).ready(function() {
 			redoTagList();
 			renderAll();
 			d3.select("#activelocation").text(locationname);
+			if (tagsFiltered){
+				d3.selectAll($(".tag")).remove();
+			}
 		};
 
 		function redoTagList() {
@@ -210,7 +198,7 @@ $(document).ready(function() {
 			updateDatapoints();
 			d3.select("#activefilter").text('');
 			d3.select("#activelocation").text('');
-
+			tagsFiltered = false;
 		};
 		iranjson();
 		renderAll();

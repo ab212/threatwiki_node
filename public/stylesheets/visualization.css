@@ -24,9 +24,11 @@
   width:218px;
 }
 #datapoint-list {
-	float: right;
+  float: left;
 }
-
+svg.map{
+  float: left;
+}
 .datapoint .serialnumber{
 	width: 35px;
 }
