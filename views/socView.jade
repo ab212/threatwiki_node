@@ -70,7 +70,7 @@ block pageContent
                 td
                   span #{datapoint.stage}
                 td
-                  if (typeof(datapoint.tags) != 'undefined'
+                  if (typeof(datapoint.tags) != undefined && datapoint.tags!=null)
                       each tags in datapoint.tags
                         span #{tags.title} <br />
                 td
