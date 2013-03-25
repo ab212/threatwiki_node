@@ -111,6 +111,7 @@ $(document).ready(function() {
 				.attr("r",function(d) {
 					return radius(d.value);
 				})
+				//opacity more transparent on bigger datapoints on the map (to be able to see whats behind)
 				.style("fill-opacity",function(d) {
 					if (radius(d.value)>8){
 						return 0.6;
@@ -259,10 +260,4 @@ $(document).ready(function() {
 
 
 	});
-
-
-
-
-
-	
 });
