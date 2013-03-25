@@ -111,6 +111,13 @@ $(document).ready(function() {
 				.attr("r",function(d) {
 					return radius(d.value);
 				})
+				.style("fill-opacity",function(d) {
+					if (radius(d.value)>8){
+						return 0.6;
+					} else {
+						return 0.9;
+					}
+				})
 				.attr("transform", function(d) {
 					return "translate(" + projection([d.key[1],d.key[0]]) + ")";
 				});
