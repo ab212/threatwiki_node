@@ -128,6 +128,14 @@ block pageContent
                     option(value="Social Media",selected=(source.sourcetype=="Social Media")) Social Media
                     option(value="Informant",selected=(source.sourcetype=="Informant")) Informant
                     option(value="Other",selected=(source.sourcetype=="Other")) Other
+                  if (/^(f|ht)tps?:\/\//i.test(source.url))
+                    ul(class="inline")
+                      li
+                        a(href=source.url,target="_blank") Open Link 
+                      li
+                        a(href="http://webcache.googleusercontent.com/search?q=cache:"+source.url,target="_blank") Google cache 
+                      li
+                        a(href="http://web.archive.org/web/20130114215817/"+source.url,target="_blank") Internet Archive Wayback 
                   br/
               else
                 input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")
