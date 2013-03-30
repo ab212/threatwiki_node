@@ -35,7 +35,7 @@ function authenticate(req, res, UserModel, callback) {
     });
     return true;
   } else {
-    console.log("Can't create a new datapoint if currently not logged in");
+    console.log("This action is not permitted if you are not logged in");
     return res.send(401);
   }
 }
@@ -318,17 +318,30 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     });
   });*/
 
-//archive tag by ID
+  //archive tag by ID
   app.put('/api/tag/:id/archive', function (req, res) {
-    console.log(req.params.id+' '+req.body.archive);
-    return TagModel.update({ _id: req.params.id }, { archive: req.body.archive }, function (err) {
-    if (!err){
-      return res.send(200);
-    } else {
-      console.log('Cant archive the datapoint'+req.params.id);
-      return res.send(500);
+    console.log("Archive: "+req.params.id+' '+req.body.archive);
+
+    function archiveTag(req){
+      return TagModel.update({ _id: req.params.id }, { archive: req.body.archive }, function (err) {
+        if (!err){
+          return res.send(200);
+        } else {
+          console.log('Cant archive the datapoint'+req.params.id);
+          return res.send(500);
+        }
+      });
     }
-  });
+
+    if((app.settings.env != 'production')) {
+      generateDevUser(UserModel, function(user) {
+        archiveTag(req);
+      });
+    } else {
+      authenticate(req, res, UserModel, function(user) {
+        archiveTag(req);
+      });
+    }
 });
 }
 

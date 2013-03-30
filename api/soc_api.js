@@ -34,7 +34,7 @@ function authenticate(req, res, UserModel, callback) {
     });
     return true;
   } else {
-    console.log("Can't create a new datapoint if currently not logged in");
+    console.log("This action is not permitted if you are not logged in");
     return res.send(401);
   }
 }
@@ -283,41 +283,39 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
     });
   });*/
 
-//archive datapoint by ID
+  //archive SOC by ID
   app.put('/api/soc/:id/archive', function (req, res) {
-    return SocModel.findById(req.params.id, function (err,soc) {
-console.log("time to archive"+req.body.archive);
-       if (!err && soc){
 
-        soc.archive=req.body.archive;
-
-        return soc.save(function (err) {
-          if (!err) {
-            //Now that SOC record is updated, we want to update all datapoints part of that SOC
-            //Disabled for now, since SOC are disabled from UI, datapoints would never be visible anyway?
-            /*
-            var searchConditions = { soc: soc.title},
-             update = {   archive_from_soc: true },
-             options = { multi: true };
-             //Update datapoints
-             DataPointModel.update(searchConditions, update, options, function(err) {
-                  if (err){
-                    console.log(err);
-                  }
-              });*/
+    function archiveSoc(req){
+      return SocModel.findById(req.params.id, function (err,soc) {
+        console.log("time to archive"+req.body.archive);
+        if (!err && soc){
+          soc.archive=req.body.archive;
+          return soc.save(function (err) {
+            if (!err) {
               return res.send(200);
-           } else {
-            console.log('Cant save soc '+err);
-            return res.send(500);
-          }
-         });
+            } else {
+              console.log('Cant archive soc '+err);
+              return res.send(500);
+            }
+          });
+        } else {
+          console.log('Cant archive the SOC'+req.params.id+err);
+          return res.send(500);
+        }
+      });
+    }
 
+    if((app.settings.env != 'production')) {
+      generateDevUser(UserModel, function(user) {
+        archiveSoc(req);
+      });
     } else {
-      console.log('Cant archive the SOC'+req.params.id);
-      return res.send(500);
+      authenticate(req, res, UserModel, function(user) {
+        archiveSoc(req);
+      });
     }
   });
-});
 }
 
 exports.load_socApi = load_socApi;

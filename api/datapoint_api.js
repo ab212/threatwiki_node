@@ -37,7 +37,7 @@ function authenticate(req, res, UserModel, callback) {
     });
     return true;
   } else {
-    console.log("Can't create a new datapoint if currently not logged in");
+    console.log("This action is not permitted if you are not logged in");
     return res.send(401);
   }
 }
@@ -279,7 +279,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   app.put('/api/datapoint/:id', function (req, res) {
     var date_now = new Date();
     date_now.setTimezone('UTC');
-    
+
     function update_datapoint(req, date_now, user) {
       DataPointModel.findById(req.params.id, function (err, datapoint) {
       if (!err && datapoint){
@@ -334,12 +334,12 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
           var source_delete = datapoint.sources.id(id_delete);
           source_delete.remove();
         }
-        
-        
+
+
 
         return datapoint.save(function (err) {
           if (!err) {
-            console.log("updated");
+            console.log("datapoint updated");
             return res.send(200);
           } else {
             console.log(err);
@@ -387,16 +387,28 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
  //archive datapoint by ID
   app.put('/api/datapoint/:id/archive', function (req, res) {
-    console.log(req.body.archive);
-    return DataPointModel.update({ _id: req.params.id }, { archive: req.body.archive }, function (err) {
-    if (!err){
-      return res.send(200);
+
+    function archiveDatapoint(req) {
+      return DataPointModel.update({ _id: req.params.id }, { archive: req.body.archive }, function (err) {
+        if (!err){
+          return res.send(200);
+        } else {
+          console.log('Cant archive the datapoint'+req.params.id);
+          return res.send(500);
+        }
+      });
+    }
+
+    if((app.settings.env != 'production')) {
+      generateDevUser(UserModel, function(user) {
+        archiveDatapoint(req);
+      });
     } else {
-      console.log('Cant archive the datapoint'+req.params.id);
-      return res.send(500);
+      authenticate(req, res, UserModel, function(user) {
+        archiveDatapoint(req);
+      });
     }
   });
-});
 
 }
 
