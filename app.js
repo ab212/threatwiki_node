@@ -87,6 +87,7 @@ everyauth.google
 app.configure(function () {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use(express.compress());
   app.use(express.bodyParser());
   app.use(express.cookieParser('secret'));
   //TODO: Will need to specify a memorystore to go in PROD (see warning in log when deploying in PROD)
