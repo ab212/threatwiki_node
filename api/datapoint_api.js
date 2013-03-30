@@ -57,7 +57,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
   // retrieve by id
   app.get('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
+    return DataPointModel.findById(req.params.id).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -125,7 +125,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
     var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$gte : d_small, $lt : d_big},archive: {$ne: true}}).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_small, $lt : d_big},archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -139,7 +139,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   app.get('/api/datapoint/date/after/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date_start,10));
     d_small.setHours(0,0,0,0);
-    return DataPointModel.find({created: {$gte : d_small},archive: {$ne: true}}).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_small},archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -153,7 +153,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   app.get('/api/datapoint/date/before/:date', function (req, res) {
     var d_big = new Date(parseInt(req.params.date,10));
     d_big.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$lt : d_big},archive: {$ne: true}}).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$lt : d_big},archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -172,7 +172,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$gte : d_start, $lt : d_end},archive: {$ne: true}}).populate('tags','title').populate('created by','name').exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_start, $lt : d_end},archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
