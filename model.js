@@ -6,7 +6,7 @@ function createModel() {
   var DataPoint = new Schema ({
       title: { type: String, required: true }
     , description: { type: String, required: true }
-    , comment: { type: String}
+    , comment: { type: String, select: false}
     , Location: {
         title: { type: String, required: true }
       , latitude: { type: String, required: true }

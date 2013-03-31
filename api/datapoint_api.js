@@ -43,9 +43,19 @@ function authenticate(req, res, UserModel, callback) {
 }
 
 function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
+
+  //If user is currently logged in, we also get the field comment (that is disabled by default in the model)
+  function loggedInQuery(req){
+    if (app.settings.env != 'production' || (req.session.auth && req.session.auth.loggedIn)) {
+      return ("+comment");
+    } else {
+      return ("");
+    }
+  }
+
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
-    return DataPointModel.find({archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
+    return DataPointModel.find({archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
       if (!err && datapoints) {
         return res.jsonp(datapoints);
       } else {
@@ -57,7 +67,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
   // retrieve by id
   app.get('/api/datapoint/:id', function (req, res) {
-    return DataPointModel.findById(req.params.id).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
+    return DataPointModel.findById(req.params.id).populate('tags','title').select(loggedInQuery(req)).populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -70,7 +80,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   // retrieve by SOC
   app.get('/api/datapoint/soc/:soc', function (req, res) {
     console.log("DATAPOINT_API:SOC:Search by: " + req.params.soc);
-    return DataPointModel.find({soc: req.params.soc,archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
+    return DataPointModel.find({soc: req.params.soc,archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -83,7 +93,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   // retrieve by stage of genocide
   app.get('/api/datapoint/stage/:stage', function (req, res) {
     console.log("DATAPOINT_API:SOC:Search by: " + req.params.soc);
-    return DataPointModel.find({stage: req.params.stage,archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
+    return DataPointModel.find({stage: req.params.stage,archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
       if (!err && datapoints) {
         return res.jsonp(datapoints);
       } else {
@@ -96,7 +106,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
    // retrieve by tagids, if multiple tags specified under /api/datapoint/tag/tagidnumberone,tagidnumbertwo then datapoint must contain ALL tags specified (not OR)
   app.get('/api/datapoint/tag/:tagsid', function (req, res) {
     var tagsid=req.params.tagsid.split(',');
-    return DataPointModel.find({ archive: {$ne: true}}).where('tags').all(tagsid).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
+    return DataPointModel.find({ archive: {$ne: true}}).where('tags').all(tagsid).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
       if (!err && datapoints) {
         return res.jsonp(datapoints);
       } else {
@@ -109,7 +119,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   // retrieve by location
   app.get('/api/datapoint/location/:Location', function (req, res) {
     console.log("DATAPOINT_API:LOCATION:Search by: " + req.params.Location);
-    return DataPointModel.find({'Location.title': req.params.Location,archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
+    return DataPointModel.find({'Location.title': req.params.Location,archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -125,7 +135,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
     var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$gte : d_small, $lt : d_big},archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_small, $lt : d_big},archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -139,7 +149,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   app.get('/api/datapoint/date/after/:date', function (req, res) {
     var d_small = new Date(parseInt(req.params.date_start,10));
     d_small.setHours(0,0,0,0);
-    return DataPointModel.find({created: {$gte : d_small},archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_small},archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -153,7 +163,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   app.get('/api/datapoint/date/before/:date', function (req, res) {
     var d_big = new Date(parseInt(req.params.date,10));
     d_big.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$lt : d_big},archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$lt : d_big},archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -172,7 +182,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);
     d_end.setHours(23,59,59,59);
-    return DataPointModel.find({created: {$gte : d_start, $lt : d_end},archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
+    return DataPointModel.find({created: {$gte : d_start, $lt : d_end},archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -189,7 +199,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
       if (!err && user) {
         console.log("User found at " + user._id);
         // search datapoint for the user_id that we just found
-        return DataPointModel.find({createdBy: user._id,archive: {$ne: true}}).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
+        return DataPointModel.find({createdBy: user._id,archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
           if (!err && datapoint) {
             return res.jsonp(datapoint);
           } else {

@@ -246,13 +246,11 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
             save_tag(req, date_now, user);
           });
         }
-      }else {
+      } else {
         console.log(err);
         return res.send(null);
       }
     });
-
-    
   });
 
   // update
@@ -261,28 +259,28 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
     date_now.setTimezone('UTC');
 
     function update_tag(req, date_now, user) {
-    TagModel.findById(req.params.id, function (err, tag) {
-      if (!err && tag){
-        tag.title = req.body.title;
-        tag.description = req.body.description;
-        tag.soc = req.body.soc;
-        tag.modified = date_now;
-        tag.modifiedBy = user._id;
+      TagModel.findById(req.params.id, function (err, tag) {
+        if (!err && tag){
+          tag.title = req.body.title;
+          tag.description = req.body.description;
+          tag.soc = req.body.soc;
+          tag.modified = date_now;
+          tag.modifiedBy = user._id;
 
-        return tag.save(function (err) {
-          if (!err) {
-            console.log("updated");
-          } else {
-            console.log(err);
-            return res.send(500);
-          }
-          return res.jsonp(tag);
-        });
-    } else {
-      console.log(err);
-      return res.send(null);
-    }
-    });
+          return tag.save(function (err) {
+            if (!err) {
+              console.log("updated");
+            } else {
+              console.log(err);
+              return res.send(500);
+            }
+            return res.jsonp(tag);
+          });
+        } else {
+          console.log(err);
+          return res.send(null);
+        }
+      });
     }
 
     if((app.settings.env != 'production')) {
