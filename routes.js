@@ -88,7 +88,7 @@ function load_routes(app) {
         soc.created = moment(soc.created).format("YYYY-MM-DD");
         soc.modified = moment(soc.modified).format("YYYY-MM-DD");
         res.render('socForm',  {
-          title: 'Sentinel Project: Edit SOC '+soc.title,
+          title: 'Sentinel Project: Edit SOC '+soc.displayname,
           soc: soc
         });
       });
@@ -129,7 +129,7 @@ function load_routes(app) {
                 }
               }
               res.render('socView', {
-                  title: 'Sentinel Project: View SOC '+soc.title,
+                  title: 'Sentinel Project: View SOC '+soc.displayname,
                   datapoints: datapoints,
                   soc:soc,
                   tag:tag,
@@ -149,7 +149,7 @@ function load_routes(app) {
                 datapoints[i].event_date = moment(datapoints[i].event_date).format("YYYY-MM-DD");
               }
               res.render('socView', {
-                  title: 'Sentinel Project: View SOC '+soc.title,
+                  title: 'Sentinel Project: View SOC '+soc.displayname,
                   datapoints: datapoints,
                   soc:soc,
                   tagsavailable:tagsavailable

@@ -31,7 +31,10 @@ block pageContent
            each soc, i in socs
               tr(id="row_"+soc._id)
                 td
-                  a(href="/soc/view?soc="+soc.title) #{soc.title}
+                  if (typeof(soc.displayname)!='undefined')
+                    a(href="/soc/view?soc="+soc.title) #{soc.displayname}
+                  else
+                    a(href="/soc/view?soc="+soc.title) #{soc.title}
                 if (typeof(datapoints) != 'undefined')
                   td
                     if (typeof(datapoints[i]) != 'undefined')
@@ -42,12 +45,3 @@ block pageContent
                   td
                     if (typeof(datapoints[i]) != 'undefined')
                       span #{datapoints[i].created}
-
-                //         
-                  td
-                    span #{soc.created}
-                  td
-                    span #{soc.createdBy.name}
-                  td 
-                    a(href="#", id="delete_"+soc._id) delete
-

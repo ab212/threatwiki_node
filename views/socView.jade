@@ -9,10 +9,10 @@ block pageContent
       a(href="/soc") List of SOC
       span.divider
     if (typeof(tag) == 'undefined')
-      li.active SOC: #{soc.title}
+      li.active SOC: #{soc.displayname}
     else
       li 
-        a(href="/soc/view?soc="+soc.title) SOC: #{soc.title}
+        a(href="/soc/view?soc="+soc.title) SOC: #{soc.displayname}
         span.divider
       each tagname, i in tag
         li.active Tag: #{tagname.title}

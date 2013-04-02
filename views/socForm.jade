@@ -24,6 +24,9 @@ block pageContent
        form(id="soc_form_update",class="form-horizontal")
           input(name="id", value=soc._id, type="hidden")
           div(class="control-group")
+            label(class="control-label") SOC Display Name
+            div(class="controls")
+              input(name="displayname",id="displayname",type="text",value=soc.displayname)
             label(class="control-label",for="titlecode") Country Name
             input(name="title",id="title",type="hidden",value=soc.title)
             div(class="controls")
@@ -293,6 +296,9 @@ block pageContent
       - else
         form(id="soc_form",class="form-horizontal")
           div(class="control-group")
+            label(class="control-label") SOC Display Name
+            div(class="controls")
+              input(name="displayname",id="displayname",type="text")
             label(class="control-label",for="titlecode") Country Name
             input(name="title",id="title",type="hidden")
             div(class="controls")

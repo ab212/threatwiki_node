@@ -177,6 +177,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
       soc = new SocModel({
         title: req.body.title,
         isocountry: req.body.titlecode,
+        displayname: req.body.displayname,
         created: date_now,
         modified: date_now,
         //save the _id of the current user in the new SOC
@@ -215,6 +216,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
 
         oldTitle = soc.title;
         soc.title = req.body.title;
+        soc.displayname= req.body.displayname;
         soc.isocountry= req.body.titlecode;
         soc.modified = date_now;
         soc.modifiedBy = user._id;
