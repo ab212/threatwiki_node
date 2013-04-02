@@ -10,9 +10,11 @@ $(document).ready(function() {
 			p.event_date = ymdFormat.parse(moment.utc(p.event_date).format("YYYY-MM-DD"));
 			p.created = ymdFormat.parse(moment.utc(p.created).format("YYYY-MM-DD"));
 			//normalize tags
-			p.tags.forEach(function(tag){
-				tags.push({title: tag.title,total: 1});
-			});
+			if (typeof(p.tags)!='undefined'  && p.tags!=null){
+				p.tags.forEach(function(tag){
+					tags.push({title: tag.title,total: 1});
+				});
+			}
 		});
 		var crossdatapoints = crossfilter(datapoints);
 		var all = crossdatapoints.groupAll();
@@ -153,9 +155,11 @@ $(document).ready(function() {
 
 		window.filter = function(tagname) {
 			byTags.filterFunction(function (tag) {
-				for(i=0; i<tag.length; i++) {
-					if (tag[i].title==tagname){
-						return true;
+				if (tag!=null){
+					for(i=0; i<tag.length; i++) {
+						if (tag[i].title==tagname){
+							return true;
+						}
 					}
 				}
 				return false;
@@ -190,9 +194,11 @@ $(document).ready(function() {
 		function redoTagList() {
 			var tags=[];
 			byId.top(Infinity).forEach(function(p, i) {
-				p.tags.forEach(function(tag){
-					tags.push({title: tag.title,total: 1});
-				});
+				if (p.tags!=null){
+					p.tags.forEach(function(tag){
+						tags.push({title: tag.title,total: 1});
+					});
+				}
 			});
 			crosstags = crossfilter(tags);
 			tagList = crosstags.dimension(function(p){return p.title;});
