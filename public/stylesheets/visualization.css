@@ -11,7 +11,7 @@
   fill: #FF0000;
 }
 
-#datapoint-list .datapoint {
+#datapoint-list {
    margin-bottom: .4em;
    font-size: 13px;
    line-height: 1.5em;
@@ -31,21 +31,28 @@
 svg.map{
   float: left;
 }
-.datapoint .serialnumber{
+#datapoint-list .serialnumber{
 	width: 35px;
 }
 
-.datapoint .date {
+#datapoint-list .date {
   width: 130px;
 }
 
-.datapoint .stage{
+#datapoint-list .stage{
 	width: 100px;
+}
+
+#datapoint-list .title{
+  width: 170px;
 }
 
 .datapoint div {
 	display: inline-block;
-	width: 170px;
+}
+.datapointTitle div {
+  display: inline-block;
+  font-weight:bold;
 }
 
 
