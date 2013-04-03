@@ -170,7 +170,7 @@ $(document).ready(function() {
 			updateDatapoints();
 			tagsFiltered = true;
 		};
-
+		//executed when someone click on a bubble on the map
 		window.filterLocation = function(location) {
 			var locationname;
 			byFullLocation.filterFunction(function (datapointlocation) {
@@ -191,6 +191,19 @@ $(document).ready(function() {
 			}
 		};
 
+		//Javascript exexcuted onchange when dropdown menu for stage is changed
+		window.filterStage = function(stage){
+			if (stage!==''){
+				byStage.filter(stage);
+			} else {
+				//Remove all filters
+				byStage.filterAll(null);
+			}
+			updateDatapoints();
+			redoTagList();
+			renderAll();
+		};
+
 		function redoTagList() {
 			var tags=[];
 			byId.top(Infinity).forEach(function(p, i) {
@@ -207,6 +220,8 @@ $(document).ready(function() {
 		window.reset = function(i) {
 			byTags.filterAll(null);
 			byFullLocation.filterAll(null);
+			byStage.filterAll(null);
+			$("#stagedropdown").val('');
 			redoTagList();
 			renderAll();
 			updateDatapoints();

@@ -19,6 +19,18 @@ block pageContent
             br
             strong  Location Filtered: 
             span(id="activelocation")
+    div
+        select(name="stage",id="stagedropdown",onchange="filterStage(this.options[this.selectedIndex].value)")
+            option(selected=true,value="") -Choose Genocide Stage-
+            option(value="Symbolization") Symbolization
+            option(value="Discrimination") Discrimination
+            option(value="Dehumanization") Dehumanization
+            option(value="Organization") Organization
+            option(value="Polarization") Polarization
+            option(value="Preparation") Preparation
+            option(value="Persecution") Persecution
+            option(value="Extermination") Extermination
+            option(value="Denial") Denial 
     div(id="lists")
         div(id="tag-list", class="list")
             span Tags List
