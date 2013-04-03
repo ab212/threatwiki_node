@@ -22,7 +22,7 @@ block pageContent
       span.divider
     if (typeof(socname) != 'undefined' && typeof(datapoint) == 'undefined')
       li 
-        a(href="/soc/view?soc="+socname) SOC: #{socname}
+        a(href="/soc/view?soc="+socname) SOC: #{soc.displayname}
         span.divider
       if (typeof(tag) != 'undefined')
         li 
@@ -30,7 +30,7 @@ block pageContent
           span.divider
     else if (typeof(datapoint) != 'undefined')
       li 
-        a(href="/soc/view?soc="+datapoint.soc) SOC: #{datapoint.soc}
+        a(href="/soc/view?soc="+datapoint.soc) SOC: #{soc.displayname}
         span.divider
       if (typeof(tag) != 'undefined')
         li 

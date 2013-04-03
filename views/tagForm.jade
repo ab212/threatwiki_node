@@ -14,14 +14,14 @@ block pageContent
       span.divider
     if (typeof(socname) == 'undefined' && typeof(tag) != 'undefined')
       li 
-        a(href="/soc/view?soc="+tag[0].soc) SOC: #{tag[0].soc}
-        span.divider        
+        a(href="/soc/view?soc="+tag[0].soc) SOC: #{soc.displayname}
+        span.divider
       li 
         a(href="/soc/view?soc="+tag[0].soc+"&tag="+tag[0]._id) Tag: #{tag[0].title}
         span.divider
     else
       li
-        a(href="/soc/view?soc="+socname) SOC: #{socname}
+        a(href="/soc/view?soc="+socname) SOC: #{soc.displayname}
         span.divider
     if (typeof(tag) != 'undefined')
       li.active Edit Tag

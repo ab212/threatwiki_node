@@ -193,18 +193,24 @@ function load_routes(app) {
       var tagid = req.query["tag"];
       if (typeof(tagid)!='undefined'){
         jquery.getJSON(host+'api/tag/'+ tagid +'?callback=?', function(tag) {
-          res.render('datapointForm', {
-            title: 'Sentinel Project: Create Datapoint for SOC '+socname,
-            socname:socname,
-            tag:tag
+          jquery.getJSON(host+'api/soc/title/'+ socname +'?callback=?', function(soc) {
+            res.render('datapointForm', {
+              title: 'Sentinel Project: Create Datapoint for SOC '+soc.displayname,
+              socname:socname,
+              soc:soc,
+              tag:tag
+            });
           });
         });
       } else {
-        res.render('datapointForm', {
-            title: 'Sentinel Project: Create Datapoint for SOC '+socname,
-            socname:socname,
-            tag:tagid
-          });
+        jquery.getJSON(host+'api/soc/title/'+ socname +'?callback=?', function(soc) {
+          res.render('datapointForm', {
+              title: 'Sentinel Project: Create Datapoint for SOC '+socname,
+              socname:socname,
+              soc:soc,
+              tag:tagid
+            });
+        });
       }
 
     } else {
@@ -216,7 +222,6 @@ function load_routes(app) {
   exports.datapoint.edit = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
-      console.log(host+'api/datapoint/'+ obj_id +'?callback=?');
 
       jquery.getJSON(host+'api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
         jquery.getJSON(host+'api/soc/title/'+ datapoint.soc +'?callback=?', function(soc) {
@@ -263,9 +268,12 @@ function load_routes(app) {
   exports.tag.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var socname = req.query["soc"];
-      res.render('tagForm', {
-        title: 'Sentinel Project: Create Tag',
-        socname: socname
+      jquery.getJSON(host+'api/soc/title/'+ socname +'?callback=?', function(soc) {
+        res.render('tagForm', {
+          title: 'Sentinel Project: Create Tag',
+          socname: socname,
+          soc:soc
+        });
       });
     } else {
       //force logout if user doesn't meet conditions to view the page
@@ -276,12 +284,14 @@ function load_routes(app) {
   exports.tag.edit = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
-      console.log(host+'api/tag/'+ obj_id +'?callback=?');
       jquery.getJSON(host+'api/tag/'+ obj_id +'?callback=?', function(tag) {
-        res.render('tagForm', {
-          title: 'Sentinel Project: Edit Tag '+tag.title,
-          tag: tag
-        });
+        jquery.getJSON(host+'api/soc/title/'+ tag[0].soc +'?callback=?', function(soc) {
+          res.render('tagForm', {
+            title: 'Sentinel Project: Edit Tag '+tag.title,
+            tag: tag,
+            soc:soc
+          });
+         });
       });
     } else {
       //force logout if user doesn't meet conditions to view the page
