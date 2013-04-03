@@ -107,8 +107,9 @@ block pageContent
             label(class="control-label",for="tags") Tags
             div(class="controls")
               select(multiple id="tag_list", name="tag_list")
-                for tag in datapoint.tags
-                  option(selected=tag._id, value=tag._id) #{tag.title}
+                if (datapoint.tags!==null && typeof(datapoint.tags)!=='undefined')
+                  for tag in datapoint.tags
+                    option(selected=tag._id, value=tag._id) #{tag.title}
               button(type="button", class="btn btn-small", data-toggle="modal", data-target="#myModal") Create New Tag
           div(class="control-group")
             label(class="control-label",for="source") Sources
@@ -128,7 +129,7 @@ block pageContent
                     option(value="Social Media",selected=(source.sourcetype=="Social Media")) Social Media
                     option(value="Informant",selected=(source.sourcetype=="Informant")) Informant
                     option(value="Other",selected=(source.sourcetype=="Other")) Other
-                  if (/^(f|ht)tps?:\/\//i.test(source.url))
+                  if (  /^(f|ht)tps?:\/\//i.test(source.url))
                     ul(class="inline")
                       li
                         a(href=source.url,target="_blank") Open Link 
