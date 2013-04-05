@@ -11,7 +11,7 @@ $(document).ready(function() {
 			p.created = ymdFormat.parse(moment.utc(p.created).format("YYYY-MM-DD"));
 			//normalize tags
 			if (typeof(p.tags)!='undefined'  && p.tags!=null){
-				p.tags.forEach(function(tag){
+			p.tags.forEach(function(tag){
 					tags.push({title: tag.title,total: 1});
 				});
 			}
@@ -231,6 +231,22 @@ $(document).ready(function() {
 		};
 		iranjson();
 		renderAll();
+
+		window.showModal = function (datapointId){
+			var dateformat = d3.time.format("%B %d, %Y");
+			byId.filter(datapointId);
+			byId.top(Infinity).forEach(function(p, i) {
+				d3.select("#datapointevent").text(p.title);
+				d3.select("#datapointdescription").text(p.description);
+				d3.select("#datapointstage").text(p.stage);
+				d3.select("#datapointdate").text(dateformat(p.event_date));
+			});
+			byId.filterAll(null);
+			//console.log(datapoint._id);
+			//$("#datapointdescription").val(datapoint.description);
+			$('#myModal').modal('toggle');
+		};
+
 		//TODO order by date
 		// The table at the bottom of the page
 		function datapointlist(div) {
@@ -247,8 +263,10 @@ $(document).ready(function() {
 				datapointsEnter.append("div")
 					.attr("class", "title")
 					.append("a")
-					.attr("href",function(d) { return "/datapoint/edit?id="+d._id; })
-					.attr("target","_blank")
+					//.attr("href",function(d) { return "/datapoint/edit?id="+d._id; })
+//					.attr("target","_blank")
+					.attr("href","#")
+					.attr("onclick",function(d) { return ("javascript:showModal('"+d._id+"'	);return false;"); })
 					.text(function(d) { return d.title; });
 
 				datapointsEnter.append("div")
@@ -264,6 +282,7 @@ $(document).ready(function() {
 				datapoints.order();
 			});
 		}
+		
 		function taglist(div) {
 			div.each(function() {
 				//d3.selectAll(this.childNodes).remove();
@@ -272,7 +291,8 @@ $(document).ready(function() {
 				tagsEnter.append("a")
 					.attr("class", "title")
 					//TODO not have javascript directly in the link
-					.attr("href",function(d) { return ("javascript:filter('"+d.key+"')"); })
+					.attr("href","#")
+					.attr("onclick",function(d) { return ("javascript:filter('"+d.key+"');return false;"); })
 					.text(function(d) { return d.key+" ("+d.value+")"; });
 				tags.exit().remove();
 				tags.order();

@@ -9,6 +9,8 @@ block head
 block pageContent
     a(href="javascript:reset(0)")
         button(type="button", class="btn") Reset All Filters
+    span(class="help-inline")
+        button(type="button", class="btn", data-toggle="modal", data-target="#myModal") Test Modal
     div(id="totals")
         span(id="active")
         span  datapoints out of a total of 
@@ -40,3 +42,17 @@ block pageContent
                 div(class="title") Title
                 div(class="stage") Stage
                 div(class="date") Date
+    //Modal to create tag from inside the datapoint          
+    div(id="myModal",class="modal hide fade",tabindex="-1",role="dialog",aria-labelledby="datapointevent",aria-hidden="true")
+      div(class="modal-header")
+        button(type="button",class="close",data-dismiss="modal",aria-hidden="true") x
+        h4(id="datapointevent") Event Details
+      div(class="modal-body")
+        h4 Event Date
+        span(id="datapointdate")
+        h4 Stage
+        span(id="datapointstage")
+        h4(class="control-label",for="description") Description
+        span(name="description",  class="span6", id="datapointdescription")
+      div(class="modal-footer")
+        button(class="btn",data-dismiss="modal",aria-hidden="true") Close
