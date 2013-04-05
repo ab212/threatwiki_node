@@ -9,8 +9,6 @@ block head
 block pageContent
     a(href="javascript:reset(0)")
         button(type="button", class="btn") Reset All Filters
-    span(class="help-inline")
-        button(type="button", class="btn", data-toggle="modal", data-target="#myModal") Test Modal
     div(id="totals")
         span(id="active")
         span  datapoints out of a total of 
@@ -48,11 +46,27 @@ block pageContent
         button(type="button",class="close",data-dismiss="modal",aria-hidden="true") x
         h4(id="datapointevent") Event Details
       div(class="modal-body")
-        h4 Event Date
-        span(id="datapointdate")
-        h4 Stage
-        span(id="datapointstage")
-        h4(class="control-label",for="description") Description
-        span(name="description",  class="span6", id="datapointdescription")
+        div(class="container-fluid")
+            div(class="row-fluid")
+                div(class="span4")
+                    h4 Event Date
+                    span(id="datapointdate")
+                div(class="span4")
+                    h4 Location
+                    span(id="datapointlocation")
+                div(class="span4")
+                    h4 Stage
+                    span(id="datapointstage")
+            div(class="row-fluid")
+                div(class="span12")
+                    h4(class="control-label",for="description") Description
+                    span(id="datapointdescription")
+            div(class="row-fluid")
+                div(class="span12")
+                    h4(class="control-label",for="description") Sources
+                    div(id="datapointsources")
       div(class="modal-footer")
+        a(href="#",target="_blank",id="datapointlink")
+            button(class="btn btn-info") Edit
+        &nbsp;
         button(class="btn",data-dismiss="modal",aria-hidden="true") Close

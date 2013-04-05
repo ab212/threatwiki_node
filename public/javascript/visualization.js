@@ -8,7 +8,7 @@ $(document).ready(function() {
 			p.event_date = ymdFormat.parse(moment.utc(p.event_date).format("YYYY-MM-DD"));
 			p.created = ymdFormat.parse(moment.utc(p.created).format("YYYY-MM-DD"));
 			//normalize tags
-			if (typeof(p.tags)!='undefined'  && p.tags!=null){
+			if (typeof(p.tags)!='undefined'  && p.tags!==null){
 			p.tags.forEach(function(tag){
 					tags.push({title: tag.title,total: 1});
 				});
@@ -96,8 +96,8 @@ $(document).ready(function() {
 				.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
 			//nb of datapoints per location could be from 1 to 36
 			var radius = d3.scale.sqrt()
-			    .domain([1, 36])
-			    .range([4, 16]);
+				.domain([1, 36])
+				.range([4, 16]);
 
 			//draw circles
 			circleenter=data.enter()
@@ -150,7 +150,7 @@ $(document).ready(function() {
 
 		window.filter = function(tagname) {
 			byTags.filterFunction(function (tag) {
-				if (tag!=null){
+				if (tag!==null && typeof(tag)!='undefined'){
 					for(i=0; i<tag.length; i++) {
 						if (tag[i].title==tagname){
 							return true;
@@ -202,7 +202,7 @@ $(document).ready(function() {
 		function redoTagList() {
 			var tags=[];
 			byId.top(Infinity).forEach(function(p, i) {
-				if (p.tags!=null){
+				if (p.tags!==null && typeof(p.tags)!='undefined'){
 					p.tags.forEach(function(tag){
 						tags.push({title: tag.title,total: 1});
 					});
@@ -234,7 +234,23 @@ $(document).ready(function() {
 				d3.select("#datapointevent").text(p.title);
 				d3.select("#datapointdescription").text(p.description);
 				d3.select("#datapointstage").text(p.stage);
+				d3.select("#datapointlocation").text(p.Location.title);
 				d3.select("#datapointdate").text(dateformat(p.event_date));
+				d3.select("#datapointlink").attr("href",function(d) { return "/datapoint/edit?id="+p._id; });
+				d3.selectAll(".datapointsource").remove();
+				if (p.sources!==null && typeof(p.sources)!='undefined'){
+					for (var j=0;j<p.sources.length;j++){
+						//Create link if it's a URL in the source field
+						if (/^(f|ht)tps?:\/\//i.test(p.sources[j].url)){
+							datapointsource = d3.select("#datapointsources").
+							append("span").text(p.sources[j].sourcetype+" : ").attr("class","datapointsource").append("a").attr("href",p.sources[j].url).text(p.sources[j].url).attr("target","_blank").attr("class","datapointsource");
+						} else {
+							datapointsource = d3.select("#datapointsources").
+							append("span").attr("class","datapointsource").text(p.sources[j].sourcetype+" : "+p.sources[j].url);
+						}
+						//text(p.sources[j].sourcetype);
+					}
+				}
 			});
 			byId.filterAll(null);
 			//console.log(datapoint._id);
@@ -276,7 +292,7 @@ $(document).ready(function() {
 				datapoints.order();
 			});
 		}
-		
+
 		function taglist(div) {
 			div.each(function() {
 				//d3.selectAll(this.childNodes).remove();

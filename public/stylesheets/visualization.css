@@ -54,6 +54,9 @@ svg.map{
   display: inline-block;
   font-weight:bold;
 }
+span.datapointsource {
+  display: block;
+}
 
 
 circle.points {
