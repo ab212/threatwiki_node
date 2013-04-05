@@ -2,8 +2,6 @@ $(document).ready(function() {
 	//var host = "http://threatwiki.thesentinelproject.org";
 	var host = "http://localhost:3000";
 	jQuery.getJSON(host+"/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
-		//console.log(datapoints);
-		//2012-11-04T00:00:00.000Z
 		tags = [];
 		var ymdFormat = d3.time.format("%Y-%m-%d");
 		datapoints.forEach(function(p) {
@@ -36,10 +34,7 @@ $(document).ready(function() {
 		var byLocation = crossdatapoints.dimension(function(p) {return [p.Location.latitude,p.Location.longitude]; });
 		var byFullLocation = crossdatapoints.dimension(function(p) {return p.Location; });
 		var tagsFiltered = false;
-		//Round to the month
-		var byEventMonth = crossdatapoints.dimension(function(p) { return d3.time.month(p.event_date); });
-		var byEventMonthGrouping = byEventMonth.group();
-		var byCreatedMonth = crossdatapoints.dimension(function(p) { return d3.time.month(p.created); });
+		var byEventDate = crossdatapoints.dimension(function(p) { return d3.time.day(p.event_date); });
 
 		// Render the initial list of tag.
 		var listtag = d3.select("#tag-list").data([taglist]);
@@ -247,11 +242,10 @@ $(document).ready(function() {
 			$('#myModal').modal('toggle');
 		};
 
-		//TODO order by date
 		// The table at the bottom of the page
 		function datapointlist(div) {
 			div.each(function() {
-				var datapoints = d3.select(this).selectAll(".datapoint").data(byId.top(Infinity),function(d) { return d._id; });
+				var datapoints = d3.select(this).selectAll(".datapoint").data(byEventDate.top(Infinity),function(d) { return d._id; });
 
 				var datapointsEnter = datapoints.enter().append("div").attr("class","datapoint");
 				var dateformat = d3.time.format("%B %d, %Y");
