@@ -7,11 +7,9 @@ block head
     script(src="/javascript/moment.min.js")
     link(rel='stylesheet', href='/stylesheets/visualization.css')
 block pageContent
-    a(href="javascript:reset(0)")
-        button(type="button", class="btn") Reset All Filters
     div(id="totals")
         span(id="active")
-        span  datapoints out of a total of 
+        span  datapoints out of 
         span(id="total")
         p 
             strong Tag filtered: 
@@ -19,28 +17,35 @@ block pageContent
             br
             strong  Location Filtered: 
             span(id="activelocation")
-    div
-        select(name="stage",id="stagedropdown",onchange="filterStage(this.options[this.selectedIndex].value)")
-            option(selected=true,value="") -Choose Genocide Stage-
-            option(value="Symbolization") Symbolization
-            option(value="Discrimination") Discrimination
-            option(value="Dehumanization") Dehumanization
-            option(value="Organization") Organization
-            option(value="Polarization") Polarization
-            option(value="Preparation") Preparation
-            option(value="Persecution") Persecution
-            option(value="Extermination") Extermination
-            option(value="Denial") Denial 
+        div
+            select(name="stage",id="stagedropdown",onchange="filterStage(this.options[this.selectedIndex].value)")
+                option(selected=true,value="") Filter by Genocide Stage
+                option(value="Symbolization") Symbolization
+                option(value="Discrimination") Discrimination
+                option(value="Dehumanization") Dehumanization
+                option(value="Organization") Organization
+                option(value="Polarization") Polarization
+                option(value="Preparation") Preparation
+                option(value="Persecution") Persecution
+                option(value="Extermination") Extermination
+                option(value="Denial") Denial
+        a(href="javascript:reset(0)")
+            button(type="button", class="btn btn-small") Reset All Filters
+
+
+    div(id="charts")
+        div(id="date-chart",class="chart")
+
     div(id="lists")
         div(id="tag-list", class="list")
-            span Tags List
+            span Tag List
         div(id="datapoint-list", class="list")
             div(class="datapointTitle")
                 div(class="serialnumber") #
                 div(class="title") Title
                 div(class="stage") Stage
                 div(class="date") Event Date
-    //Modal to create tag from inside the datapoint          
+    //Modal to display datapoint information    
     div(id="myModal",class="modal hide fade",tabindex="-1",role="dialog",aria-labelledby="datapointevent",aria-hidden="true")
       div(class="modal-header")
         button(type="button",class="close",data-dismiss="modal",aria-hidden="true") x

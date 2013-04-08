@@ -4,12 +4,6 @@
   stroke-dasharray: 2,2;
   stroke-linejoin: round;
 }
-.points-label {
-  font-size: 18px;
-  font-weight: 300;
-  text-anchor: middle;
-  fill: #FF0000;
-}
 
 #datapoint-list {
    margin-bottom: .4em;
@@ -22,7 +16,7 @@
 
 #tag-list {
   float: left;
-  width:218px;
+  width:200px;
   font-size: 13px;
 }
 #datapoint-list {
@@ -58,6 +52,55 @@ span.datapointsource {
   display: block;
 }
 
-
-circle.points {
+.background.bar {
+  fill: #ccc;
 }
+
+.foreground.bar {
+  fill: steelblue;
+}
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+.chart-label {
+  font: 10px sans-serif;
+  font-weight:bold;
+}
+
+
+.brush rect.extent {
+  fill: steelblue;
+  fill-opacity: .125;
+}
+
+.brush .resize path {
+  fill: #eee;
+  stroke: #666;
+}
+#charts {
+  padding: 10px 0;
+}
+#totals {
+  float:left;
+  margin-right:10px;
+  width:162px;
+}
+#stagedropdown{
+  width:150px;
+}
+#date-chart .title{
+  text-aligh: center;
+}
+
+.chart {
+  display: inline-block;
+  height: 121px;
+  margin-bottom: 20px;
+}
+
