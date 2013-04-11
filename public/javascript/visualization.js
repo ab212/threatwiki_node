@@ -71,7 +71,8 @@ $(document).ready(function() {
 		function iranjson() {
 			d3.json("/mapfiles/iran.json", function(error, data) {
 				svg.selectAll(".subunit")
-					.data(topojson.object(data, data.objects.iranprovinces).geometries)
+
+					.data(topojson.feature(data, data.objects.iranprovinces).features)
 					.enter().append("path")
 					//class name based on name of region
 					.attr("class", function(d) { return "subunit";})
@@ -340,7 +341,7 @@ $(document).ready(function() {
 				tags.order();
 			});
 		}
-
+		//function given in example on https://github.com/square/crossfilter
 		function barChart() {
 			if (!barChart.id) barChart.id = 0;
 
@@ -401,8 +402,8 @@ $(document).ready(function() {
 
 					g.append("text")
 					.attr("class", "chart-label")
-					  .attr("transform", "translate("+width/2+"," + (margin.top + margin.bottom) + ")")
-					  .text("Click on chart to filter by dates");
+					  .attr("transform", "translate("+width/2+"," + 0 + ")")
+					  .text("Click and drag on chart to filter a date range");
 
 				  // Initialize the brush component with pretty resize handles.
 				  var gBrush = g.append("g").attr("class", "brush").call(brush);
