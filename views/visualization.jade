@@ -1,78 +1,69 @@
-extends layout
-block head
-    script(src="/javascript/d3.v3.min.js")
-    script(src="/javascript/topojson.v1.min.js")
-    script(src="/javascript/crossfilter.min.js")
-    script(src="/javascript/visualization.js")
-    script(src="/javascript/moment.min.js")
-    link(rel='stylesheet', href='/stylesheets/visualization.css')
-block pageContent
-    div(id="totals")
-        span(id="active")
-        span  datapoints out of 
-        span(id="total")
-        p 
-            strong Tag filtered: 
-            span(id="activefilter")
-            br
-            strong  Location Filtered: 
-            span(id="activelocation")
-        div
-            select(name="stage",id="stagedropdown",onchange="filterStage(this.options[this.selectedIndex].value)")
-                option(selected=true,value="") -Genocide Stage-
-                option(value="Symbolization") Symbolization
-                option(value="Discrimination") Discrimination
-                option(value="Dehumanization") Dehumanization
-                option(value="Organization") Organization
-                option(value="Polarization") Polarization
-                option(value="Preparation") Preparation
-                option(value="Persecution") Persecution
-                option(value="Extermination") Extermination
-                option(value="Denial") Denial
-        a(href="javascript:reset(0)")
-            button(type="button", class="btn btn-small") Reset All Filters
+div(id="totals")
+    span(id="active")
+    span  datapoints out of 
+    span(id="total")
+    p 
+        strong Tag filtered: 
+        span(id="activefilter")
+        br
+        strong  Location Filtered: 
+        span(id="activelocation")
+    div
+        select(name="stage",id="stagedropdown",onchange="filterStage(this.options[this.selectedIndex].value)")
+            option(selected=true,value="") -Genocide Stage-
+            option(value="Symbolization") Symbolization
+            option(value="Discrimination") Discrimination
+            option(value="Dehumanization") Dehumanization
+            option(value="Organization") Organization
+            option(value="Polarization") Polarization
+            option(value="Preparation") Preparation
+            option(value="Persecution") Persecution
+            option(value="Extermination") Extermination
+            option(value="Denial") Denial
+    a(href="javascript:reset(0)")
+        button(type="button", class="btn btn-small") Reset All Filters
 
 
-    div(id="charts")
-        div(id="date-chart",class="chart")
+div(id="charts")
+    div(id="date-chart",class="chart")
 
-    div(id="lists")
-        div(id="tag-list", class="list")
-            span Tag List
-        div(id="datapoint-list", class="list")
-            div(class="datapointTitle")
-                div(class="serialnumber") #
-                div(class="title") Title
-                div(class="stage") Stage
-                div(class="date") Event Date
-        div(id="map")
-    //Modal to display datapoint information    
-    div(id="myModal",class="modal hide fade",tabindex="-1",role="dialog",aria-labelledby="datapointevent",aria-hidden="true")
-      div(class="modal-header")
-        button(type="button",class="close",data-dismiss="modal",aria-hidden="true") x
-        h4(id="datapointevent") Event Details
-      div(class="modal-body")
-        div(class="container-fluid")
-            div(class="row-fluid")
-                div(class="span4")
-                    h4 Event Date
-                    span(id="datapointdate")
-                div(class="span4")
-                    h4 Location
-                    span(id="datapointlocation")
-                div(class="span4")
-                    h4 Stage
-                    span(id="datapointstage")
-            div(class="row-fluid")
-                div(class="span12")
-                    h4(class="control-label",for="description") Description
-                    span(id="datapointdescription")
-            div(class="row-fluid")
-                div(class="span12")
-                    h4(class="control-label",for="description") Sources
-                    div(id="datapointsources")
-      div(class="modal-footer")
-        a(href="#",target="_blank",id="datapointlink")
-            button(class="btn btn-info") Edit
-        &nbsp;
-        button(class="btn",data-dismiss="modal",aria-hidden="true") Close
+div(id="lists")
+    div(id="tag-list", class="list")
+        span Tag List
+    div(id="datapoint-list", class="list")
+        div(class="datapointTitle")
+            div(class="serialnumber") #
+            div(class="title") Title
+            div(class="stage") Stage
+            div(class="date") Event Date
+    div(id="map")
+//Modal to display datapoint information    
+div(id="myModal",class="modal hide fade",tabindex="-1",role="dialog",aria-labelledby="datapointevent",aria-hidden="true")
+  div(class="modal-header")
+    button(type="button",class="close",data-dismiss="modal",aria-hidden="true") x
+    h4(id="datapointevent") Event Details
+  div(class="modal-body")
+    div(class="container-fluid")
+        div(class="row-fluid")
+            div(class="span4")
+                h4 Event Date
+                span(id="datapointdate")
+            div(class="span4")
+                h4 Location
+                span(id="datapointlocation")
+            div(class="span4")
+                h4 Stage
+                span(id="datapointstage")
+        div(class="row-fluid")
+            div(class="span12")
+                h4(class="control-label",for="description") Description
+                span(id="datapointdescription")
+        div(class="row-fluid")
+            div(class="span12")
+                h4(class="control-label",for="description") Sources
+                div(id="datapointsources")
+  div(class="modal-footer")
+    a(href="#",target="_blank",id="datapointlink")
+        button(class="btn btn-info") Edit
+    &nbsp;
+    button(class="btn",data-dismiss="modal",aria-hidden="true") Close

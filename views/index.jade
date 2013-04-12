@@ -1,7 +1,7 @@
 extends layout
 block pageContent
   - if (settings.env != "development" && !everyauth.loggedIn)
-   a(href='/auth/google', style='border: 0px') Login with your thesentinelproject.org email
+   a(href='/auth/google', style='border: 0px') Login with your @thesentinelproject.org email
   - else if (settings.env == "development")
    p Welcome developer!
   - else

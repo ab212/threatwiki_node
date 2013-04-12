@@ -1,0 +1,10 @@
+extends layout
+block head
+    script(src="/javascript/d3.v3.min.js")
+    script(src="/javascript/topojson.v1.min.js")
+    script(src="/javascript/crossfilter.min.js")
+    script(src="/javascript/visualization.js")
+    script(src="/javascript/moment.min.js")
+    link(rel='stylesheet', href='/stylesheets/visualization.css')
+block pageContent
+    include visualization

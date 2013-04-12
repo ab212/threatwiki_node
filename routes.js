@@ -299,17 +299,18 @@ function load_routes(app) {
     }
   };
 
-   exports.visualization = function(req, res){
+   exports.iranvisualization = function(req, res){
+    //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      //var obj_id = req.query["id"];
-     //  jquery.getJSON(host+'api/datapoint/soc/Kenya?callback=?', function(datapoints) {
-        res.render('visualization', {
-          title: 'Visualization'
+        res.render('irancontainer', {
+          title: 'Iran Visualization'
         });
-     // });
     } else {
-      //force logout if user doesn't meet conditions to view the page
-      res.redirect('/logout');
+      //Public access to the Visualization page without being logged in on Threatwiki
+      res.render('iranpublic', {
+          title: 'Iran Sentinel Project Visualization'
+      });
+
     }
   };
 }

@@ -1,0 +1,25 @@
+!!!
+html(lang="en")
+  head
+    title #{title}
+    link(rel='stylesheet', href='/stylesheets/reset.css')
+    link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
+    script(type='text/javascript', src='/javascript/jquery.min.js')
+    script(src='/lib/bootstrap/js/bootstrap.min.js')
+    script(src="/javascript/d3.v3.min.js")
+    script(src="/javascript/topojson.v1.min.js")
+    script(src="/javascript/crossfilter.min.js")
+    script(src="/javascript/visualization.js")
+    script(src="/javascript/moment.min.js")
+    link(rel='stylesheet', href='/stylesheets/visualization.css')
+  div(class='navbar navbar-inverse')
+        div.navbar-inner
+          div.container
+            ul(class='nav')
+                li
+                  a(href='http://thesentinelproject.org/situations-of-concern-2/bahais-in-iran/') Return to Iran Situation of Concern
+      div.container-fluid
+        #logo
+          img(src='/images/logo.png',width='300',height='44')
+        body
+            include visualization
