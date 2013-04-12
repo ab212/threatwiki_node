@@ -10,27 +10,28 @@
    font-size: 13px;
    line-height: 1.5em;
    background: #eee;
-   width: 435px;
+   width: 390px;
    margin-bottom: 1px;
 }
-
+#lists {
+   white-space: nowrap;
+}
 #tag-list {
   float: left;
   width:200px;
   font-size: 13px;
+  white-space: normal;
 }
 #datapoint-list {
   float: left;
 }
-svg.map{
-  float: left;
-}
+
 #datapoint-list .serialnumber{
 	width: 35px;
 }
 
 #datapoint-list .date {
-  width: 130px;
+  width: 85px;
 }
 
 #datapoint-list .stage{
@@ -43,6 +44,7 @@ svg.map{
 
 .datapoint div {
 	display: inline-block;
+  white-space: normal;
 }
 .datapointTitle div {
   display: inline-block;

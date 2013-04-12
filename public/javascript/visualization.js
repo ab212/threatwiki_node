@@ -61,7 +61,8 @@ $(document).ready(function() {
 
 		path = path.projection(projection);
 
-		var svg = d3.select(".container-fluid").append("svg")
+		var svg = d3.select("#map").append("svg")
+
 			.attr("width", width)
 			.attr("height", height)
 			.attr("class","map")
@@ -81,6 +82,10 @@ $(document).ready(function() {
 					.style("fill", function() {
 						return "hsl(" + Math.random() * 360 + ",100%,50%)";
 					});
+				svg.append("text")
+					.attr("class", "chart-label")
+					.attr("transform", "translate("+width/4+"," + 30 + ")")
+					.text("Click a point on the map to filter by location");
 				//border between the regions
 				svg.append("path")
 					.datum(topojson.mesh(data, data.objects.iranprovinces, function(a, b) { return a != b; }))
@@ -297,7 +302,7 @@ $(document).ready(function() {
 				var datapoints = d3.select(this).selectAll(".datapoint").data(byEventDate.top(Infinity),function(d) { return d._id; });
 
 				var datapointsEnter = datapoints.enter().append("div").attr("class","datapoint");
-				var dateformat = d3.time.format("%B %d, %Y");
+				var dateformat = d3.time.format("%b %d, %Y");
 
 				datapointsEnter.append("div")
 					.attr("class", "serialnumber")
@@ -402,7 +407,7 @@ $(document).ready(function() {
 
 					g.append("text")
 					.attr("class", "chart-label")
-					  .attr("transform", "translate("+width/2+"," + 0 + ")")
+					  .attr("transform", "translate("+width/2.5+",-2"  + ")")
 					  .text("Click and drag on chart to filter a date range");
 
 				  // Initialize the brush component with pretty resize handles.
