@@ -6,12 +6,10 @@
 }
 
 #datapoint-list {
-   margin-bottom: .4em;
    font-size: 13px;
    line-height: 1.5em;
-   background: #eee;
-   width: 390px;
-   margin-bottom: 1px;
+   width: 396px;
+   margin-right: 5px;
 }
 #lists {
    white-space: nowrap;
@@ -27,28 +25,47 @@
 }
 
 #datapoint-list .serialnumber{
-	width: 35px;
+	width: 25px;
+  display: inline-block;
+  vertical-align: top;
+  padding:2px;
+
 }
 
 #datapoint-list .date {
   width: 85px;
+  display: inline-block;
+  vertical-align: top;
+  padding:2px;
 }
 
 #datapoint-list .stage{
-	width: 100px;
+	width: 95px;
+  display: inline-block;
+  vertical-align: top;
+  padding:2px;
 }
 
 #datapoint-list .title{
   width: 170px;
+  display: inline-block;
+  vertical-align: top;
+  padding:2px;
 }
 
-.datapoint div {
-	display: inline-block;
+#datapoint-list .datapoint {
   white-space: normal;
+  vertical-align: top;
+  margin-bottom: 1px;
+  display: block;
+  background: #eee;
+  padding: 1.5px;
 }
-.datapointTitle div {
-  display: inline-block;
+#datapoint-list .datapointTitle  {
   font-weight:bold;
+  white-space: normal;
+  margin-bottom: 1px;
+  padding: 1.5px;
 }
 span.datapointsource {
   display: block;
