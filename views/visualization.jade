@@ -63,7 +63,8 @@ div(id="myModal",class="modal hide fade",tabindex="-1",role="dialog",aria-labell
                 h4(class="control-label",for="description") Sources
                 div(id="datapointsources")
   div(class="modal-footer")
-    a(href="#",target="_blank",id="datapointlink")
-        button(class="btn btn-info") Edit
-    &nbsp;
+    if (settings.env == "development" || everyauth.loggedIn)
+        a(href="#",target="_blank",id="datapointlink")
+            button(class="btn btn-info") Edit
+        &nbsp;
     button(class="btn",data-dismiss="modal",aria-hidden="true") Close
