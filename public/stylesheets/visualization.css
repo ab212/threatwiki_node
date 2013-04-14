@@ -113,6 +113,18 @@ span.datapointsource {
 #stagedropdown{
   width:150px;
 }
+#map {
+  width:535px;
+  height: 500px;
+}
+#mapcontainer {
+  width:0px;
+}
+#map path {
+  fill-opacity: .2;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
 
 .chart {
   display: inline-block;

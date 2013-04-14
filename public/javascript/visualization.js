@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	//var host = "http://threatwiki.thesentinelproject.org";
-	var host = "http://localhost:3000";
+	var host = "http://threatwiki.thesentinelproject.org";
+	//var host = "http://localhost:3000";
 	jQuery.getJSON(host+"/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
 		tags = [];
 		var ymdFormat = d3.time.format("%Y-%m-%d");
@@ -36,7 +36,7 @@ $(document).ready(function() {
 		var tagsFiltered = false;
 		var byEventDate = crossdatapoints.dimension(function(p) { return d3.time.day(p.event_date); });
 		//byEventDate.group().top(Infinity).forEach(function(p, i) {
- 		//	 console.log(p.key + ": " + p.value);
+		//	 console.log(p.key + ": " + p.value);
 		//});
 		// Render the initial list of tag.
 		var listtag = d3.select("#tag-list").data([taglist]);
@@ -44,35 +44,34 @@ $(document).ready(function() {
 		// Render the total.
 		d3.selectAll("#total").text(crossdatapoints.groupAll().reduceCount().value());
 
-		var width = 535,
-		height = 580;
+		//create leaflet map
+		var map = new L.Map("map", {
+			center: [32, 53],
+			zoom: 5,
+			minZoom: 4
+		})
+		.addLayer(new L.TileLayer("http://{s}.tile.cloudmade.com/aa22c4af8c674048a68c8d6f3b5d1937/998	/256/{z}/{x}/{y}.png"));
 
-		//Geographic coordinates: 32 00 N, 53 00 E
-		//todo calculate projection and scale automatically
-		//http://stackoverflow.com/questions/14492284/center-a-map-in-d3-given-a-geojson-object
-		var projection = d3.geo.albers()
-			.scale(1900)
-			.center([0, 32])
-			//.parallels([-5,0])
-			.rotate([-54.5, 0])
-			.translate([width / 2, height / 2]);
+		//necessary to integrate between d3 and leaflet
+		function project(x) {
+			var point = map.latLngToLayerPoint(new L.LatLng(x[1], x[0]));
+			return [point.x, point.y];
+		}
+		//projection to be used to convert GeoJSON to SVG
+		var path = d3.geo.path().projection(project);
 
-		var path = d3.geo.path().projection(projection);
-
-		path = path.projection(projection);
-
-		var svg = d3.select("#map").append("svg")
-
-			.attr("width", width)
-			.attr("height", height)
-			.attr("class","map")
+		var svg = d3.select(map.getPanes().overlayPane).append("svg")
 			.data([iranjson]);
+		//our map will be included inside a <g> (group) tag, it is hidden while zooming on leaflet is happening
+		var gleaf = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+		
+
 
 		//the actual map
 		function iranjson() {
 			d3.json("/mapfiles/iran.json", function(error, data) {
-				svg.selectAll(".subunit")
-
+				var feature = gleaf.selectAll(".subunit")
 					.data(topojson.feature(data, data.objects.iranprovinces).features)
 					.enter().append("path")
 					//class name based on name of region
@@ -82,17 +81,37 @@ $(document).ready(function() {
 					.style("fill", function() {
 						return "hsl(" + Math.random() * 360 + ",100%,50%)";
 					});
-				svg.append("text")
+				/*gleaf.append("text")
 					.attr("class", "chart-label")
 					.attr("transform", "translate("+width/4+"," + 30 + ")")
-					.text("Click a point on the map to filter by location");
+					.text("Click a point on the map to filter by location");/*
 				//border between the regions
-				svg.append("path")
+				/*gleaf.append("path")
 					.datum(topojson.mesh(data, data.objects.iranprovinces, function(a, b) { return a != b; }))
 					.attr("d", path)
-					.attr("class", "subunit-boundary");
-				//because we want datapoints to be drawn AFTER the map
-				updateDatapoints();
+					.attr("class", "subunit-boundary");*/
+
+				var bounds = d3.geo.bounds(topojson.feature(data, data.objects.iranprovinces));
+				//we want to call reset everytime we zoom in or zoom out of the map
+				map.on("viewreset", reset);
+				reset();
+
+				// Reposition the SVG to cover the features.
+				function reset() {
+					var bottomLeft = project(bounds[0]);
+					var topRight = project(bounds[1]);
+					svg.attr("width", topRight[0] - bottomLeft[0])
+					.attr("height", bottomLeft[1] - topRight[1])
+					.style("margin-left", bottomLeft[0] + "px")
+					.style("margin-top", topRight[1] + "px");
+
+					gleaf.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+
+					feature.attr("d", path);
+
+					updateDatapoints();
+
+				}
 			});
 
 		}
@@ -100,7 +119,7 @@ $(document).ready(function() {
 		function updateDatapoints() {
 			//Datapoints mapping
 			d3.selectAll("circle").remove();
-			var data = svg.selectAll("circle.points")
+			var data = gleaf.selectAll("circle.points")
 				.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
 			//nb of datapoints per location could be from 1 to 36
 			var radius = d3.scale.sqrt()
@@ -125,7 +144,7 @@ $(document).ready(function() {
 					}
 				})
 				.attr("transform", function(d) {
-					return "translate(" + projection([d.key[1],d.key[0]]) + ")";
+					return "translate(" + project([d.key[1],d.key[0]]) + ")";
 				});
 			data.exit().remove();
 			//add number of datapoints in the circle as text elements
@@ -146,8 +165,6 @@ $(document).ready(function() {
 			.x(d3.time.scale.utc()
 				.domain([new Date(2011, 10,06), new Date()])
 				.rangeRound([0, 960]))
-			//.filter([new Date(2011, 10, 1), new Date()])
-				//.ticks(d3.time.month, 1)
 		];
 		var chart = d3.selectAll(".chart")
 			.data(charts)
