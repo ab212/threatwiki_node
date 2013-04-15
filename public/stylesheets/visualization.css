@@ -120,7 +120,13 @@ span.datapointsource {
 #mapcontainer {
   width:0px;
 }
-#map path {
+.leaflet-clickable{
+  fill-opacity: .5;
+}
+.leaflet-clickable:hover{
+  fill-opacity: .8;
+}
+.subunit {
   fill-opacity: .2;
   stroke: #fff;
   stroke-width: 1.5px;
@@ -131,4 +137,15 @@ span.datapointsource {
   height: 121px;
   margin-bottom: 20px;
 }
-
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}

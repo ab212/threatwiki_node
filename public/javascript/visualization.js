@@ -1,7 +1,10 @@
 $(document).ready(function() {
-	var host = "http://threatwiki.thesentinelproject.org";
-	//var host = "http://localhost:3000";
+	//var host = "http://threatwiki.thesentinelproject.org";
+	var host = "http://localhost:3000";
 	jQuery.getJSON(host+"/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
+		////////////////////////////////////////
+		/// Crossfilter Initial configuration///
+		////////////////////////////////////////
 		tags = [];
 		var ymdFormat = d3.time.format("%Y-%m-%d");
 		datapoints.forEach(function(p) {
@@ -31,27 +34,60 @@ $(document).ready(function() {
 
 		var tagList = crosstags.dimension(function(p){return p.title;});
 
-		var byLocation = crossdatapoints.dimension(function(p) {return [p.Location.latitude,p.Location.longitude]; });
+		var byLocation = crossdatapoints.dimension(function(p) {
+			//if (p.Location.title!='Iran'){
+				return [p.Location.latitude,p.Location.longitude];
+			//}
+		});
 		var byFullLocation = crossdatapoints.dimension(function(p) {return p.Location; });
+		var byFullLocationtemp = crossdatapoints.dimension(function(p) {return p.Location; });
+
 		var tagsFiltered = false;
 		var byEventDate = crossdatapoints.dimension(function(p) { return d3.time.day(p.event_date); });
 		//byEventDate.group().top(Infinity).forEach(function(p, i) {
-		//	 console.log(p.key + ": " + p.value);
+		//	console.log(p.key + ": " + p.value);
 		//});
+
 		// Render the initial list of tag.
 		var listtag = d3.select("#tag-list").data([taglist]);
 
-		// Render the total.
+		// Render the total number of datapoints
 		d3.selectAll("#total").text(crossdatapoints.groupAll().reduceCount().value());
 
+
+		////////////////////////////////////////
+		/// Leaflet and Mapping //
+		////////////////////////////////////////
 		//create leaflet map
 		var map = new L.Map("map", {
 			center: [32, 53],
 			zoom: 5,
+			keyboard: false,
 			minZoom: 4
 		})
-		.addLayer(new L.TileLayer("http://{s}.tile.cloudmade.com/aa22c4af8c674048a68c8d6f3b5d1937/998	/256/{z}/{x}/{y}.png"));
+		.addLayer(new L.TileLayer("http://{s}.tile.cloudmade.com/aa22c4af8c674048a68c8d6f3b5d1937/998/256/{z}/{x}/{y}.png"));
 
+		//little hack to fix issue where first click on the map would scroll the page 
+		//https://github.com/Leaflet/Leaflet/issues/1228
+		L.Map.addInitHook(function() {
+			return L.DomEvent.off(this._container, "mousedown", this.keyboard._onMouseDown);
+		});
+		var info = L.control();
+
+		info.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+			this.update();
+			return this._div;
+		};
+
+		// method that we will use to update the control based on feature properties passed
+		info.update = function (location,numberdatapoints) {
+			this._div.innerHTML = '<h4>Datapoints</h4>' +  (location ?
+				numberdatapoints+ ' in <b>' + location + '</b>'
+			: 'Iran');
+		};
+
+		info.addTo(map);
 		//necessary to integrate between d3 and leaflet
 		function project(x) {
 			var point = map.latLngToLayerPoint(new L.LatLng(x[1], x[0]));
@@ -65,10 +101,7 @@ $(document).ready(function() {
 		//our map will be included inside a <g> (group) tag, it is hidden while zooming on leaflet is happening
 		var gleaf = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-		
-
-
-		//the actual map
+		//the actual map created from data
 		function iranjson() {
 			d3.json("/mapfiles/iran.json", function(error, data) {
 				var feature = gleaf.selectAll(".subunit")
@@ -81,21 +114,12 @@ $(document).ready(function() {
 					.style("fill", function() {
 						return "hsl(" + Math.random() * 360 + ",100%,50%)";
 					});
-				/*gleaf.append("text")
-					.attr("class", "chart-label")
-					.attr("transform", "translate("+width/4+"," + 30 + ")")
-					.text("Click a point on the map to filter by location");/*
-				//border between the regions
-				/*gleaf.append("path")
-					.datum(topojson.mesh(data, data.objects.iranprovinces, function(a, b) { return a != b; }))
-					.attr("d", path)
-					.attr("class", "subunit-boundary");*/
 
 				var bounds = d3.geo.bounds(topojson.feature(data, data.objects.iranprovinces));
 				//we want to call reset everytime we zoom in or zoom out of the map
 				map.on("viewreset", reset);
 				reset();
-
+				updateDatapoints();
 				// Reposition the SVG to cover the features.
 				function reset() {
 					var bottomLeft = project(bounds[0]);
@@ -104,60 +128,68 @@ $(document).ready(function() {
 					.attr("height", bottomLeft[1] - topRight[1])
 					.style("margin-left", bottomLeft[0] + "px")
 					.style("margin-top", topRight[1] + "px");
-
 					gleaf.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-
 					feature.attr("d", path);
-
-					updateDatapoints();
-
+					//when we zoom in a lot,  hide the color background
+					if(map.getZoom()>10){
+						feature.style("fill-opacity","0");
+					} else {
+						feature.style("fill-opacity","0.2");
+					}
 				}
 			});
 
 		}
+		var markers = [];
 		//the datapoints on the map
 		function updateDatapoints() {
-			//Datapoints mapping
-			d3.selectAll("circle").remove();
-			var data = gleaf.selectAll("circle.points")
-				.data(byLocation.group().top(Infinity).filter(function(d) { return d.value; }),function(d) { return d.key; });
-			//nb of datapoints per location could be from 1 to 36
+			//remove all markers from the map in order to be able to do a refresh
+			for(i=0;i<markers.length;i++) {
+				map.removeLayer(markers[i]);
+			}
+			markers = [];
+			//TODO: remove all datapoints and redraw on filtering
+			//configure size of the points on the map nb of datapoints per location could be from 1 to 36
 			var radius = d3.scale.sqrt()
 				.domain([1, 36])
-				.range([4, 16]);
-
-			//draw circles
-			circleenter=data.enter()
-				.append("svg:a")
-				.attr("xlink:href",function(d) { return ("javascript:filterLocation('"+d.key+"')"); })
-				.append("circle")
-				.attr("class","points")
-				.attr("r",function(d) {
-					return radius(d.value);
-				})
-				//opacity more transparent on bigger datapoints on the map (to be able to see whats behind)
-				.style("fill-opacity",function(d) {
-					if (radius(d.value)>8){
-						return 0.6;
-					} else {
-						return 0.9;
-					}
-				})
-				.attr("transform", function(d) {
-					return "translate(" + project([d.key[1],d.key[0]]) + ")";
+				.range([5, 16]);
+			//for all the locations on the map
+			byLocation.group().top(Infinity).filter(function(d) { return d.value; }).forEach(function(p, i) {
+				//create a marker at that specific position
+				var marker = L.circleMarker([p.key[0],p.key[1]]);
+				marker.setRadius(radius(p.value));
+				//.bindPopup('miow');
+				//On mouse over, update the info overlay with the name of the location
+				marker.on('mouseover',function (e) {
+					var locationname;
+					byFullLocationtemp.filterFunction(function (datapointlocation) {
+						if (datapointlocation.latitude==p.key[0] && datapointlocation.longitude==p.key[1]){
+							locationname=datapointlocation.title;
+							return true;
+						}
+						return false;
+					});
+					info.update(locationname,p.value);
+					byFullLocationtemp.filter(null);
 				});
-			data.exit().remove();
-			//add number of datapoints in the circle as text elements
-			/*textenter=data.enter()
-				.append("text")
-				.attr("class", "points-label")
-				.attr("transform", function(d) {
-						return "translate(" + projection([d.key[1],d.key[0]]) + ")";
-					
-				})
-				.attr("dy", ".35em")
-				.text(function(d) { return d.value; });*/
+				//On mouse out, re-update the info overlay with no value
+				marker.on('mouseout',function (e) {
+					info.update();
+				});
+				//on click, filter the location
+				marker.on('click',function (e) {
+					info.update();
+					filterLocation(p.key);
+				});
+				//add the marker to the map
+				marker.addTo(map);
+				//keep markers in a array so we can get rid of them later
+				markers.push(marker);
+
+			});
 		}
+
+		//configure bar chart for timeline
 		var charts = [
 		barChart()
 			.dimension(byEventDate)
@@ -197,7 +229,7 @@ $(document).ready(function() {
 			chart.each(render);
 			d3.select("#active").text((all.value()));
 		}
-
+		//executed when clicking on a tag name, will filter data by tag
 		window.filter = function(tagname) {
 			byTags.filterFunction(function (tag) {
 				if (tag!==null && typeof(tag)!='undefined'){
@@ -215,13 +247,11 @@ $(document).ready(function() {
 			updateDatapoints();
 			tagsFiltered = true;
 		};
-		//executed when someone click on a bubble on the map
-		window.filterLocation = function(location) {
+		//executed when someone click on a bubble on the map, filter by location
+		var filterLocation = function(location) {
 			var locationname;
 			byFullLocation.filterFunction(function (datapointlocation) {
-				var newlocation = location;
-				var locationarray=newlocation.split(',');
-				if (datapointlocation.latitude==locationarray[0] && datapointlocation.longitude==locationarray[1]){
+				if (datapointlocation.latitude==location[0] && datapointlocation.longitude==location[1]){
 					locationname=datapointlocation.title;
 					return true;
 				}
@@ -248,7 +278,7 @@ $(document).ready(function() {
 			redoTagList();
 			renderAll();
 		};
-
+		//Recreate the taglist
 		function redoTagList() {
 			var tags=[];
 			byId.top(Infinity).forEach(function(p, i) {
@@ -261,7 +291,7 @@ $(document).ready(function() {
 			crosstags = crossfilter(tags);
 			tagList = crosstags.dimension(function(p){return p.title;});
 		}
-
+		//When clicking the Reset all filters, we show all datapoints on every visualization
 		window.reset = function() {
 			byTags.filterAll(null);
 			byFullLocation.filterAll(null);
@@ -276,15 +306,15 @@ $(document).ready(function() {
 			tagsFiltered = false;
 		};
 
-		window.resetDates = function(i) {
-			charts[i].filter(null);
-			renderAll();
-		};
+		//window.resetDates = function(i) {
+		//	charts[i].filter(null);
+		//	renderAll();
+		//};
 		iranjson();
 		renderAll();
 
 
-
+		//window to be displayed when clicking on a datapoint in the list
 		window.showModal = function (datapointId){
 			var dateformat = d3.time.format("%B %d, %Y");
 			byId.filter(datapointId);
@@ -313,7 +343,7 @@ $(document).ready(function() {
 			$('#myModal').modal('toggle');
 		};
 
-		// The table at the bottom of the page
+		// Creation of table with all datapoints
 		function datapointlist(div) {
 			div.each(function() {
 				var datapoints = d3.select(this).selectAll(".datapoint").data(byEventDate.top(Infinity),function(d) { return d._id; });
@@ -328,8 +358,6 @@ $(document).ready(function() {
 				datapointsEnter.append("div")
 					.attr("class", "title")
 					.append("a")
-					//.attr("href",function(d) { return "/datapoint/edit?id="+d._id; })
-//					.attr("target","_blank")
 					.attr("href","#")
 					.attr("onclick",function(d) { return ("javascript:showModal('"+d._id+"'	);return false;"); })
 					.text(function(d) { return d.title; });
