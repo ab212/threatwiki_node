@@ -126,7 +126,7 @@ span.datapointsource {
   height: 500px;
 }
 #mapcontainer {
-  width:0px;
+  overflow: auto;
 }
 .leaflet-clickable{
   fill-opacity: .5;
