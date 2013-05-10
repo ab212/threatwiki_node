@@ -82,6 +82,7 @@ block pageContent
               select(name="stage",id="stage")
                 if (typeof(datapoint.stage) == 'undefined')
                   option(selected=true,value="") -Choose Genocide Stage-
+                  option(value="General") General
                   option(value="Symbolization") Symbolization
                   option(value="Discrimination") Discrimination
                   option(value="Dehumanization") Dehumanization
@@ -92,6 +93,7 @@ block pageContent
                   option(value="Extermination") Extermination
                   option(value="Denial") Denial
                 else
+                  option(value="General",selected=(datapoint.stage=="General")) General
                   option(value="Symbolization",selected=(datapoint.stage=="Symbolization")) Symbolization
                   option(value="Discrimination",selected=(datapoint.stage=="Discrimination")) Discrimination
                   option(value="Dehumanization",selected=(datapoint.stage=="Dehumanization")) Dehumanization
@@ -102,7 +104,7 @@ block pageContent
                   option(value="Extermination",selected=(datapoint.stage=="Extermination")) Extermination
                   option(value="Denial",selected=(datapoint.stage=="Denial")) Denial
               span(class="help-inline")
-                a(href="http://genocidewatch.org/aboutgenocide/8stagesofgenocide.html", target="_blank") Read definitions
+                a(href="http://sentinelproject:tsp_2012_wiki_pwd@wiki.tspdev.org/index.php/Determining_Operational_Process_Stages_and_Tagging_Datapoints", target="_blank") Read definitions
           div(class="control-group")
             label(class="control-label",for="tags") Tags
             div(class="controls")
@@ -196,6 +198,7 @@ block pageContent
             div(class="controls")
               select(name="stage")
                 option(selected=true,value="") -Choose Genocide Stage-
+                option(value="General") General
                 option(value="Symbolization") Symbolization
                 option(value="Discrimination") Discrimination
                 option(value="Dehumanization") Dehumanization
@@ -206,7 +209,7 @@ block pageContent
                 option(value="Extermination") Extermination
                 option(value="Denial") Denial
               span(class="help-inline")
-                a(href="http://genocidewatch.org/aboutgenocide/8stagesofgenocide.html", target="_blank") Read definitions
+                a(href="http://sentinelproject:tsp_2012_wiki_pwd@wiki.tspdev.org/index.php/Determining_Operational_Process_Stages_and_Tagging_Datapoints", target="_blank") Read definitions
           div(class="control-group")
             label(class="control-label",for="tags") Tags
             div(class="controls")
