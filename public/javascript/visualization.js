@@ -17,6 +17,8 @@ $(document).ready(function() {
 				});
 			}
 		});
+		var dateformat = d3.time.format("%B %d, %Y");
+
 		var crossdatapoints = crossfilter(datapoints);
 		var all = crossdatapoints.groupAll();
 		var byId = crossdatapoints.dimension(function(p) { return p._id; });
@@ -311,7 +313,6 @@ $(document).ready(function() {
 
 		//window to be displayed when clicking on a datapoint in the list
 		window.showModal = function (datapointId){
-			var dateformat = d3.time.format("%B %d, %Y");
 			byId.filter(datapointId);
 			byId.top(Infinity).forEach(function(p, i) {
 				d3.select("#datapointevent").text(p.title);
@@ -344,7 +345,6 @@ $(document).ready(function() {
 				var datapoints = d3.select(this).selectAll(".datapoint").data(byEventDate.top(Infinity),function(d) { return d._id; });
 
 				var datapointsEnter = datapoints.enter().append("div").attr("class","datapoint");
-				var dateformat = d3.time.format("%b %d, %Y");
 
 				datapointsEnter.append("div")
 					.attr("class", "serialnumber")
@@ -413,10 +413,7 @@ $(document).ready(function() {
 
 				// Create the skeletal chart.
 				if (g.empty()) {
-				 /* div.select(".title").append("a")
-					  .attr("href", "javascript:resetDates(" + id + ")")
-					  .attr("class", "reset")
-					  .text("reset")
+				  /*div.select(".daterange")
 					  .style("display", "none");*/
 
 				  g = div.append("svg")
@@ -460,7 +457,9 @@ $(document).ready(function() {
 				if (brushDirty) {
 				  brushDirty = false;
 				  g.selectAll(".brush").call(brush);
-				  div.select(".title a").style("display", brush.empty() ? "none" : null);
+				  //div.select(".daterange").style("display", brush.empty() ? "none" : null);
+				  div.select(".chart-label").text("Click and drag on chart to filter a date range");
+
 				  if (brush.empty()) {
 					g.selectAll("#clip-" + id + " rect")
 						.attr("x", 0)
@@ -506,7 +505,7 @@ $(document).ready(function() {
 
 			brush.on("brushstart.chart", function() {
 			  var div = d3.select(this.parentNode.parentNode.parentNode);
-			  div.select(".title a").style("display", null);
+			  //div.select(".daterange").style("display", null);
 			});
 
 			brush.on("brush.chart", function() {
@@ -520,12 +519,28 @@ $(document).ready(function() {
 				  .attr("x", x(extent[0]))
 				  .attr("width", x(extent[1]) - x(extent[0]));
 			  dimension.filterRange(extent);
+			  //Update the date range selected on the UI as we select a range on the chart
+			  var div = d3.select(this.parentNode.parentNode.parentNode);
+			  div.select(".chart-label").style("display", null)
+				.text(
+				  	function(){ 
+				  		var datetext;
+				  		if (typeof(dimension.bottom(1)[0])!='undefined' && typeof(dimension.top(1)[0])!='undefined'){
+				  			datetext=dateformat(dimension.bottom(1)[0].event_date) + ' to ' + dateformat(dimension.top(1)[0].event_date);
+				  		} else {
+				  			datetext='Click and drag on chart to filter a date range';
+				  		}
+						return (datetext);
+				  	}
+				);
+
 			});
 
 			brush.on("brushend.chart", function() {
 			  if (brush.empty()) {
 				var div = d3.select(this.parentNode.parentNode.parentNode);
-				div.select(".title a").style("display", "none");
+				//div.select(".daterange").style("display", "none");
+				  div.select(".chart-label").text("Click and drag on chart to filter a date range");
 				div.select("#clip-" + id + " rect").attr("x", null).attr("width", "100%");
 				dimension.filterAll();
 			  }
