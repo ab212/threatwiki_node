@@ -1,4 +1,7 @@
 div(id="totals")
+    a(href="javascript:reset(0)")
+        button(type="button", class="btn btn-small btn-primary") Reset All Filters
+    br
     span(id="active")
     span  datapoints out of 
     span(id="total")
@@ -20,9 +23,7 @@ div(id="totals")
             option(value="Persecution") Persecution
             option(value="Extermination") Extermination
             option(value="Denial") Denial
-    a(href="javascript:reset(0)")
-        button(type="button", class="btn btn-small") Reset All Filters
-
+    
 
 div(id="charts")
     div(id="date-chart",class="chart")
