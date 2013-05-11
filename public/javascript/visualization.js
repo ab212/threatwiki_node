@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	//var host = "http://threatwiki.thesentinelproject.org";
-	var host = "http://localhost:3000";
+	var host = "http://threatwiki.thesentinelproject.org";
+	//var host = "http://localhost:3000";
 	jQuery.getJSON(host+"/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
 		////////////////////////////////////////
 		/// Crossfilter Initial configuration///
@@ -67,11 +67,6 @@ $(document).ready(function() {
 		})
 		.addLayer(new L.TileLayer("http://{s}.tile.cloudmade.com/aa22c4af8c674048a68c8d6f3b5d1937/998/256/{z}/{x}/{y}.png"));
 
-		//little hack to fix issue where first click on the map would scroll the page 
-		//https://github.com/Leaflet/Leaflet/issues/1228
-		L.Map.addInitHook(function() {
-			return L.DomEvent.off(this._container, "mousedown", this.keyboard._onMouseDown);
-		});
 		var info = L.control();
 
 		info.onAdd = function (map) {

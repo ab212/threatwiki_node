@@ -5,11 +5,14 @@ block head
     script(src="/javascript/crossfilter.min.js")
     script(src="/javascript/visualization.js")
     script(src="/javascript/moment.min.js")
-    script(src="/javascript/leaflet.js")
-    script(src="/javascript/L.Control.Zoomslider.js")
+    script(src="/lib/leaflet/js/leaflet.js")
+    script(src="/lib/leaflet/js/L.Control.Zoomslider.js")
     link(rel='stylesheet', href='/stylesheets/visualization.css')
-    link(rel='stylesheet', href='/stylesheets/leaflet.css')
-    link(rel='stylesheet', href='/stylesheets/L.Control.Zoomslider.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/leaflet.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/L.Control.Zoomslider.css')
+//if lte IE 8]
+    link(rel='stylesheet', href='/lib/leaflet/css/leaflet.ie.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/L.Control.Zoomslider.ie.css')
 
 block pageContent
     include visualization
