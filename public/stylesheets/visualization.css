@@ -12,11 +12,9 @@
    margin-right: 15px;
 }
 #top {
-  float: left;
 }
 #lists {
    white-space: nowrap;
-   float: left;
 }
 #tag-list {
   float: left;
@@ -125,10 +123,10 @@ span.datapointsource {
 
 #charts {
   padding: 0px 0px 15px 0px;
-  float: left;
+  display:inline-block;
 }
 #totals {
-  float:left;
+  display:inline-block;
   margin-right:10px;
   width:162px;
 }
