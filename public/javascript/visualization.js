@@ -137,15 +137,14 @@ $(document).ready(function() {
 			});
 
 		}
-		var markers = [];
+		var markers = {};
 		//the datapoints on the map
 		function updateDatapoints() {
 			//remove all markers from the map in order to be able to do a refresh
-			for(i=0;i<markers.length;i++) {
-				map.removeLayer(markers[i]);
+			for (var key in markers){
+				map.removeLayer(markers[key]);
 			}
-			markers = [];
-			//TODO: remove all datapoints and redraw on filtering
+			markers = {};
 			//configure size of the points on the map nb of datapoints per location could be from 1 to 36
 			var radius = d3.scale.sqrt()
 				.domain([1, 36])
@@ -155,9 +154,9 @@ $(document).ready(function() {
 				//create a marker at that specific position
 				var marker = L.circleMarker([p.key[0],p.key[1]]);
 				marker.setRadius(radius(p.value));
-				//.bindPopup('miow');
-				//On mouse over, update the info overlay with the name of the location
+
 				marker.on('mouseover',function (e) {
+					//On mouse over, update the info overlay with the name of the location
 					var locationname;
 					byFullLocationtemp.filterFunction(function (datapointlocation) {
 						if (datapointlocation.latitude==p.key[0] && datapointlocation.longitude==p.key[1]){
@@ -166,8 +165,8 @@ $(document).ready(function() {
 						}
 						return false;
 					});
+					byFullLocationtemp.filterAll();
 					info.update(locationname,p.value);
-					byFullLocationtemp.filter(null);
 				});
 				//On mouse out, re-update the info overlay with no value
 				marker.on('mouseout',function (e) {
@@ -180,8 +179,9 @@ $(document).ready(function() {
 				});
 				//add the marker to the map
 				marker.addTo(map);
+				marker.setStyle({fillOpacity: 0.5,fillColor:'#0033ff'});
 				//keep markers in a array so we can get rid of them later
-				markers.push(marker);
+				markers[[p.key[0],p.key[1]]]=marker;
 
 			});
 		}
@@ -226,6 +226,10 @@ $(document).ready(function() {
 			chart.each(render);
 			d3.select("#active").text((all.value()));
 		}
+
+		iranjson();
+		renderAll();
+
 		//executed when clicking on a tag name, will filter data by tag
 		window.filter = function(tagname) {
 			byTags.filterFunction(function (tag) {
@@ -303,13 +307,18 @@ $(document).ready(function() {
 			tagsFiltered = false;
 		};
 
-		//window.resetDates = function(i) {
-		//	charts[i].filter(null);
-		//	renderAll();
-		//};
-		iranjson();
-		renderAll();
+		//triggered when going over a datapoint link in datapoint list
+		//will change color on the marker that represents the datapoint location
+		window.overMarker = function (datapointLocation){
+			markers[datapointLocation].fire('mouseover');
+			markers[datapointLocation].setStyle({fillOpacity: 0.8,fillColor:'red',color:'red'});
+		};
 
+		//triggered when cursor leaves the datapoint link in datapoint list
+		window.outMarker = function (datapointLocation){
+			markers[datapointLocation].fire('mouseout');
+			markers[datapointLocation].setStyle({fillOpacity: 0.5,fillColor:'#0033ff',color:'#0033ff'});
+		};
 
 		//window to be displayed when clicking on a datapoint in the list
 		window.showModal = function (datapointId){
@@ -355,6 +364,8 @@ $(document).ready(function() {
 					.append("a")
 					.attr("href","#")
 					.attr("onclick",function(d) { return ("javascript:showModal('"+d._id+"'	);return false;"); })
+					.attr("onmouseover",function(d) { return ("javascript:overMarker('"+[d.Location.latitude,d.Location.longitude]+"'	);"); })
+					.attr("onmouseout",function(d) { return ("javascript:outMarker('"+[d.Location.latitude,d.Location.longitude]+"'	);"); })
 					.text(function(d) { return d.title; });
 
 				datapointsEnter.append("div")
@@ -390,7 +401,7 @@ $(document).ready(function() {
 		function barChart() {
 			if (!barChart.id) barChart.id = 0;
 
-			var margin = {top: 10, right: 10, bottom: 20, left: 10},
+			var margin = {top: 20, right: 10, bottom: 20, left: 10},
 				x,
 				y = d3.scale.linear().range([100, 0]),
 				id = barChart.id++,
@@ -444,7 +455,7 @@ $(document).ready(function() {
 
 					g.append("text")
 					.attr("class", "chart-label")
-					  .attr("transform", "translate("+width/2.5+",-2"  + ")")
+					  .attr("transform", "translate("+width/2.5+",-10"  + ")")
 					  .text("Click and drag on chart to filter a date range");
 
 				  // Initialize the brush component with pretty resize handles.

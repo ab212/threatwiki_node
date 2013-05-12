@@ -11,8 +11,12 @@
    width: 396px;
    margin-right: 15px;
 }
+#top {
+  float: left;
+}
 #lists {
    white-space: nowrap;
+   float: left;
 }
 #tag-list {
   float: left;
@@ -96,10 +100,9 @@ span.datapointsource {
   font: 10px sans-serif;
 }
 .chart-label {
-  font: 10px sans-serif;
+  font: 12px sans-serif;
   font-weight:bold;
 }
-
 
 .brush rect.extent {
   fill: steelblue;
@@ -110,8 +113,10 @@ span.datapointsource {
   fill: #eee;
   stroke: #666;
 }
+
 #charts {
-  padding: 10px 0;
+  padding: 0px 0px 15px 0px;
+  float: left;
 }
 #totals {
   float:left;
@@ -119,7 +124,7 @@ span.datapointsource {
   width:162px;
 }
 #stagedropdown{
-  width:150px;
+  width:170px;
 }
 #map {
   width:535px;
@@ -128,11 +133,10 @@ span.datapointsource {
 #mapcontainer {
   overflow: auto;
 }
-.leaflet-clickable{
-  fill-opacity: .5;
-}
 .leaflet-clickable:hover{
   fill-opacity: .8;
+  stroke: red;
+  fill: red;
 }
 .subunit {
   fill-opacity: .2;
