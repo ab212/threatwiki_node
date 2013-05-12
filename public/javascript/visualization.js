@@ -55,7 +55,32 @@ $(document).ready(function() {
 
 		// Render the total number of datapoints
 		d3.selectAll("#total").text(crossdatapoints.groupAll().reduceCount().value());
-
+		var hide = false;
+		var clicktoshow = false;
+		//enable popover on stage column, only show on hover
+		$('#popover').popover({ trigger: 'manual' }).hover(function(e){
+			if (!$("#popover").next('div.popover:visible').length && hide ===false){
+				$(this).popover('show');
+				e.preventDefault();
+			} else if (hide){
+				hide = false;
+			}
+		}).click(function(e){
+			if ($("#popover").next('div.popover:visible').length){
+				hide = true;
+			} else {
+				clicktoshow=true;
+				$('#popover').popover('show');
+			}
+		});
+		//hide on click somewhere on the screen
+		$(document).click(function(e) {
+			if ($("#popover").next('div.popover:visible').length && clicktoshow===false){
+				$('#popover').popover('hide');
+			} else if (clicktoshow){
+				clicktoshow=false;
+			}
+		});
 
 		////////////////////////////////////////
 		/// Leaflet and Mapping //

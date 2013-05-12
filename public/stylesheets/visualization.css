@@ -51,6 +51,9 @@
   padding:2px;
 }
 
+
+
+
 #datapoint-list .title{
   width: 170px;
   display: inline-block;
@@ -73,11 +76,17 @@
   font-size: 13px;
   vertical-align: top;
 }
-#datapoint-list .datapointTitle  {
+#datapoint-list .datapointTitle {
   font-weight:bold;
   white-space: normal;
   margin-bottom: 1px;
   padding: 1.5px;
+}
+.popover-content{
+  font-weight: normal;
+}
+.popover-link {
+  color: black;
 }
 span.datapointsource {
   display: block;
