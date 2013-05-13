@@ -1,0 +1,4 @@
+/node_modules/*
+threatwiki.sublime-project
+.env
+*.sublime-workspace
