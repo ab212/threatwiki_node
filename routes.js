@@ -308,7 +308,7 @@ function load_routes(app) {
     } else {
       //Public access to the Visualization page without being logged in on Threatwiki
       res.render('iranpublic', {
-          title: 'Iran Sentinel Project Visualization'
+          title: "Visualization of the Persecution of the Bahá'ís community in Iran - The Sentinel Project"
       });
 
     }

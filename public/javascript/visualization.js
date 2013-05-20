@@ -57,7 +57,7 @@ $(document).ready(function() {
 		d3.selectAll("#total").text(crossdatapoints.groupAll().reduceCount().value());
 		var hide = false;
 		var clicktoshow = false;
-		//enable popover on stage column, only show on hover
+		//configure bootstrap popovers (for stage and hate crimes terms)
 		$('#popover').popover({ trigger: 'manual' }).hover(function(e){
 			if (!$("#popover").next('div.popover:visible').length && hide ===false){
 				$(this).popover('show');
@@ -73,10 +73,27 @@ $(document).ready(function() {
 				$('#popover').popover('show');
 			}
 		});
+		$('#popovertitle').popover({ trigger: 'manual' }).hover(function(e){
+			if (!$("#popovertitle").next('div.popover:visible').length && hide ===false){
+				$(this).popover('show');
+				e.preventDefault();
+			} else if (hide){
+				hide = false;
+			}
+		}).click(function(e){
+			if ($("#popovertitle").next('div.popover:visible').length){
+				hide = true;
+			} else {
+				clicktoshow=true;
+				$('#popovertitle').popover('show');
+			}
+		});
+		
 		//hide on click somewhere on the screen
 		$(document).click(function(e) {
-			if ($("#popover").next('div.popover:visible').length && clicktoshow===false){
+			if (($("#popover").next('div.popover:visible').length || $("#popovertitle").next('div.popover:visible').length) && clicktoshow===false){
 				$('#popover').popover('hide');
+				$('#popovertitle').popover('hide');
 			} else if (clicktoshow){
 				clicktoshow=false;
 			}

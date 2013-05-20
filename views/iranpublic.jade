@@ -26,9 +26,24 @@ html(lang="en")
           div.container
             ul(class='nav')
                 li
-                  a(href='http://thesentinelproject.org/situations-of-concern-2/bahais-in-iran/') Return to Iran Situation of Concern
+                  a(href='http://thesentinelproject.org/situations-of-concern-2/bahais-in-iran/') Read more about our Iran Situation of Concern Monitoring
+            ul(class='nav pull-right')
+                li
+                    a(href='mailto:iransoc@thesentinelproject.org',style="display:inline-block;padding:0px;")
+                        img(src='/images/mail-icon.png',style="height: 36px; width:45px;")
+                    a(href='http://facebook.com/stopgenocide',target="_blank",style="display:inline-block;padding:0px;")
+                        img(src='/images/facebooklogo.png',style="height: 38px; width:38px;")
+                    a(href='http://twitter.com/sentinelproject',target="_blank",style="display:inline-block;padding:0px;")
+                        img(src='/images/twitter-bird-dark-bgs.png',style="height: 42px; width:42px;")
+                    a(href='http://thesentinelproject.org',target="_blank",style="display:inline-block;padding:0px;")
+                        img(src='/images/logoblack.png',style="height: 44px; width:auto;")
       div.container-fluid
         #logo
-          img(src='/images/logo.png',style="height: 44px; width:300px;")
+            div(align="center")
+                h3 Threatwiki - Tracking and Mapping  
+                    a(href="#", id="popovertitle", class="popover-link", data-delay"2000", data-title='<a href="#" style="float:none" class="close pull-right">&times;</a>', data-html="true", data-toggle="popover", data-placement="right", data-trigger="hover",data-content="Monitoring hate crimes is part of our <a href='http://thesentinelproject.org/our-work/early-warning-system-overview/' target='_blank'>Early Warning System</a> to help us identify communities at risk of genocide.") Hate Crimes  
+                        i(class="icon-info-sign")
+                h4 Persecution of the Bahá'ís community in Iran
+                br
         body
             include visualization

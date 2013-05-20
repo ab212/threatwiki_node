@@ -82,6 +82,8 @@
 }
 .popover-content{
   font-weight: normal;
+  font-size: 12px;
+  line-height: 1.5em;
 }
 .popover-link {
   color: black;
@@ -129,6 +131,7 @@ span.datapointsource {
   display:inline-block;
   margin-right:10px;
   width:162px;
+  vertical-align: top;
 }
 #stagedropdown{
   width:170px;
