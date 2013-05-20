@@ -9,10 +9,9 @@
    font-size: 13px;
    line-height: 1.5em;
    width: 396px;
-   margin-right: 15px;
+   margin-right: 10px;
 }
-#top {
-}
+
 #lists {
    white-space: nowrap;
 }
@@ -137,8 +136,8 @@ span.datapointsource {
   width:170px;
 }
 #map {
-  width:455px;
-  height: 420px;
+  width:475px;
+  height: 450px;
 }
 #mapcontainer {
   overflow: auto;
