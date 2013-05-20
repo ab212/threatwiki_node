@@ -1,3 +1,9 @@
+if(process.env.NODETIME_ACCOUNT_KEY) {
+  require('nodetime').profile({
+    accountKey: process.env.NODETIME_ACCOUNT_KEY,
+    appName: 'Threatwiki' // optional
+  });
+}
 var application_root = __dirname
   , routes = require("./routes")
   , model = require("./model")
