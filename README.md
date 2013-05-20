@@ -13,3 +13,9 @@ We try to keep the master branch as stable as possible so feel free to get the m
 	ie: export NODE_ENV=development
 
 Installed and running on [http://threatwiki.thesentinelproject.org/](http://threatwiki.thesentinelproject.org/)
+
+Blog post of our launch:
+http://thesentinelproject.org/introducing-threatwiki-3-0-warsaw-a-big-update-for-sentinel-projects-genocide-risk-tracking-platform/
+
+Technical blog explaining our visualization
+http://jeromegagnonvoyer.wordpress.com/2013/04/17/creating-a-data-visualization-tool-using-d3-js-crossfilter-and-leaflet-js/
