@@ -22,6 +22,7 @@ $(document).ready(function() {
 		var crossdatapoints = crossfilter(datapoints);
 		var all = crossdatapoints.groupAll();
 		var byId = crossdatapoints.dimension(function(p) { return p._id; });
+		var bySerialNumber = crossdatapoints.dimension(function(p) { return p.serialNumber; });
 
 		var byStage = crossdatapoints.dimension(function(p) { return p.stage; });
 
@@ -364,8 +365,8 @@ $(document).ready(function() {
 
 		//window to be displayed when clicking on a datapoint in the list
 		window.showModal = function (datapointId){
-			byId.filter(datapointId);
-			byId.top(Infinity).forEach(function(p, i) {
+			bySerialNumber.filter(datapointId);
+			bySerialNumber.top(Infinity).forEach(function(p, i) {
 				d3.select("#datapointevent").text(p.title);
 				d3.select("#datapointdescription").text(p.description);
 				d3.select("#datapointstage").text(p.stage);
@@ -386,9 +387,27 @@ $(document).ready(function() {
 					}
 				}
 			});
-			byId.filterAll(null);
+			bySerialNumber.filterAll(null);
 			$('#myModal').modal('toggle');
+			window.history.replaceState("", "title", "?datapoint="+datapointId);
 		};
+		//Replace to normal empty url when we hide the modal
+		$('#myModal').on('hidden', function () {
+			window.history.replaceState("", "title", "?");
+		})
+
+		//Look for datapoint GET argument in the URL, if present, toggle showModal to show datapoint directly
+		var prmstr = window.location.search.substr(1);
+	    var prmarr = prmstr.split ("&");
+	    var params = {};
+
+		for ( var i = 0; i < prmarr.length; i++) {
+			var tmparr = prmarr[i].split("=");
+			params[tmparr[0]] = tmparr[1];
+	    }
+	    if (params.datapoint!==undefined){
+			window.showModal(params.datapoint);
+		}
 
 		// Creation of table with all datapoints
 		function datapointlist(div) {
@@ -404,8 +423,8 @@ $(document).ready(function() {
 				datapointsEnter.append("div")
 					.attr("class", "title")
 					.append("a")
-					.attr("href","#")
-					.attr("onclick",function(d) { return ("javascript:showModal('"+d._id+"'	);return false;"); })
+					.attr("href",function(d) { return ("?datapoint="+d.serialNumber); })
+					.attr("onclick",function(d) { return ("javascript:showModal('"+d.serialNumber+"'	);return false;"); })
 					.attr("onmouseover",function(d) { return ("javascript:overMarker('"+[d.Location.latitude,d.Location.longitude]+"'	);"); })
 					.attr("onmouseout",function(d) { return ("javascript:outMarker('"+[d.Location.latitude,d.Location.longitude]+"'	);"); })
 					.text(function(d) { return d.title; });
