@@ -17,5 +17,8 @@ Installed and running on [http://threatwiki.thesentinelproject.org/](http://thre
 Blog post of our launch:
 http://thesentinelproject.org/introducing-threatwiki-3-0-warsaw-a-big-update-for-sentinel-projects-genocide-risk-tracking-platform/
 
+Technical blog post explaining how to access the Threatwiki API
+http://thesentinelproject.org/learn-how-to-access-the-sentinel-project-open-data-with-our-apis/
+
 Technical blog explaining our visualization
 http://jeromegagnonvoyer.wordpress.com/2013/04/17/creating-a-data-visualization-tool-using-d3-js-crossfilter-and-leaflet-js/
