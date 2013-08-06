@@ -132,7 +132,7 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
 
   // retrieve by title
   app.get('/api/soc/title/:title', function (req, res) {
-    return SocModel.findOne({ title: req.params.title}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
+    return SocModel.findOne({ title: { $regex : new RegExp(req.params.title, "i")}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
       if (!err && soc) {
         return res.jsonp(soc);
       } else {
@@ -145,11 +145,10 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
   // retrieve by user
   app.get('/api/soc/user/:email', function (req, res) {
     // first retrieve user based on user_name
-    var user = UserModel.find({ email: req.params.email}, function (err, user) {
+    var user = UserModel.find({ email: { $regex : new RegExp(req.params.email, "i")}}, function (err, user) {
       if (!err && user) {
-        console.log("User found at " + user._id);
         // search soc for the user_id that we just found
-        return SocModel.find({createdBy: user._id,archive: {$ne: true}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
+        return SocModel.find({createdBy: user[0]._id,archive: {$ne: true}}).populate('createdBy','name').populate('modifiedBy','name').exec(function (err, soc) {
           if (!err && soc) {
             return res.jsonp(soc);
           } else {
@@ -263,27 +262,6 @@ function load_socApi(app, SocModel, UserModel,DataPointModel,TagModel) {
       });
     }
   });
-
-  // delete by id
-  /* Removing the code for now to protect our data, will re-enable when we have an admin access + authenticated API
-  app.get('/api/soc/delete/:id', function (req, res) {
-    return SocModel.findById(req.params.id, function (err, soc) {
-      if (!err && soc){
-        return soc.remove(function (err) {
-          if (!err) {
-            console.log("removed");
-            return res.send(204);
-          } else {
-            console.log(err);
-            return res.send(500);
-          }
-        });
-     } else {
-        console.log(err);
-        return res.send(null);
-     }
-    });
-  });*/
 
   //archive SOC by ID
   app.put('/api/soc/:id/archive', function (req, res) {

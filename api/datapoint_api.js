@@ -90,10 +90,9 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
     });
   });
 
-  // retrieve by stage of genocide
+  // retrieve by stage of genocide, case insensitive
   app.get('/api/datapoint/stage/:stage', function (req, res) {
-    console.log("DATAPOINT_API:SOC:Search by: " + req.params.soc);
-    return DataPointModel.find({stage: req.params.stage,archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
+    return DataPointModel.find({stage: { $regex : new RegExp(req.params.stage, "i")},archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
       if (!err && datapoints) {
         return res.jsonp(datapoints);
       } else {
@@ -119,7 +118,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   // retrieve by location
   app.get('/api/datapoint/location/:Location', function (req, res) {
     console.log("DATAPOINT_API:LOCATION:Search by: " + req.params.Location);
-    return DataPointModel.find({'Location.title': req.params.Location,archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
+    return DataPointModel.find({'Location.title': { $regex : new RegExp(req.params.Location, "i")},archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
         return res.jsonp(datapoint);
       } else {
@@ -195,11 +194,10 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   // retrieve by email
   app.get('/api/datapoint/user/:email', function (req, res) {
     // first retrieve user based on email
-    var user = UserModel.find({ email: req.params.email}, function (err, user) {
+    var user = UserModel.find({ email: { $regex : new RegExp(req.params.email, "i")}}, function (err, user) {
       if (!err && user) {
-        console.log("User found at " + user._id);
         // search datapoint for the user_id that we just found
-        return DataPointModel.find({createdBy: user._id,archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
+        return DataPointModel.find({createdBy: user[0]._id,archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoint) {
           if (!err && datapoint) {
             return res.jsonp(datapoint);
           } else {
@@ -217,8 +215,6 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
   // create
   app.post('/api/datapoint', function (req, res) {
     var datapoint;
-    //console.log("POST: ");
-    //console.log(req.body);
 
     var date_now = new Date();
     date_now.setTimezone('UTC');
@@ -373,27 +369,6 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
       });
     }
   });
-
-  // delete by id
-  /* Removing the code for now to protect our data, will re-enable when we have an admin access + authenticated API
-  app.get('/api/datapoint/delete/:id', function (req, res) {
-     return DataPointModel.findById(req.params.id, function (err, datapoint) {
-      if (!err && datapoint){
-        return datapoint.remove(function (err) {
-          if (!err) {
-            console.log("removed");
-            return res.send(204);
-          } else {
-            console.log(err);
-            return res.send(500);
-          }
-        });
-      } else {
-        console.log('Cant delete datapoint with this id '+err);
-        return res.send(null);
-      }
-    });
-  });*/
 
  //archive datapoint by ID
   app.put('/api/datapoint/:id/archive', function (req, res) {
