@@ -159,9 +159,6 @@ function load_tagApi(app, TagModel,DataPointModel,UserModel) {
 
   // retrieve by date range, date format is milliseconds since 1970/01/01
   app.get('/api/tag/date/range/:date_start/:date_end', function (req, res) {
-    console.log("Search between range");
-    console.log("Range start: " + req.params.date_start);
-    console.log("Range end: " + req.params.date_end);
     var d_start = new Date(parseInt(req.params.date_start,10));
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);

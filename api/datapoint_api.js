@@ -130,7 +130,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
   // retrieve by date, date format is milliseconds since 1970/01/01
   app.get('/api/datapoint/date/:date', function (req, res) {
-    var d_small = new Date(parseInt(req.params.date_start,10));
+    var d_small = new Date(parseInt(req.params.date,10));
     var d_big = d_small;
     d_small.setHours(0,0,0,0);
     d_big.setHours(23,59,59,59);
@@ -146,7 +146,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
   // retrieve by date after, date format is milliseconds since 1970/01/01
   app.get('/api/datapoint/date/after/:date', function (req, res) {
-    var d_small = new Date(parseInt(req.params.date_start,10));
+    var d_small = new Date(parseInt(req.params.date,10));
     d_small.setHours(0,0,0,0);
     return DataPointModel.find({created: {$gte : d_small},archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').exec(function (err, datapoint) {
       if (!err && datapoint) {
@@ -174,9 +174,6 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
   // retrieve by date range, date format is milliseconds since 1970/01/01
   app.get('/api/datapoint/date/range/:date_start/:date_end', function (req, res) {
-    //console.log("Search between range");
-    //console.log("Range start: " + req.params.date_start);
-    //console.log("Range end: " + req.params.date_end);
     var d_start = new Date(parseInt(req.params.date_start,10));
     var d_end = new Date(parseInt(req.params.date_end,10));
     d_start.setHours(0,0,0,0);
