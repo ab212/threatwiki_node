@@ -299,7 +299,7 @@ function load_routes(app) {
     }
   };
 
-   exports.iranvisualization = function(req, res){
+  exports.iranvisualization = function(req, res){
     //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
         res.render('irancontainer', {
@@ -312,6 +312,21 @@ function load_routes(app) {
       });
 
     }
+  };
+
+  exports.burmavisualization = function(req, res){
+    //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+        res.render('burmacontainer', {
+          title: "Visualization of the Persecution of the Rohinyga community in Burma - The Sentinel Project"
+        });
+    } /*else {
+      //Public access to the Visualization page without being logged in on Threatwiki
+      res.render('burmapublic', {
+          title: "Visualization of the Persecution of the Rohinyga community in Burma - The Sentinel Project"
+      });
+
+    }*/
   };
 }
 

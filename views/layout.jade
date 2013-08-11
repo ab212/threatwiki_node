@@ -21,13 +21,18 @@ html(lang="en")
                 a(href='/') Home
               li
                 a(href='/soc') SOC
-              li
-                a(href='/iranvisualization') Iran Visualization
+              li(class="dropdown")
+                a(href='#',data-toggle="dropdown",class="dropdown-toggle",data-target="#",id="dLabel")  Visualizations
+                ul(class="dropdown-menu",role="menu",aria-labelledby="dLabel")
+                  li
+                    a(role="menuitem",tabindex="-1",href='/iranvisualization') Iran
+                  li
+                    a(role="menuitem",tabindex="-1",href='/burmavisualization') Burma
               li
                 a(href='/logout') Logout
             ul(class='nav pull-right')
               li
-                button(class='btn btn-info', onclick="window.open('http://wiki.tspdev.org/index.php/Threatwiki_User_Guide');", target='_blank') User Guide
+                button(class='btn btn-info', onclick="window.open('http://wiki.thesentinelproject.org/index.php/Threatwiki_User_Guide');", target='_blank') User Guide
       div.container-fluid
         #logo
           img(src='/images/logo.png',style="height: 44px; width:300px;")

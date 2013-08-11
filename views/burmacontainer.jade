@@ -1,0 +1,18 @@
+extends layout
+block head
+    script(src="/lib/d3/js/d3.v3.min.js")
+    script(src="/lib/topojson/js/topojson.v1.min.js")
+    script(src="/lib/crossfilter/js/crossfilter.min.js")
+    script(src="/javascript/visualizationburma.js")
+    script(src="/javascript/moment.min.js")
+    script(src="/lib/leaflet/js/leaflet.js")
+    script(src="/lib/leaflet/js/L.Control.Zoomslider.js")
+    link(rel='stylesheet', href='/stylesheets/visualization.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/leaflet.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/L.Control.Zoomslider.css')
+//if lte IE 8]
+    link(rel='stylesheet', href='/lib/leaflet/css/leaflet.ie.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/L.Control.Zoomslider.ie.css')
+
+block pageContent
+    include visualization

@@ -130,6 +130,8 @@ app.get('/tag', routes.tag);
 app.get('/tag/create', routes.tag.create);
 app.get('/tag/edit', routes.tag.edit);
 app.get('/iranvisualization',routes.iranvisualization);
+app.get('/burmavisualization',routes.burmavisualization);
+
 
 // import socApi
 var socApi = soc_api.load_socApi(app, SocModel,UserModel,DataPointModel,TagModel);
