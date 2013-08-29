@@ -3,7 +3,9 @@ block head
     script(src="/lib/d3/js/d3.v3.min.js")
     script(src="/lib/topojson/js/topojson.v1.min.js")
     script(src="/lib/crossfilter/js/crossfilter.min.js")
-    script(src="/javascript/visualizationburma.js")
+    script(src="/javascript/visualization.js")
+    script
+        generateVisualization("http://threatwiki.thesentinelproject.org/api/datapoint/soc/Myanmar?callback=?",22,96,"/mapfiles/burma.json",new Date(2013, 03,15),"Burma");
     script(src="/javascript/moment.min.js")
     script(src="/lib/leaflet/js/leaflet.js")
     script(src="/lib/leaflet/js/L.Control.Zoomslider.js")

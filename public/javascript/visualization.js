@@ -1,7 +1,6 @@
-$(document).ready(function() {
-	var host = "http://threatwiki.thesentinelproject.org";
+function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartTimeline,countryName){
 	//var host = "http://localhost:3000";
-	jQuery.getJSON(host+"/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?", function(datapoints) {
+	jQuery.getJSON(url, function(datapoints) {
 		////////////////////////////////////////
 		/// Crossfilter Initial configuration///
 		////////////////////////////////////////
@@ -38,9 +37,7 @@ $(document).ready(function() {
 		var tagList = crosstags.dimension(function(p){return p.title;});
 
 		var byLocation = crossdatapoints.dimension(function(p) {
-			//if (p.Location.title!='Iran'){
-				return [p.Location.latitude,p.Location.longitude];
-			//}
+			return [p.Location.latitude,p.Location.longitude];
 		});
 		var byFullLocation = crossdatapoints.dimension(function(p) {return p.Location; });
 		var byFullLocationtemp = crossdatapoints.dimension(function(p) {return p.Location; });
@@ -105,7 +102,7 @@ $(document).ready(function() {
 		////////////////////////////////////////
 		//create leaflet map
 		var map = new L.Map("map", {
-			center: [32, 53],
+			center: [coordinate_x, coordinate_y],
 			zoom: 5,
 			keyboard: false,
 			minZoom: 4
@@ -124,7 +121,7 @@ $(document).ready(function() {
 		info.update = function (location,numberdatapoints) {
 			this._div.innerHTML = '<h4>Datapoints</h4>' +  (location ?
 				numberdatapoints+ ' in <b>' + location + '</b>'
-			: 'Iran');
+			: countryName);
 		};
 
 		info.addTo(map);
@@ -137,25 +134,25 @@ $(document).ready(function() {
 		var path = d3.geo.path().projection(project);
 
 		var svg = d3.select(map.getPanes().overlayPane).append("svg")
-			.data([iranjson]);
+			.data([generateMapData]);
 		//our map will be included inside a <g> (group) tag, it is hidden while zooming on leaflet is happening
 		var gleaf = svg.append("g").attr("class", "leaflet-zoom-hide");
 
 		//the actual map created from data
-		function iranjson() {
-			d3.json("/mapfiles/iran.json", function(error, data) {
+		function generateMapData() {
+			d3.json(pathData, function(error, data) {
 				var feature = gleaf.selectAll(".subunit")
-					.data(topojson.feature(data, data.objects.iranprovinces).features)
+					.data(topojson.feature(data, data.objects.subunits).features)
 					.enter().append("path")
 					//class name based on name of region
 					.attr("class", function(d) { return "subunit";})
 					.attr("d", path)
-					//random color for each region of iran
+					//random color for each sub region of that country
 					.style("fill", function() {
 						return "hsl(" + Math.random() * 360 + ",100%,50%)";
 					});
 
-				var bounds = d3.geo.bounds(topojson.feature(data, data.objects.iranprovinces));
+				var bounds = d3.geo.bounds(topojson.feature(data, data.objects.subunits));
 				//we want to call reset everytime we zoom in or zoom out of the map
 				map.on("viewreset", reset);
 				reset();
@@ -235,7 +232,7 @@ $(document).ready(function() {
 			.dimension(byEventDate)
 			.group(byEventDate.group())
 			.x(d3.time.scale.utc()
-				.domain([new Date(2011, 10,06), new Date()])
+				.domain([dateStartTimeline, new Date()])
 				.rangeRound([0, 960]))
 		];
 		var chart = d3.selectAll(".chart")
@@ -270,7 +267,7 @@ $(document).ready(function() {
 			d3.select("#active").text((all.value()));
 		}
 
-		iranjson();
+		generateMapData();
 		renderAll();
 
 		//executed when clicking on a tag name, will filter data by tag
@@ -673,4 +670,4 @@ $(document).ready(function() {
 
 
 	});
-});
+}
