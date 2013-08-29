@@ -1,4 +1,4 @@
-function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartTimeline,countryName){
+function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartTimeline,countryName,customZoom){
 	//var host = "http://localhost:3000";
 	jQuery.getJSON(url, function(datapoints) {
 		////////////////////////////////////////
@@ -103,7 +103,7 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 		//create leaflet map
 		var map = new L.Map("map", {
 			center: [coordinate_x, coordinate_y],
-			zoom: 5,
+			zoom: customZoom,
 			keyboard: false,
 			minZoom: 4
 		})

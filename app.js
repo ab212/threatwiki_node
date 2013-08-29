@@ -131,6 +131,7 @@ app.get('/tag/create', routes.tag.create);
 app.get('/tag/edit', routes.tag.edit);
 app.get('/iranvisualization',routes.iranvisualization);
 app.get('/burmavisualization',routes.burmavisualization);
+app.get('/kenyavisualization',routes.kenyavisualization);
 
 
 // import socApi
