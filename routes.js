@@ -320,13 +320,13 @@ function load_routes(app) {
         res.render('burmacontainer', {
           title: "Visualization of the Persecution of the Rohinyga community in Burma - The Sentinel Project"
         });
-    } /*else {
+    } else {
       //Public access to the Visualization page without being logged in on Threatwiki
       res.render('burmapublic', {
           title: "Visualization of the Persecution of the Rohinyga community in Burma - The Sentinel Project"
       });
 
-    }*/
+    }
   };
 
   exports.kenyavisualization = function(req, res){
