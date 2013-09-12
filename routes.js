@@ -318,12 +318,12 @@ function load_routes(app) {
     //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
         res.render('burmacontainer', {
-          title: "Visualization of the Persecution of the Rohinyga community in Burma - The Sentinel Project"
+          title: "Visualization of the Persecution of the Rohingya community in Burma - The Sentinel Project"
         });
     } else {
       //Public access to the Visualization page without being logged in on Threatwiki
       res.render('burmapublic', {
-          title: "Visualization of the Persecution of the Rohinyga community in Burma - The Sentinel Project"
+          title: "Visualization of the Persecution of the Rohingya community in Burma - The Sentinel Project"
       });
 
     }
@@ -337,8 +337,8 @@ function load_routes(app) {
         });
     } /*else {
       //Public access to the Visualization page without being logged in on Threatwiki
-      res.render('burmapublic', {
-          title: "Visualization of the Persecution of the Rohinyga community in Burma - The Sentinel Project"
+      res.render('kenyapublic', {
+          title: "Visualization of hate crimes in Kenya - The Sentinel Project"
       });
 
     }*/
