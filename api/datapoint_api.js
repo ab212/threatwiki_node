@@ -2,6 +2,8 @@ var express = require("express");
 var time = require('time')(Date);
 var jquery = require('jquery');
 var mongoose = require('mongoose');
+var secretkey = '123';
+
 
 function generateDevUser(UserModel, callback) {
   //we generate a random dev user during DEV mode (not using Google Apps auth)
@@ -46,7 +48,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
   //If user is currently logged in, we also get the field comment (that is disabled by default in the model)
   function loggedInQuery(req){
-    if (app.settings.env != 'production' || (req.session.auth && req.session.auth.loggedIn)) {
+    if (app.settings.env != 'production' || (req.session.auth && req.session.auth.loggedIn) || (req.query.secretkey==secretkey)) {
       return ("+comment");
     } else {
       return ("");
@@ -55,6 +57,7 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
   // retrieve all
   app.get('/api/datapoint', function (req, res) {
+
     return DataPointModel.find({archive: {$ne: true}}).select(loggedInQuery(req)).populate('tags','title').populate('createdBy','name').populate('modifiedBy','name').exec(function (err, datapoints) {
       if (!err && datapoints) {
         return res.jsonp(datapoints);

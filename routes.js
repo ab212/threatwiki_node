@@ -1,6 +1,7 @@
 var util = require('util');
 var moment = require('moment');
 var jquery = require('jquery');
+var secretkey = '123';
 
 // authenticate user based on the incoming request
 function authenticate(req, res){
@@ -29,7 +30,8 @@ function load_routes(app) {
 
   exports.soc = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      jquery.getJSON(host+'api/soc?callback=?', function(socs) {
+      
+      jquery.getJSON(host+'api/soc'+'?secretkey='+secretkey+'&callback=?', function(socs) {
         //Render the page with list of SOCs only when we are done getting info about each datapoint
         function render() {
           res.render('socList', {
@@ -45,7 +47,7 @@ function load_routes(app) {
         for(i=0; i<socs.length; i++) {
           socs[i].created = moment(socs[i].created).format("YYYY-MM-DD");
           socs[i].modified = moment(socs[i].modified).format("YYYY-MM-DD");
-          jquery.getJSON(host+'api/datapoint/soc/'+ socs[i].title +'?callback=?', function(datapoints) {
+          jquery.getJSON(host+'api/datapoint/soc/'+ socs[i].title +'?secretkey='+secretkey+'&callback=?', function(datapoints) {
             //sort DESC date by created date to get the most recent datapoint created
             datapoints.sort(function(a,b){return new Date(b.created)-new Date(a.created);});
             if (typeof(datapoints[0]) != 'undefined')  {
@@ -83,8 +85,8 @@ function load_routes(app) {
   exports.soc.edit = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
-      console.log(host+'api/soc/'+ obj_id +'?callback=?');
-      jquery.getJSON(host+'api/soc/'+ obj_id +'?callback=?', function(soc) {
+      
+      jquery.getJSON(host+'api/soc/'+ obj_id +'?secretkey='+secretkey+'&callback=?', function(soc) {
         soc.created = moment(soc.created).format("YYYY-MM-DD");
         soc.modified = moment(soc.modified).format("YYYY-MM-DD");
         res.render('socForm',  {
@@ -106,9 +108,9 @@ function load_routes(app) {
       if (typeof(tagname) != 'undefined') {
         //support multiple tag in the URL, delimited by commas
         tagname = tagname.split(',');
-        jquery.getJSON(host+'api/datapoint/tag/'+ tagname +'?callback=?', function(datapoints) {
-          jquery.getJSON(host+'api/soc/title/'+ socname +'?callback=?', function(soc) {
-            jquery.getJSON(host+'api/tag/'+ tagname +'?callback=?', function(tag) {
+        jquery.getJSON(host+'api/datapoint/tag/'+ tagname +'?secretkey='+secretkey+'&callback=?', function(datapoints) {
+          jquery.getJSON(host+'api/soc/title/'+ socname +'?secretkey='+secretkey+'&callback=?', function(soc) {
+            jquery.getJSON(host+'api/tag/'+ tagname +'?secretkey='+secretkey+'&callback=?', function(tag) {
               var tagsavailable=[];
               var tagstitle = [];
 
@@ -140,9 +142,9 @@ function load_routes(app) {
           });
         });
       } else {
-        jquery.getJSON(host+'api/datapoint/soc/'+ socname +'?callback=?', function(datapoints) {
-          jquery.getJSON(host+'api/soc/title/'+ socname +'?callback=?', function(soc) {
-            jquery.getJSON(host+'api/tag/soc/'+ socname +'?callback=?', function(tagsavailable) {
+        jquery.getJSON(host+'api/datapoint/soc/'+ socname +'?secretkey='+secretkey+'&callback=?', function(datapoints) {
+          jquery.getJSON(host+'api/soc/title/'+ socname +'?secretkey='+secretkey+'&callback=?', function(soc) {
+            jquery.getJSON(host+'api/tag/soc/'+ socname +'?secretkey='+secretkey+'&callback=?', function(tagsavailable) {
               for(i=0; i<datapoints.length; i++) {
                 datapoints[i].created = moment(datapoints[i].created).format("YYYY-MM-DD");
                 datapoints[i].modified = moment(datapoints[i].modified).format("YYYY-MM-DD");
@@ -167,7 +169,7 @@ function load_routes(app) {
 
   exports.datapoint = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      jquery.getJSON(host+'api/datapoint?callback=?', function(datapoints) {
+      jquery.getJSON(host+'api/datapoint'+'?secretkey='+secretkey+'&callback=?', function(datapoints) {
         console.log(datapoints);
         // convert dates from ISO-8601 to string
         for(i=0; i<datapoints.length; i++) {
@@ -192,8 +194,8 @@ function load_routes(app) {
       var socname = req.query["soc"];
       var tagid = req.query["tag"];
       if (typeof(tagid)!='undefined'){
-        jquery.getJSON(host+'api/tag/'+ tagid +'?callback=?', function(tag) {
-          jquery.getJSON(host+'api/soc/title/'+ socname +'?callback=?', function(soc) {
+        jquery.getJSON(host+'api/tag/'+ tagid +'?secretkey='+secretkey+'&callback=?', function(tag) {
+          jquery.getJSON(host+'api/soc/title/'+ socname +'?secretkey='+secretkey+'&callback=?', function(soc) {
             res.render('datapointForm', {
               title: 'Sentinel Project: Create Datapoint for SOC '+soc.displayname,
               socname:socname,
@@ -203,7 +205,7 @@ function load_routes(app) {
           });
         });
       } else {
-        jquery.getJSON(host+'api/soc/title/'+ socname +'?callback=?', function(soc) {
+        jquery.getJSON(host+'api/soc/title/'+ socname +'?secretkey='+secretkey+'&callback=?', function(soc) {
           res.render('datapointForm', {
               title: 'Sentinel Project: Create Datapoint for SOC '+socname,
               socname:socname,
@@ -223,8 +225,8 @@ function load_routes(app) {
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
 
-      jquery.getJSON(host+'api/datapoint/'+ obj_id +'?callback=?', function(datapoint) {
-        jquery.getJSON(host+'api/soc/title/'+ datapoint.soc +'?callback=?', function(soc) {
+      jquery.getJSON(host+'api/datapoint/'+ obj_id +'?secretkey='+secretkey+'&callback=?', function(datapoint) {
+        jquery.getJSON(host+'api/soc/title/'+ datapoint.soc +'?secretkey='+secretkey+'&callback=?', function(soc) {
 
           datapoint.created = moment(datapoint.created).format("YYYY-MM-DD");
           datapoint.modified = moment(datapoint.modified).format("YYYY-MM-DD");
@@ -245,7 +247,7 @@ function load_routes(app) {
 
   exports.tag = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      jquery.getJSON(host+'api/tag?callback=?', function(tags) {
+      jquery.getJSON(host+'api/tag+'+'?secretkey='+secretkey+'&callback=?', function(tags) {
         console.log(tags);
 
         // convert dates from ISO-8601 to string
@@ -268,7 +270,7 @@ function load_routes(app) {
   exports.tag.create = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var socname = req.query["soc"];
-      jquery.getJSON(host+'api/soc/title/'+ socname +'?callback=?', function(soc) {
+      jquery.getJSON(host+'api/soc/title/'+ socname +'?secretkey='+secretkey+'&callback=?', function(soc) {
         res.render('tagForm', {
           title: 'Sentinel Project: Create Tag',
           socname: socname,
@@ -284,8 +286,8 @@ function load_routes(app) {
   exports.tag.edit = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
-      jquery.getJSON(host+'api/tag/'+ obj_id +'?callback=?', function(tag) {
-        jquery.getJSON(host+'api/soc/title/'+ tag[0].soc +'?callback=?', function(soc) {
+      jquery.getJSON(host+'api/tag/'+ obj_id +'?secretkey='+secretkey+'&callback=?', function(tag) {
+        jquery.getJSON(host+'api/soc/title/'+ tag[0].soc +'?secretkey='+secretkey+'&callback=?', function(soc) {
           res.render('tagForm', {
             title: 'Sentinel Project: Edit Tag '+tag.title,
             tag: tag,
