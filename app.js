@@ -19,10 +19,7 @@ var application_root = __dirname
   //, user_api = require("./api/user_api")
 ;
 var app = express();
-//express 2.x
-//var app = module.exports = express.createServer();
-//app.enable("jsonp callback");
-//everyauth.helpExpress(app);
+
 
 // database
 mongoose.connect('mongodb://localhost/namp', function(err) {
@@ -111,9 +108,6 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-// helpers
-//app.helpers({
-//});
 
 // get routes
 routes.load_routes(app);
