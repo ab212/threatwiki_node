@@ -223,6 +223,7 @@ block pageContent
             label(class="control-label",for="source") Sources
             div(class="controls",id="sourcelist")
               input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")
+              input(name="sourceid", value="", type="hidden")
               select(name="sourcetype",id="sourcetype")
                   option(selected=true,value="") -Choose Source Type-
                   option(value="Newspaper") Newspaper
