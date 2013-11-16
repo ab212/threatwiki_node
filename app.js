@@ -33,6 +33,7 @@ var SocModel = model.SocModel;
 var DataPointModel = model.DataPointModel;
 var TagModel = model.TagModel;
 var UserModel = model.UserModel;
+var WebsiteModel = model.WebsiteModel;
 
 //using the informations we get back from Google Apps, we check if we already have this user in the DB,
 //if yes we return it, if not we create a new one
@@ -123,6 +124,7 @@ app.get('/datapoint/edit', routes.datapoint.edit);
 app.get('/tag', routes.tag);
 app.get('/tag/create', routes.tag.create);
 app.get('/tag/edit', routes.tag.edit);
+
 app.get('/iranvisualization',routes.iranvisualization);
 app.get('/burmavisualization',routes.burmavisualization);
 app.get('/kenyavisualization',routes.kenyavisualization);
@@ -130,7 +132,7 @@ app.get('/kenyavisualization',routes.kenyavisualization);
 
 // import socApi
 var socApi = soc_api.load_socApi(app, SocModel,UserModel,DataPointModel,TagModel);
-var datapointApi = datapoint_api.load_datapointApi(app, DataPointModel, TagModel, UserModel,SocModel);
+var datapointApi = datapoint_api.load_datapointApi(app, DataPointModel, TagModel, UserModel,SocModel,WebsiteModel);
 var tagApi = tag_api.load_tagApi(app, TagModel, DataPointModel,UserModel);
 //var userApi = user_api.load_userApi(app, UserModel);
 

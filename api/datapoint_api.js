@@ -3,6 +3,8 @@ var time = require('time')(Date);
 var jquery = require('jquery');
 var mongoose = require('mongoose');
 var secretkey = '123';
+var exec = require('child_process').exec;
+var util = require('util');
 
 
 function generateDevUser(UserModel, callback) {
@@ -43,8 +45,40 @@ function authenticate(req, res, UserModel, callback) {
     return res.send(401);
   }
 }
+//function to save a raw html copy of each datasource we add
+function saveUrl(url,WebsiteModel,sourceId,callback){
+  //if there is sourceId, it means we deal with an existing source, so we don't re-download the source
+  if (sourceId===''){
+    return( exec('wget -q -O- ' + url,
+     function (error, stdout, stderr) {
+        var website;
+        if (error===null){
+          website = new WebsiteModel({
+            url:  url,
+            content: stdout
+          });
+        } else {
+          callback(-1);
+          return(-1);
+        }
 
-function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
+        return website.save(function (err) {
+          if (!err) {
+            callback(website._id);
+            return (website._id);
+          } else {
+            callback(-1);
+            return(-1);
+          }
+        });
+    }));
+  } else {
+    callback(-1);
+    return(-1);
+  }
+}
+
+function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel, WebsiteModel) {
 
   //If user is currently logged in, we also get the field comment (that is disabled by default in the model)
   function loggedInQuery(req){
@@ -212,8 +246,21 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
     });
   });
 
+  
   // create
   app.post('/api/datapoint', function (req, res) {
+
+    function save_datapoint_db (datapoint) {
+      return datapoint.save(function (err) {
+        if (!err) {
+          console.log("Datapoint created");
+          return res.jsonp(datapoint);
+        } else {
+          console.log("Error creating datapoint:"+err);
+          return res.send(500);
+        }
+      });
+    }
     var datapoint;
 
     var date_now = new Date();
@@ -246,23 +293,39 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
           //save each source as subdocument individually
           if (jquery.isArray(req.body.sourceurl)){
             for (i=0;i<req.body.sourceurl.length;i++){
-              datapoint.sources.push({url: req.body.sourceurl[i],sourcetype: req.body.sourcetype[i]});
+              var url = req.body.sourceurl[i];
+              var sourceType = req.body.sourcetype[i];
+              //this pattern is explained here:
+              //http://stackoverflow.com/questions/2900839/how-to-structure-javascript-callback-so-that-function-scope-is-maintained-proper
+              (function(url,sourceType) {
+                 saveUrl(url,WebsiteModel,'',function(websiteId){
+                    //websiteId == -1 if we failed to save the wget from the website to mongo
+                    if (websiteId!='-1'){
+                        datapoint.sources.push({url: url,sourcetype: sourceType, savedurl: websiteId});
+                     } else {
+                        datapoint.sources.push({url: url,sourcetype: sourceType});
+                     }
+                     //happens only on the last loop, save the datapoint once we are done creating the datapoint sources
+                     if (datapoint.sources.length==req.body.sourceurl.length){
+                        save_datapoint_db(datapoint);
+                     }
+                 });
+              })(url,sourceType);
             }
+            //when there is only 1 source to save
           } else if (req.body.sourceurl!=='' && req.body.sourcetype!==''){
-            datapoint.sources.push({url: req.body.sourceurl,sourcetype: req.body.sourcetype});
+            saveUrl(req.body.sourceurl,WebsiteModel,'',function(websiteId){
+              if (websiteId!='-1'){
+                datapoint.sources.push({url: req.body.sourceurl,sourcetype: req.body.sourcetype, savedurl: websiteId});
+              } else {
+                datapoint.sources.push({url: req.body.sourceurl,sourcetype: req.body.sourcetype});
+              }
+              save_datapoint_db(datapoint);
+            });
+          } else {
+            //there is no sources
+            save_datapoint_db(datapoint);
           }
-
-          return datapoint.save(function (err) {
-            if (!err) {
-              //console.log("Datapoint created");
-              return res.jsonp(datapoint);
-            } else {
-              console.log("Error creating datapoint:"+err);
-              return res.send(500);
-            }
-          });
-
-
         } else {
           console.log("Error finding SOC while creating datapoint:"+err);
           return res.send(null);
@@ -283,6 +346,19 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
 
   // update
   app.put('/api/datapoint/:id', function (req, res) {
+
+    function update_datapoint_db (datapoint) {
+      return datapoint.save(function (err) {
+        if (!err) {
+          console.log("Datapoint updated");
+          return res.send(200);
+        } else {
+          console.log("Error updating datapoint:"+err);
+          return res.send(500);
+        }
+      });
+    }
+
     var date_now = new Date();
     date_now.setTimezone('UTC');
 
@@ -304,54 +380,71 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel) {
         datapoint.event_date = req.body.event_date;
         //to update/add/remove sources in a datapoint
         if (jquery.isArray(req.body.sourceurl)){
+          var countSources=new Array();
           for (j=0;j<req.body.sourceurl.length;j++){
-            if (req.body.sourceurl[j]!=='' && req.body.sourcetype[j]!==''){
-              if (req.body.sourceid[j]!==''){
-                //update existing source
-                var id = mongoose.Types.ObjectId(req.body.sourceid[j]);
-                var source = datapoint.sources.id(id);
-                source.url= req.body.sourceurl[j];
-                source.sourcetype= req.body.sourcetype[j];
-              } else {
-                //create new source
-                datapoint.sources.addToSet({url: req.body.sourceurl[j],sourcetype: req.body.sourcetype[j]});
-              }
-            } else if (req.body.sourceurl[j]==='' && req.body.sourceid[j]!==''){
-              //delete source
-              var id_to_delete = mongoose.Types.ObjectId(req.body.sourceid[j]);
-              var source_to_delete = datapoint.sources.id(id_to_delete);
-              source_to_delete.remove();
+            var url = req.body.sourceurl[j];
+            var sourceType = req.body.sourcetype[j];
+            var sourceId = req.body.sourceid[j];
+            (function(url,sourceType,sourceId) {
+              saveUrl(url,WebsiteModel,sourceId,function(websiteId){
+                countSources.push('dummy');
+                if (url!=='' && sourceType!==''){
+                  if (sourceId!==''){
+                    //update existing source
+                    var id = mongoose.Types.ObjectId(sourceId);
+                    var source = datapoint.sources.id(id);
+                    source.url= url;
+                    source.sourcetype= sourceType;
+                  } else {
+                      //create new source
+                      if (websiteId!='-1'){
+                        datapoint.sources.addToSet({url: url,sourcetype: sourceType, savedurl: websiteId});
+                      } else {
+                        datapoint.sources.addToSet({url: url,sourcetype: sourceType});
+                      }
+                  }
+                } else if (url==='' && sourceId!==''){
+                  //delete source
+                  var id_to_delete = mongoose.Types.ObjectId(sourceId);
+                  var source_to_delete = datapoint.sources.id(id_to_delete);
+                  source_to_delete.remove();
+                }
+                if (countSources.length==req.body.sourceurl.length){
+                  update_datapoint_db(datapoint);
+                }
+              });
+            })(url,sourceType,sourceId);
+          }
+        } else if (req.body.sourceurl!=='' && req.body.sourcetype!==''){
+          saveUrl(req.body.sourceurl,WebsiteModel,req.body.sourceid,function(websiteId){          
+            if (req.body.sourceid!==''){
+              //update source
+              var id_to_update = mongoose.Types.ObjectId(req.body.sourceid);
+              var source_to_update = datapoint.sources.id(id_to_update);
+              source_to_update.url=req.body.sourceurl;
+              source_to_update.sourcetype=req.body.sourcetype;
+            } else {
+                if (websiteId!='-1'){
+                  datapoint.sources.addToSet({url: req.body.sourceurl,sourcetype: req.body.sourcetype,savedurl: websiteId});
+                } else {
+                  //create new source
+                  datapoint.sources.addToSet({url: req.body.sourceurl,sourcetype: req.body.sourcetype});
+                }
             }
-          }
-        }else if (req.body.sourceurl!=='' && req.body.sourcetype!==''){
-          if (req.body.sourceid!==''){
-            //update source
-            var id_to_update = mongoose.Types.ObjectId(req.body.sourceid);
-            var source_to_update = datapoint.sources.id(id_to_update);
-            source_to_update.url=req.body.sourceurl;
-            source_to_update.sourcetype=req.body.sourcetype;
-          } else {
-            //create new source
-            datapoint.sources.addToSet({url: req.body.sourceurl,sourcetype: req.body.sourcetype});
-          }
+            update_datapoint_db(datapoint);
+          });
         } else if (req.body.sourceurl==='' && req.body.sourceid!=='') {
           //delete source
           var id_delete = mongoose.Types.ObjectId(req.body.sourceid);
           var source_delete = datapoint.sources.id(id_delete);
           source_delete.remove();
+          update_datapoint_db(datapoint);
+        } else {
+          //no sources
+          update_datapoint_db(datapoint);
+
         }
 
-
-
-        return datapoint.save(function (err) {
-          if (!err) {
-            console.log("datapoint updated");
-            return res.send(200);
-          } else {
-            console.log(err);
-            return res.send(500);
-          }
-        });
       } else {
         console.log('Cant find datapoint by ID '+err);
         return res.send(null);

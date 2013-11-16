@@ -19,11 +19,16 @@ function createModel() {
     , event_date: {type: Date, required: true }
     // foreign key
     , tags      : [{ type: ObjectId, ref: 'Tag' }]   
-    , sources: [ {url: {type: String }, sourcetype: {type: String} } ]
+    , sources: [ {url: {type: String }, sourcetype: {type: String}, savedurl: {type: ObjectId, ref: 'Website'} } ]
     , createdBy : { type: ObjectId, ref: 'User' }
     , modifiedBy : { type: ObjectId, ref: 'User' }
     , serialNumber: {type: Number, required: true}
     , archive: { type: Boolean}
+  });
+
+  var Website = new Schema ({
+     url: {type: String, required: true }
+   , content: {type: String, required: true}
   });
 
   var Soc = new Schema ({
@@ -64,6 +69,7 @@ function createModel() {
   var DataPointModel = mongoose.model('DataPoint', DataPoint);
   var TagModel = mongoose.model('Tag', Tag);
   var UserModel = mongoose.model('User', User);
+  var WebsiteModel = mongoose.model('Website', Website);
 
 
   // model exports
@@ -71,6 +77,7 @@ function createModel() {
   exports.DataPointModel = DataPointModel;
   exports.TagModel = TagModel;
   exports.UserModel = UserModel;
+  exports.WebsiteModel = WebsiteModel;
 }
 
 exports.createModel = createModel;
