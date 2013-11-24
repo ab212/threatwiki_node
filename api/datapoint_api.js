@@ -3,8 +3,7 @@ var time = require('time')(Date);
 var jquery = require('jquery');
 var mongoose = require('mongoose');
 var secretkey = '123';
-var exec = require('child_process').exec;
-var util = require('util');
+var request = require('request');
 
 
 function generateDevUser(UserModel, callback) {
@@ -49,13 +48,12 @@ function authenticate(req, res, UserModel, callback) {
 function saveUrl(url,WebsiteModel,sourceId,callback){
   //if there is sourceId, it means we deal with an existing source, so we don't re-download the source
   if (sourceId===''){
-    return( exec('wget -q -O- ' + url,
-     function (error, stdout, stderr) {
+    return(request(url, function (error, response, body) {
         var website;
-        if (error===null){
+        if (!error && typeof(response)!='undefined' && response.statusCode == 200){
           website = new WebsiteModel({
             url:  url,
-            content: stdout
+            content: body
           });
         } else {
           console.log("Can't save url:"+url+" error:"+error);
@@ -296,6 +294,10 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel, W
           if (jquery.isArray(req.body.sourceurl)){
             for (i=0;i<req.body.sourceurl.length;i++){
               var url = req.body.sourceurl[i];
+              //add http if its not there since request library doesnt support URLs without it
+              if (!/^(f|ht)tps?:\/\//i.test(url)) {
+                url = "http://" + url;
+              }
               var sourceType = req.body.sourcetype[i];
               //this pattern is explained here:
               //http://stackoverflow.com/questions/2900839/how-to-structure-javascript-callback-so-that-function-scope-is-maintained-proper
@@ -385,6 +387,10 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel, W
           var countSources=new Array();
           for (j=0;j<req.body.sourceurl.length;j++){
             var url = req.body.sourceurl[j];
+            //add http if its not there since request library doesnt support URLs without it
+            if (!/^(f|ht)tps?:\/\//i.test(url)) {
+              url = "http://" + url;
+            }
             var sourceType = req.body.sourcetype[j];
             var sourceId = req.body.sourceid[j];
             (function(url,sourceType,sourceId) {

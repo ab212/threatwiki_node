@@ -14,7 +14,8 @@
     "vows": ">= 0.1.7",
     "tobi": ">= 0.3.2",
     "moment": ">= 1.7.0",
-    "nodetime": "0.8.12"
+    "nodetime": "0.8.12",
+    "request": "2.27.x"
   },
   "subdomain": "threatwiki",
   "scripts": {
