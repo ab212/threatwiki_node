@@ -58,6 +58,7 @@ function saveUrl(url,WebsiteModel,sourceId,callback){
             content: stdout
           });
         } else {
+          console.log("Can't save url:"+url+" error:"+error);
           callback(-1);
           return(-1);
         }
@@ -67,6 +68,7 @@ function saveUrl(url,WebsiteModel,sourceId,callback){
             callback(website._id);
             return (website._id);
           } else {
+            console.log("Can't save website data for url:"+url+" error:"+err);
             callback(-1);
             return(-1);
           }
