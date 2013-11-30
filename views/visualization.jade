@@ -24,7 +24,11 @@ div(id="top")
                 option(value="Persecution") Persecution
                 option(value="Extermination") Extermination
                 option(value="Denial") Denial
-        
+            label(class="checkbox",id="checkboxlabel")
+                input(type="checkbox",id="checkboxgeneral",onclick="filterGeneral(this.checked)"))
+                span Show General Datapoints 
+                    a(href="#", id="popovergeneral", class="popover-link", data-delay"2000", data-title='<a href="#" style="float:none" class="close pull-right">&times;</a>', data-html="true", data-toggle="popover", data-placement="right", data-trigger="hover",data-content="Datapoints are given the General tag if they describe events that are outside the scope of the Operational Process model but provide significant context to the events. <a href='http://thesentinelproject.org/our-work/early-warning-system-overview/operational-process-stages-of-genocide-model/' target='_blank'>Read more about our Genocide Model</a>")  
+                        i(class="icon-info-sign")
 
     div(id="charts")
         div(id="date-chart",class="chart")

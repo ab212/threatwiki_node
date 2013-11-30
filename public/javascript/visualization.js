@@ -86,17 +86,48 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 				$('#popovertitle').popover('show');
 			}
 		});
+		$('#popovergeneral').popover({ trigger: 'manual' }).hover(function(e){
+			if (!$("#popovergeneral").next('div.popover:visible').length && hide ===false){
+				$(this).popover('show');
+				e.preventDefault();
+			} else if (hide){
+				hide = false;
+			}
+		}).click(function(e){
+			if ($("#popovergeneral").next('div.popover:visible').length){
+				hide = true;
+			} else {
+				clicktoshow=true;
+				$('#popovergeneral').popover('show');
+			}
+		});
 		
 		//hide on click somewhere on the screen
 		$(document).click(function(e) {
-			if (($("#popover").next('div.popover:visible').length || $("#popovertitle").next('div.popover:visible').length) && clicktoshow===false){
+			if (($("#popover").next('div.popover:visible').length || $("#popovertitle").next('div.popover:visible').length || $("#popovergeneral").next('div.popover:visible').length) && clicktoshow===false){
 				$('#popover').popover('hide');
+				$('#popovergeneral').popover('hide');
 				$('#popovertitle').popover('hide');
 			} else if (clicktoshow){
 				clicktoshow=false;
 			}
 		});
+		//Automatically check the box that defines if general datapoints should be shown
+		$('#checkboxgeneral').prop('checked', true);
 
+		//function to disable-renable the general stage datapoints on the map/list
+		window.filterGeneral = function(general){
+			byStage.filterFunction(function (stage) {
+				if (stage=='General' && general===false){
+					return false;
+				} else {
+					return true;
+				}
+			});
+			updateDatapoints();
+			redoTagList();
+			renderAll();
+		};
 		////////////////////////////////////////
 		/// Leaflet and Mapping //
 		////////////////////////////////////////
@@ -310,10 +341,23 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 		//Javascript exexcuted onchange when dropdown menu for stage is changed
 		window.filterStage = function(stage){
 			if (stage!==''){
+				byStage.filterAll(null);
 				byStage.filter(stage);
+				$('#checkboxlabel').hide();
 			} else {
 				//Remove all filters
 				byStage.filterAll(null);
+				//if checkbox was not checked, dont show general stage
+				if ($('#checkboxgeneral').is(':checked')===false){
+					byStage.filterFunction(function (stage) {
+						if (stage=='General'){
+							return false;
+						} else {
+							return true;
+						}
+					});
+				}
+				$('#checkboxlabel').show();
 			}
 			updateDatapoints();
 			redoTagList();
@@ -336,6 +380,8 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 		window.reset = function() {
 			byTags.filterAll(null);
 			byFullLocation.filterAll(null);
+			$('#checkboxgeneral').prop('checked', true);
+			$('#checkboxlabel').show();
 			byStage.filterAll(null);
 			charts[0].filter(null);
 			$("#stagedropdown").val('');
