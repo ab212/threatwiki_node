@@ -337,13 +337,12 @@ function load_routes(app) {
         res.render('kenyacontainer', {
           title: "Visualization of hate crimes in Kenya - The Sentinel Project"
         });
-    } /*else {
+    } else {
       //Public access to the Visualization page without being logged in on Threatwiki
       res.render('kenyapublic', {
           title: "Visualization of hate crimes in Kenya - The Sentinel Project"
       });
-
-    }*/
+    }
   };
 }
 
