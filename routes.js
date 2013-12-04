@@ -335,12 +335,12 @@ function load_routes(app) {
     //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
         res.render('kenyacontainer', {
-          title: "Visualization of Atrocities and Inter-communal Violence in Kenya - The Sentinel Project"
+          title: "Visualization of Atrocities and Intercommunal Violence in Kenya - The Sentinel Project"
         });
     } else {
       //Public access to the Visualization page without being logged in on Threatwiki
       res.render('kenyapublic', {
-          title: "Visualization of Atrocities and Inter-communal Violence in Kenya - The Sentinel Project"
+          title: "Visualization of Atrocities and Intercommunal Violence in Kenya - The Sentinel Project"
       });
     }
   };
