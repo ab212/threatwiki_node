@@ -16,6 +16,7 @@ var application_root = __dirname
   , soc_api = require("./api/soc_api")
   , datapoint_api = require("./api/datapoint_api")
   , tag_api = require("./api/tag_api")
+  , archive_api = require("./api/archive_api")
   //, user_api = require("./api/user_api")
 ;
 var app = express();
@@ -134,6 +135,7 @@ app.get('/kenyavisualization',routes.kenyavisualization);
 var socApi = soc_api.load_socApi(app, SocModel,UserModel,DataPointModel,TagModel);
 var datapointApi = datapoint_api.load_datapointApi(app, DataPointModel, TagModel, UserModel,SocModel,WebsiteModel);
 var tagApi = tag_api.load_tagApi(app, TagModel, DataPointModel,UserModel);
+var archiveApi = archive_api.load_archiveApi(app,WebsiteModel);
 //var userApi = user_api.load_userApi(app, UserModel);
 
 // server listen
