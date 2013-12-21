@@ -318,11 +318,16 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel, W
             }
             //when there is only 1 source to save
           } else if (req.body.sourceurl!=='' && req.body.sourcetype!==''){
-            saveUrl(req.body.sourceurl,WebsiteModel,'',function(websiteId){
+            var url = req.body.sourceurl;
+            //add http if its not there since request library doesnt support URLs without it
+            if (!/^(f|ht)tps?:\/\//i.test(url)) {
+              url = "http://" + url;
+            }
+            saveUrl(url,WebsiteModel,'',function(websiteId){
               if (websiteId!='-1'){
-                datapoint.sources.push({url: req.body.sourceurl,sourcetype: req.body.sourcetype, savedurl: websiteId});
+                datapoint.sources.push({url: url,sourcetype: req.body.sourcetype, savedurl: websiteId});
               } else {
-                datapoint.sources.push({url: req.body.sourceurl,sourcetype: req.body.sourcetype});
+                datapoint.sources.push({url: url,sourcetype: req.body.sourcetype});
               }
               save_datapoint_db(datapoint);
             });
@@ -424,19 +429,24 @@ function load_datapointApi(app, DataPointModel, TagModel, UserModel, SocModel, W
             })(url,sourceType,sourceId);
           }
         } else if (req.body.sourceurl!=='' && req.body.sourcetype!==''){
-          saveUrl(req.body.sourceurl,WebsiteModel,req.body.sourceid,function(websiteId){          
+          var url = req.body.sourceurl;
+          //add http if its not there since request library doesnt support URLs without it
+          if (!/^(f|ht)tps?:\/\//i.test(url)) {
+            url = "http://" + url;
+          }
+          saveUrl(url,WebsiteModel,req.body.sourceid,function(websiteId){          
             if (req.body.sourceid!==''){
               //update source
               var id_to_update = mongoose.Types.ObjectId(req.body.sourceid);
               var source_to_update = datapoint.sources.id(id_to_update);
-              source_to_update.url=req.body.sourceurl;
+              source_to_update.url=url;
               source_to_update.sourcetype=req.body.sourcetype;
             } else {
                 if (websiteId!='-1'){
-                  datapoint.sources.addToSet({url: req.body.sourceurl,sourcetype: req.body.sourcetype,savedurl: websiteId});
+                  datapoint.sources.addToSet({url: url,sourcetype: req.body.sourcetype,savedurl: websiteId});
                 } else {
                   //create new source
-                  datapoint.sources.addToSet({url: req.body.sourceurl,sourcetype: req.body.sourcetype});
+                  datapoint.sources.addToSet({url: url,sourcetype: req.body.sourcetype});
                 }
             }
             update_datapoint_db(datapoint);
