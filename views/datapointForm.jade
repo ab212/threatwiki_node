@@ -138,7 +138,10 @@ block pageContent
                       li
                         a(href="http://webcache.googleusercontent.com/search?q=cache:"+source.url,target="_blank") Google cache 
                       li
-                        a(href="http://web.archive.org/web/20130114215817/"+source.url,target="_blank") Internet Archive Wayback 
+                        a(href="http://web.archive.org/web/20130114215817/"+source.url,target="_blank") Internet Archive Wayback
+                      if (typeof(source.savedurl)!= 'undefined')
+                        li
+                          a(href="/archiveurl?id="+source.savedurl,target="_blank") Internal Archive
                   br/
               else
                 input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")

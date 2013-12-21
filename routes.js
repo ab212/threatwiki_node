@@ -344,6 +344,21 @@ function load_routes(app) {
       });
     }
   };
+
+  exports.archiveurl = function (req,res){
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+      var obj_id = req.query["id"];
+      jquery.getJSON(host+'api/archiveurl/'+ obj_id + '?callback=?', function(archiveurl) {
+        res.render('archiveViewer', {
+          title: 'Sentinel Project: View Archived URL',
+          archiveurl: archiveurl
+        });
+      });
+    } else {
+      //force logout if user doesn't meet conditions to view the page
+      res.redirect('/logout');
+    }
+  }
 }
 
 exports.load_routes = load_routes;

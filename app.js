@@ -129,14 +129,13 @@ app.get('/tag/edit', routes.tag.edit);
 app.get('/iranvisualization',routes.iranvisualization);
 app.get('/burmavisualization',routes.burmavisualization);
 app.get('/kenyavisualization',routes.kenyavisualization);
-
+app.get('/archiveurl',routes.archiveurl);
 
 // import socApi
 var socApi = soc_api.load_socApi(app, SocModel,UserModel,DataPointModel,TagModel);
 var datapointApi = datapoint_api.load_datapointApi(app, DataPointModel, TagModel, UserModel,SocModel,WebsiteModel);
 var tagApi = tag_api.load_tagApi(app, TagModel, DataPointModel,UserModel);
 var archiveApi = archive_api.load_archiveApi(app,WebsiteModel);
-//var userApi = user_api.load_userApi(app, UserModel);
 
 // server listen
 app.listen(3000);
