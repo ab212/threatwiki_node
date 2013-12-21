@@ -16,8 +16,8 @@ Relevant Links
 - Installed and running on [http://threatwiki.thesentinelproject.org/](http://threatwiki.thesentinelproject.org/)
 
 - Iran (Bahai) visualization: http://threatwiki.thesentinelproject.org/iranvisualization
-
 - Burma visualization: http://threatwiki.thesentinelproject.org/burmavisualization
+- Kenya Visualization: http://threatwiki.thesentinelproject.org/kenyavisualization
 
 - Blog post of our launch:
 http://thesentinelproject.org/introducing-threatwiki-3-0-warsaw-a-big-update-for-sentinel-projects-genocide-risk-tracking-platform/
