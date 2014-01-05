@@ -135,6 +135,8 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 		var map = new L.Map("map", {
 			center: [coordinate_x, coordinate_y],
 			zoom: customZoom,
+			zoomsliderControl: true,
+          	zoomControl: false,
 			keyboard: false,
 			minZoom: 4
 		})
