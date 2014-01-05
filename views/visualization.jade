@@ -9,9 +9,6 @@ div(id="top")
         p 
             strong Tag filtered: 
             span(id="activefilter")
-            br
-            strong  Location Filtered: 
-            span(id="activelocation")
         div
             select(name="stage",id="stagedropdown",onchange="filterStage(this.options[this.selectedIndex].value)")
                 option(selected=true,value="") Pick Genocide Stage
@@ -45,7 +42,7 @@ div(id="lists")
                     i(class="icon-info-sign")
             div(class="date") Event Date
     div(id="mapcontainer")
-        div(class="datapointTitle") Click a point on the map to filter by location
+        div(class="datapointTitle") Click to enlarge and get details on the datapoint
         div(id="map")
 //Modal to display datapoint information    
 div(id="myModal",class="modal hide fade",tabindex="-1",role="dialog",aria-labelledby="datapointevent",aria-hidden="true")

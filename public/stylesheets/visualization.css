@@ -142,11 +142,11 @@ span.datapointsource {
 #mapcontainer {
   overflow: auto;
 }
-.leaflet-clickable:hover{
+/*.leaflet-clickable:hover{
   fill-opacity: .8;
   stroke: red;
   fill: red;
-}
+}*/
 .subunit {
   fill-opacity: .2;
   stroke: #fff;

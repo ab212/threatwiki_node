@@ -149,9 +149,9 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 		};
 
 		// method that we will use to update the control based on feature properties passed
-		info.update = function (location,numberdatapoints) {
+		info.update = function (location) {
 			this._div.innerHTML = '<h4>Datapoints</h4>' +  (location ?
-				numberdatapoints+ ' in <b>' + location + '</b>'
+				'<b>' + location + '</b>'
 			: countryName);
 		};
 
@@ -208,54 +208,104 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 			});
 
 		}
-		var markers = {};
+		//create the leaflet marker cluster group
+		var markers = L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:40});
+		var markers_list = {};
 		//the datapoints on the map
 		function updateDatapoints() {
 			//remove all markers from the map in order to be able to do a refresh
-			for (var key in markers){
-				map.removeLayer(markers[key]);
-			}
-			markers = {};
-			//configure size of the points on the map nb of datapoints per location could be from 1 to 36
-			var radius = d3.scale.sqrt()
-				.domain([1, 36])
-				.range([5, 16]);
-			//for all the locations on the map
-			byLocation.group().top(Infinity).filter(function(d) { return d.value; }).forEach(function(p, i) {
+			markers.clearLayers();
+			markers_list = {};
+			//for every datapoint
+			byId.top(Infinity).forEach(function(p, i) {
 				//create a marker at that specific position
-				var marker = L.circleMarker([p.key[0],p.key[1]]);
-				marker.setRadius(radius(p.value));
-
+				var marker = L.circleMarker([p.Location.latitude,p.Location.longitude]);
+				marker.setRadius(7);
+				//On mouse over, update the info overlay with the name of the location and turn to red
 				marker.on('mouseover',function (e) {
-					//On mouse over, update the info overlay with the name of the location
-					var locationname;
-					byFullLocationtemp.filterFunction(function (datapointlocation) {
-						if (datapointlocation.latitude==p.key[0] && datapointlocation.longitude==p.key[1]){
-							locationname=datapointlocation.title;
-							return true;
-						}
-						return false;
-					});
-					byFullLocationtemp.filterAll();
-					info.update(locationname,p.value);
+					marker.setStyle({fillOpacity: 0.8,fillColor:'red',color:'red'});
+					info.update(p.Location.title);
 				});
-				//On mouse out, re-update the info overlay with no value
+
+				//On mouse out, re-update the info overlay with no value and normal color
 				marker.on('mouseout',function (e) {
+					marker.setStyle({fillOpacity: 0.5,fillColor:'#0033ff',color:'#0033ff'});
 					info.update();
 				});
-				//on click, filter the location
+				
+				//on click, show the specific datapoint
 				marker.on('click',function (e) {
 					info.update();
-					filterLocation(p.key);
+					showModal(p.serialNumber);
 				});
-				//add the marker to the map
-				marker.addTo(map);
-				marker.setStyle({fillOpacity: 0.5,fillColor:'#0033ff'});
-				//keep markers in a array so we can get rid of them later
-				markers[[p.key[0],p.key[1]]]=marker;
 
+				marker.setStyle({fillOpacity: 0.5,fillColor:'#0033ff'});
+				//add the marker to the map
+				markers.addLayer(marker);
+				//keep markers in a array so we can get refer to them later
+				markers_list[[p.Location.latitude,p.Location.longitude]]=marker;
 			});
+
 		}
+		map.addLayer(markers);
+		//display location name on mouse over on cluster (if they are all at the same location)
+		//and turn red the cluster marker on the map
+		markers.on('clustermouseover', function (a) {
+			//add style hovered to the cluster icon, meaning it turns red
+			$(a.layer._icon).addClass('hovered');
+			
+			//we look for the location name of where the cluster is located to put in the info box on the map
+			var allchild = a.layer.getAllChildMarkers();
+			//console.log(allchild[0].getLatLng());
+			for (var key in allchild){
+				//console.log(allchild[key].getLatLng());
+				if (allchild[key].getLatLng().lat.toFixed(3)!=allchild[0].getLatLng().lat.toFixed(3) && allchild[key].getLatLng().lng.toFixed(3)!=allchild[0].getLatLng().lng.toFixed(3)){
+					//if the points in the cluster are not all at the same place (so currently grouped), we don't want to show location
+					info.update("Click to zoom");
+					return false;
+				}
+			}
+			byFullLocationtemp.filterFunction(function (datapointlocation) {
+				if (datapointlocation.latitude==allchild[0].getLatLng().lat && datapointlocation.longitude==allchild[0].getLatLng().lng){
+					//We found the location name so we show it
+					info.update(datapointlocation.title);
+					return true;
+				}
+				return false;
+			});
+			byFullLocationtemp.filterAll();
+		});
+		//when the cursor moves out, we remove the color red and remove location name
+		markers.on('clustermouseout',function (a) {
+			$(a.layer._icon).removeClass('hovered');
+			info.update();
+		});
+
+		//when someone click on a cluster, we want to filter so that the list of datapoints only contain the ones inside the cluster
+		markers.on('clusterclick',function (a) {
+			info.update();
+			var allchild = a.layer.getAllChildMarkers();
+			//if there is no more cluster underneath that cluster, we stop filtering
+			if (a.layer._childClusters.length != 0 ){
+				byFullLocation.filterFunction(function (datapointlocation) {
+					//we go through every location in crossfilter and we only keep it if it matches one of the child of the cluster we just clicked
+					for (var key in allchild){
+						if (datapointlocation.latitude==allchild[key].getLatLng().lat && datapointlocation.longitude==allchild[key].getLatLng().lng){
+							return true;
+						}
+					}
+					return false;
+				});
+				updateDatapoints();
+				redoTagList();
+				renderAll();
+				
+				if (tagsFiltered){
+					d3.selectAll($(".tag")).remove();
+				}
+			}
+		});
+
 
 		//configure bar chart for timeline
 		var charts = [
@@ -320,7 +370,7 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 			tagsFiltered = true;
 		};
 		//executed when someone click on a bubble on the map, filter by location
-		var filterLocation = function(location) {
+		/*var filterLocation = function(location) {
 			var locationname;
 			byFullLocation.filterFunction(function (datapointlocation) {
 				if (datapointlocation.latitude==location[0] && datapointlocation.longitude==location[1]){
@@ -332,11 +382,10 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 			updateDatapoints();
 			redoTagList();
 			renderAll();
-			d3.select("#activelocation").text(locationname);
 			if (tagsFiltered){
 				d3.selectAll($(".tag")).remove();
 			}
-		};
+		};*/
 
 		//Javascript exexcuted onchange when dropdown menu for stage is changed
 		window.filterStage = function(stage){
@@ -389,21 +438,28 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 			renderAll();
 			updateDatapoints();
 			d3.select("#activefilter").text('');
-			d3.select("#activelocation").text('');
 			tagsFiltered = false;
+			//recenter the map and put back at the normal zoom level
+			map.setView([coordinate_x, coordinate_y],customZoom);
 		};
-
-		//triggered when going over a datapoint link in datapoint list
-		//will change color on the marker that represents the datapoint location
+		//triggered when cursor goes over the datapoint link in datapoint list
 		window.overMarker = function (datapointLocation){
-			markers[datapointLocation].fire('mouseover');
-			markers[datapointLocation].setStyle({fillOpacity: 0.8,fillColor:'red',color:'red'});
+			//we first test to see if the marker is present in the cluster, if yes, that's the one we fire the mouseover event to
+			//if not, that means the marker is directly on the map (not being clustered) so that's the one we fire the event to
+			if (markers.getVisibleParent(markers_list[datapointLocation])){
+				markers.getVisibleParent(markers_list[datapointLocation]).fire('mouseover');
+			} else {
+				markers_list[datapointLocation].fire('mouseover');
+			}
 		};
 
 		//triggered when cursor leaves the datapoint link in datapoint list
 		window.outMarker = function (datapointLocation){
-			markers[datapointLocation].fire('mouseout');
-			markers[datapointLocation].setStyle({fillOpacity: 0.5,fillColor:'#0033ff',color:'#0033ff'});
+			if (markers.getVisibleParent(markers_list[datapointLocation])){
+				markers.getVisibleParent(markers_list[datapointLocation]).fire('mouseout');
+			} else {
+				markers_list[datapointLocation].fire('mouseout');
+			}		
 		};
 
 		//window to be displayed when clicking on a datapoint in the list

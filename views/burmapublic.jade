@@ -21,6 +21,7 @@ html(lang="en")
         generateVisualization("http://threatwiki.thesentinelproject.org/api/datapoint/soc/Myanmar?callback=?",22,96,"/mapfiles/burma.json",new Date(2013, 03,15),"Burma",5);
     script(src="/javascript/moment.min.js")
     script(src="/lib/leaflet/js/leaflet.js")
+    script(src="/lib/leaflet/js/leaflet.markercluster.js")
     script(src="/lib/leaflet/js/L.Control.Zoomslider.js")
     script
       var _gaq=[["_setAccount","UA-24857452-2"],["_trackPageview"]];
@@ -30,8 +31,8 @@ html(lang="en")
     link(rel='stylesheet', href='/stylesheets/visualization.css')
     link(rel='stylesheet', href='/lib/leaflet/css/leaflet.css')
     link(rel='stylesheet', href='/lib/leaflet/css/L.Control.Zoomslider.css')
-//if lte IE 8]
-    link(rel='stylesheet', href='/lib/leaflet/css/L.Control.Zoomslider.ie.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/MarkerCluster.Default.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/MarkerCluster.css')
   div(class='navbar navbar-inverse')
         div.navbar-inner
           div.container
