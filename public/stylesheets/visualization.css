@@ -151,6 +151,7 @@ span.datapointsource {
   fill-opacity: .2;
   stroke: #fff;
   stroke-width: 1.5px;
+  stroke-opacity: .4;
 }
 
 .chart {
