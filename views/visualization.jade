@@ -42,6 +42,9 @@ div(id="lists")
                     i(class="icon-info-sign")
             div(class="date") Event Date
     div(id="mapcontainer")
+        style
+            .leaflet-container .leaflet-control-zoomslider-body { box-sizing:content-box; }
+            .leaflet-control-zoomslider-knob { width:13px; height:6px; }
         div(class="datapointTitle") Click to enlarge and get details on the datapoint
         div(id="map")
 //Modal to display datapoint information    
