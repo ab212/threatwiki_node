@@ -131,16 +131,19 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 		////////////////////////////////////////
 		/// Leaflet and Mapping //
 		////////////////////////////////////////
-		//create leaflet map
-		var map = new L.Map("map", {
+		//create leaflet map using Mapbox.js (built on top of leaflet)
+		var layer = L.mapbox.tileLayer('jeromegv.he67emen', {
+		    detectRetina: true,
+		});
+
+		var map = new L.mapbox.map("map", 'jeromegv.he67emen',{
 			center: [coordinate_x, coordinate_y],
 			zoom: customZoom,
 			zoomsliderControl: true,
           	zoomControl: false,
 			keyboard: false,
 			minZoom: 4
-		})
-		.addLayer(new L.TileLayer("http://{s}.tile.cloudmade.com/aa22c4af8c674048a68c8d6f3b5d1937/998/256/{z}/{x}/{y}.png"));
+		}).addLayer(layer);
 
 		var info = L.control();
 

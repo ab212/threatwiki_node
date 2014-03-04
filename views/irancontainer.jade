@@ -7,11 +7,11 @@ block head
     script
         generateVisualization("http://threatwiki.thesentinelproject.org/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?",32,53,"/mapfiles/iran.json",new Date(2011, 10,06),"Iran",5);
     script(src="/javascript/moment.min.js")
-    script(src="/lib/leaflet/js/leaflet.js")
+    script(src="/lib/mapbox/js/mapbox.js")
     script(src="/lib/leaflet/js/leaflet.markercluster.js")
     script(src="/lib/leaflet/js/L.Control.Zoomslider.js")
     link(rel='stylesheet', href='/stylesheets/visualization.css')
-    link(rel='stylesheet', href='/lib/leaflet/css/leaflet.css')
+    link(rel='stylesheet', href='/lib/mapbox/css/mapbox.css')
     link(rel='stylesheet', href='/lib/leaflet/css/L.Control.Zoomslider.css')
     link(rel='stylesheet', href='/lib/leaflet/css/MarkerCluster.Default.css')
     link(rel='stylesheet', href='/lib/leaflet/css/MarkerCluster.css')
