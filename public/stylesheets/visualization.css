@@ -169,5 +169,7 @@ span.datapointsource {
 }
 .info h4 {
     margin: 0 0 5px;
+    font-size:17.5px;
+    line-height: 20px;
     color: #777;
 }
