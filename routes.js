@@ -30,7 +30,7 @@ function load_routes(app) {
 
   exports.soc = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
-      
+
       jquery.getJSON(host+'api/soc'+'?secretkey='+secretkey+'&callback=?', function(socs) {
         //Render the page with list of SOCs only when we are done getting info about each datapoint
         function render() {
@@ -85,7 +85,7 @@ function load_routes(app) {
   exports.soc.edit = function(req, res){
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
       var obj_id = req.query["id"];
-      
+
       jquery.getJSON(host+'api/soc/'+ obj_id +'?secretkey='+secretkey+'&callback=?', function(soc) {
         soc.created = moment(soc.created).format("YYYY-MM-DD");
         soc.modified = moment(soc.modified).format("YYYY-MM-DD");
@@ -360,5 +360,32 @@ function load_routes(app) {
     }
   }
 }
+
+exports.notFound = function(req, res){
+  res.status(404);
+  if(req.accepts('html')){
+    res.render('404', {title: '404: Not Found', url: req.url });
+  }
+  else if(req.accepts('json')){
+    res.json({ error: '404: Not Found' });
+  }
+  else{
+    res.send('404: Not Found');
+  }
+};
+
+exports.serverError = function(err, req, res, next){
+  err.status = err.status || 500;
+  res.status(err.status);
+  if(req.accepts('html')){
+    res.render('500', { title: 'Server Error', url: req.url, err: err });
+  }
+  else if(req.accepts('json')){
+    res.json({ error: err.status });
+  }
+  else{
+    res.send(err.status + ': Server Error');
+  }
+};
 
 exports.load_routes = load_routes;

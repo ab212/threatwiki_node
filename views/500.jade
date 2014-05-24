@@ -1,0 +1,7 @@
+extends layout
+
+block pageContent
+  h3 HTTP Error from Server: #{err.status}
+  p You requested #{url}
+  strong Error Message
+  p #{err.toString()}
