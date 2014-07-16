@@ -214,7 +214,7 @@ function generateVisualization(url,coordinate_x,coordinate_y,pathData,dateStartT
 
 		}
 		//create the leaflet marker cluster group
-		var markers = L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:40});
+		var markers = L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:20});
 		var markers_list = {};
 		//the datapoints on the map
 		function updateDatapoints() {
