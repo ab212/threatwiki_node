@@ -1,13 +1,9 @@
 extends layout
 block head
   script(src="/javascript/tag_form.js")
+  script(src="/components/parsleyjs/dist/parsley.min.js")
 
 block pageContent
-  //
-    p Run a console to see JSON data.
-    p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
-    p Shift+Ctrl+I for Chromium
-    hr/
   ul.breadcrumb
     li
       a(href="/soc") List of SOC
@@ -30,7 +26,7 @@ block pageContent
   div#post_form
     span.bold
       - if (typeof(tag) != 'undefined')
-        form(id="tag_form_update",class="form-horizontal")
+        form(id="tag_form_update",class="form-horizontal tag_form",novalidate="novalidate")
           //we update an existing tag here
           input(name="id", value=tag[0]._id, type="hidden")
           input(name="socname", value=tag[0].soc, type="hidden")
@@ -38,7 +34,7 @@ block pageContent
           div(class="control-group")
             label(class="control-label",for="title") Title
             div(class="controls")
-              input(type="text", name="title", value=tag[0].title)
+              input(type="text", name="title", value=tag[0].title, required)
           div(class="control-group")
             label(class="control-label",for="description") Description
             div(class="controls")
@@ -49,12 +45,12 @@ block pageContent
             button(type="button",  id="archive", class="btn btn-danger") Archive
       - else
         //we create the tag here
-        form(id="tag_form",class="form-horizontal")
+        form(id="tag_form",class="form-horizontal tag_form",novalidate="novalidate")
           input(type="hidden", id="soc", name="soc", value=socname)
           div(class="control-group")
             label(class="control-label",for="title") Title
             div(class="controls")
-              input(type="text", name="title")
+              input(type="text", name="title",required)
           div(class="control-group")
             label(class="control-label",for="description") Description
             div(class="controls")

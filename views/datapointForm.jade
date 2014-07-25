@@ -1,5 +1,6 @@
 extends layout
 block head
+  script(src="/components/parsleyjs/dist/parsley.min.js")
   script(src="/javascript/datapoint_form.js")
   script(src='http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCdCNPG_4JmvjQjbXVyB_W6Ena7b7CIqns&sensor=false')
   script(src='/javascript/jquery.auto-geocoder.js')
@@ -8,14 +9,7 @@ block head
   script(src='/javascript/select2.min.js')
 
 
-
 block pageContent
-  //
-    p Run a console to see JSON data.
-      br/
-    p  Ctrl+Shift+k in Firefox with 'Net' and 'JS' sources enabled
-    p Shift+Ctrl+I for Chromium
-    hr/
   ul.breadcrumb
     li 
       a(href="/soc") List of SOC
@@ -45,32 +39,32 @@ block pageContent
   div#post_form
     span.bold
       - if (typeof(datapoint) != 'undefined')
-        form(id="datapoint_form_update",class="form-horizontal")
+        form(id="datapoint_form_update",class="form-horizontal datapoint_form",novalidate="novalidate")
           //update datapoint
           input(name="id", value=datapoint._id, type="hidden")
           input(type="hidden", id="soc", name="soc", value=datapoint.soc)
           div(class="control-group")
             label(class="control-label",for="title") Event
             div(class="controls")
-              input(type="text", name="title", value=datapoint.title, class="span6")
+              input(type="text", name="title", value=datapoint.title, required, class="span6")
            div(class="control-group")
             label(class="control-label", for="event_date") Event Date
             div(class="controls")
-              input(type="text", class="span2", name="event_date", id="event_date", value=datapoint.event_date)
+              input(type="text", class="span2", name="event_date", id="event_date", value=datapoint.event_date, required)
           div(class="control-group")
             label(class="control-label",for="location") Location
             div(class="controls")
-              input(type="text", id="location", name="location", value=datapoint.Location.title)
+              input(type="text", id="location", name="location", placeholder="Enter location name here", value=datapoint.Location.title, required)
           div(class="control-group")
             label(class="control-label",for="latitude") Latitude/Longitude
-            div(class="controls controls-row")
-              input(type="text", class="span2",id="latitude", name="latitude", value=datapoint.Location.latitude)
-              input(type="text", class="span2",id="longitude", name="longitude", value=datapoint.Location.longitude)
+            div(class="controls")
+              input(type="text", class="span2",id="latitude", name="latitude", value=datapoint.Location.latitude,required,data-parsley-type="number")
+              input(type="text", class="span2",id="longitude", name="longitude", value=datapoint.Location.longitude,required,data-parsley-type="number")
               span(class="help-inline") Only change those values if you want to adjust the position on the map manually
           div(class="control-group")
             label(class="control-label",for="description") Description
             div(class="controls")
-              textarea(name="description", rows="6", class="span6" ) #{datapoint.description}
+              textarea(name="description", rows="6", class="span6",required,data-parsley-minlength="40") #{datapoint.description}
           div(class="control-group")
             label(class="control-label",for="comment") Comment
             div(class="controls")
@@ -79,7 +73,7 @@ block pageContent
           div(class="control-group")
             label(class="control-label",for="stage") Stage
             div(class="controls")
-              select(name="stage",id="stage")
+              select(name="stage",id="stage",required)
                 if (typeof(datapoint.stage) == 'undefined')
                   option(selected=true,value="") -Choose Genocide Stage-
                   option(value="General") General
@@ -144,9 +138,9 @@ block pageContent
                           a(href="/archiveurl?id="+source.savedurl,target="_blank") Internal Archive
                   br/
               else
-                input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")
+                input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here",required,data-parsley-type="url")
                 input(name="sourceid", value="", type="hidden")
-                select(name="sourcetype",id="sourcetype")
+                select(name="sourcetype",id="sourcetype",required)
                     option(selected=true,value="") -Choose Source Type-
                     option(value="Newspaper") Newspaper
                     option(value="TV") TV
@@ -165,32 +159,32 @@ block pageContent
             p   
             button(type="button",  id="archive", class="btn btn-info") Archive
       - else
-        form(id="datapoint_form", class="form-horizontal")
+        form(id="datapoint_form", class="form-horizontal datapoint_form",novalidate="novalidate")
           //if SOC is present in the URL, it means we create a datapoint from a SOC
           //create datapoint
           input(type="hidden", id="soc", name="soc", value=socname)
           div(class="control-group")
             label(class="control-label", for="title") Event
             div(class="controls")
-              input(type="text", name="title",class="span6")
+              input(type="text", name="title",required,class="span6")
           div(class="control-group")
             label(class="control-label", for="event_date") Event Date
             div(class="controls")
-              input(type="text", class="span2", name="event_date", id="event_date")
+              input(type="text", class="span2", name="event_date", id="event_date",required)
           div(class="control-group")
             label(class="control-label", for="location") Location
             div(class="controls")
-              input(type="text", id="location", name="location")
+              input(type="text", id="location", name="location",placeholder="Enter location name here", required)
           div(class="control-group")
             label(class="control-label",for="latitude") Latitude/Longitude
-            div(class="controls controls-row")
-              input(type="text", class="span2", id="latitude", name="latitude")
-              input(type="text", class="span2", id="longitude", name="longitude")
+            div(class="controls")
+              input(type="text", class="span2", id="latitude", name="latitude",required,data-parsley-type="number")
+              input(type="text", class="span2", id="longitude", name="longitude",required,data-parsley-type="number")
               span(class="help-inline") Only change those values if you want to adjust the position on the map manually
           div(class="control-group")
             label(class="control-label",for="description") Description
             div(class="controls")
-              textarea(name="description", rows="6", class="span6")
+              textarea(name="description", rows="6", class="span6",required,data-parsley-minlength="40")
           div(class="control-group")
             label(class="control-label",for="comment") Comment
             div(class="controls")
@@ -199,7 +193,7 @@ block pageContent
           div(class="control-group")
             label(class="control-label",for="stage") Stage
             div(class="controls")
-              select(name="stage")
+              select(name="stage", required)
                 option(selected=true,value="") -Choose Genocide Stage-
                 option(value="General") General
                 option(value="Symbolization") Symbolization
@@ -225,9 +219,9 @@ block pageContent
           div(class="control-group")
             label(class="control-label",for="source") Sources
             div(class="controls",id="sourcelist")
-              input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here")
+              input(type="text", name="sourceurl", id="sourceurl", class="span5",placeholder="Type URL here",required,data-parsley-type="url")
               input(name="sourceid", value="", type="hidden")
-              select(name="sourcetype",id="sourcetype")
+              select(name="sourcetype",id="sourcetype",required)
                   option(selected=true,value="") -Choose Source Type-
                   option(value="Newspaper") Newspaper
                   option(value="TV") TV

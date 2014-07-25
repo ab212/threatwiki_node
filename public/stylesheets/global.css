@@ -92,3 +92,8 @@ table.dataTable th:active {
 .primaryButton:hover { background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) ); background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff'); background-color:#378de5; }
 .primaryButton:active { position:relative; top:1px; }
 #logo {  padding-bottom: 15px;  }
+.control-group.error input.parsley-validated{
+    color: #b94a48 !important;
+    background-color: #f2dede !important;
+    border: 1px solid #EED3D7 !important;
+}

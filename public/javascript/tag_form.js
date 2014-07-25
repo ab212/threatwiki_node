@@ -1,6 +1,17 @@
 $(document).ready(function() {
 
-var already_included_soc = $('#soc').val();
+  //setup the form data validator
+  $('.tag_form').parsley({
+      successClass: 'success',
+      errorClass: 'error',
+      classHandler: function(el) {
+        return el.$element.closest('.control-group');
+      },
+      errorsWrapper: '<span class=\"help-inline\"></span>',
+      errorTemplate: '<span></span>'
+  });
+
+  var already_included_soc = $('#soc').val();
 
   // get socs
   var socs = jQuery.get("/api/soc/", function (socs, textStatus, jqXHR) {
@@ -16,18 +27,16 @@ var already_included_soc = $('#soc').val();
     });
   });
 
-  // $.post()
+  // create tag
   tag_form.submit(function(){
     jQuery.post("/api/tag", tag_form.serialize(), function (data, textStatus, jqXHR) {
       console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
       window.location=referringURL;
     });
-    $("#status").html("posted");
-    $('#result').html(tag_form.serialize());
     return false;
   });
 
-  // #.put()
+  // update tag
   tag_form_update.submit(function(){
     var obj_id = $("input[name=id]").val();
     jQuery.ajax({
@@ -35,14 +44,11 @@ var already_included_soc = $('#soc').val();
       data: tag_form_update.serialize(),
       type: 'PUT'
     }).done(function() { 
-      $("#status").html("posted");
-      $('#result').html(tag_form.serialize());
       window.location=referringURL;
     });
     return false;
   });
 
-   // #.put()
   //someone clicked Archive on the update form
   //TODO: Add confirmation dialog
   $("#archive").click(function(){
@@ -54,42 +60,10 @@ var already_included_soc = $('#soc').val();
       data: "archive=true",
       type: 'PUT'
     }).done(function() {
-     // $("#status").html("posted");
-      //$('#result').html(datapoint_form_update.serialize());
       //redirect to previous page after successful form submission
       window.location='/soc/view?soc='+soc_name;
     });
     return false;
   });
 
-  // $.get()
-  $("#get").click(function() {
-    $("#result").html('');
-    $("#status").html('');
-    $('#consumed_table').html('');
-
-    var tags = jQuery.get("/api/tag/", function (tags, textStatus, jqXHR) {
-      console.log("Get resposne:");
-      console.dir(tags);
-      console.log(textStatus);
-      console.dir(jqXHR);
-
-      $("#result").html(JSON.stringify(tags));
-      // return data in tabular format
-      $.each(tags, function(key, value) {
-        $('#consumed_table')
-        .append($("<tr></tr>")
-        .append($("<td></td>")
-        .append($("<a></a>")
-        .attr("href","/api/tag/"+value._id)
-        .text(value.title)))
-        .append($("<td></td>")
-        .append($("<a></a>")
-        .attr("href","/api/tag/delete/"+value._id)
-        .text("delete"))));
-      });
-    });
-
-  $("#status").html("received");
-  });
 });

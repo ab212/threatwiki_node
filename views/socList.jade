@@ -13,7 +13,7 @@ block pageContent
           ul(class="nav nav-list")
             li.nav-header Actions
               li 
-                a(href='soc/create') New SOC
+                a(href='/soc/create') New SOC
             
       div.span10
         table(class='table table-striped table-bordered')#soc.display
@@ -23,10 +23,6 @@ block pageContent
               th Last Created Datapoint
               th Last Created by User
               th Last Created Date
-              //
-                th created
-                th by
-                th actions
           tbody
            each soc, i in socs
               tr(id="row_"+soc._id)

@@ -9,7 +9,7 @@
     "location": ">= 0.0.1",
     "everyauth": "git://github.com/bnoguchi/everyauth.git#e19b8273e2ca6e2bcd1f339bb154653e42b5d67d",
     "navigator": ">= 1.0.1",
-    "jquery":  "1.8.3",
+    "jquery": "1.8.3",
     "time": ">= 0.8.2",
     "vows": ">= 0.1.7",
     "tobi": ">= 0.3.2",

@@ -1,5 +1,17 @@
 $(document).ready(function() {
-  // $.post()
+
+  //setup the form data validator
+  $('.soc_form').parsley({
+      successClass: 'success',
+      errorClass: 'error',
+      classHandler: function(el) {
+        return el.$element.closest('.control-group');
+      },
+      errorsWrapper: '<span class=\"help-inline\"></span>',
+      errorTemplate: '<span></span>'
+  });
+
+  //post, create new SOC
   soc_form.submit(function(){
     $("#title").val($("#titlecode option:selected").text());
     jQuery.post("/api/soc", soc_form.serialize(), function (data, textStatus, jqXHR) {
@@ -10,7 +22,7 @@ $(document).ready(function() {
     return false;
   });
 
-  // #.put()
+  //put, update existing SOC
   soc_form_update.submit(function(){
     var obj_id = $("input[name=id]").val();
     $("#title").val($("#titlecode option:selected").text());
@@ -36,14 +48,10 @@ $(document).ready(function() {
         data: "archive=true",
         type: 'PUT'
       }).done(function() {
-       // $("#status").html("posted");
-        //$('#result').html(datapoint_form_update.serialize());
         //redirect to soc list after archiving a soc
         window.location='/soc/';
       });
     }
     return false;
   });
-
-  
 });

@@ -2,3 +2,4 @@
 threatwiki.sublime-project
 .env
 *.sublime-workspace
+public/components

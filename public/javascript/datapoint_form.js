@@ -1,4 +1,14 @@
 $(document).ready(function() {
+  //setup the form data validator
+  $('.datapoint_form').parsley({
+      successClass: 'success',
+      errorClass: 'error',
+      classHandler: function(el) {
+        return el.$element.closest('.control-group');
+      },
+      errorsWrapper: '<span class=\"help-inline\"></span>',
+      errorTemplate: '<span></span>'
+  });
   $('#event_date').datepicker();
   $('#tag_list').select2({
       width: 'resolve',
@@ -79,18 +89,15 @@ $(document).ready(function() {
       });
   });
   
-
-  $("#status").html("received");
-
-  // $.post()
+  // submit new datapoint (POST)
   datapoint_form.submit(function(){
+    
     jQuery.post("/api/datapoint", datapoint_form.serialize(), function (data, textStatus, jqXHR) {
       //console.log("Post response:"); console.dir(data); console.log(textStatus); console.dir(jqXHR);
       //redirect to previous page after successful form submission
+
       window.location=referringURL;
     });
-    $("#status").html("posted");
-    $('#result').html(datapoint_form.serialize());
     return false;
   });
 
@@ -122,8 +129,6 @@ $(document).ready(function() {
       data: "archive=true",
       type: 'PUT'
     }).done(function() {
-     // $("#status").html("posted");
-      //$('#result').html(datapoint_form_update.serialize());
       //redirect to previous page after successful form submission
       window.location=referringURL;
     });
@@ -133,22 +138,21 @@ $(document).ready(function() {
   //When clicking on add button, adding a new line to add more sources
   $("#addbutton").click(function(){
     var lastInput = $("#sourcelist").find("input").eq(-2);
-    var lastId = lastInput.next();
+    var lastId = lastInput.nextAll("input[type=hidden]").first();
     var lastSelect = $("#sourcelist").find("select").eq(-1);
-
     //Make a copy of the inputURL on the next line
-    lastSelect.after('<br/>',lastInput.clone());
+    lastSelect.nextAll("br").first().after(lastInput.clone().removeAttr('data-parsley-id'));
     var newInput =  $("#sourcelist").find("input").eq(-1);
     //Add a copy of the last Select menu after the new inputURL
-    newInput.after(lastSelect.clone());
+    newInput.after('<span class="help-inline"></span>',lastSelect.clone().removeAttr('data-parsley-id'),'<br/>');
     newInput.after(lastId.clone());
     //Make sure those new elements are empty
     newInput.val("");
     newInput.next().val("");
     $("#sourcelist").find("select").eq(-1).val("");
   });
-
+  //setup the google map geocoder
   $(function() {
-    $('#location').autoGeocoder();
+    $('#location').autoGeocoder({position:'before'});
   });
 });
