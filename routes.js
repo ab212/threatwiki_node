@@ -316,6 +316,54 @@ function load_routes(app) {
     }
   };
 
+  exports.nigeriavisualization = function(req, res){
+    //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+        res.render('nigeriacontainer', {
+          title: 'Nigeria Visualization'
+        });
+    } 
+    /*else {
+      //Public access to the Visualization page without being logged in on Threatwiki
+      res.render('nigeriapublic', {
+          title: "Visualization of the Persecution of the Bahá'ís community in Iran - The Sentinel Project"
+      });
+
+    }*/
+  };
+
+  exports.southsudanvisualization = function(req, res){
+    //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+        res.render('southsudancontainer', {
+          title: 'South Sudan Visualization'
+        });
+    } 
+    /*else {
+      //Public access to the Visualization page without being logged in on Threatwiki
+      res.render('southsudanpublic', {
+          title: "Visualization of the Persecution of the Bahá'ís community in Iran - The Sentinel Project"
+      });
+
+    }*/
+  };
+
+  exports.centralafricanrepublicvisualization = function(req, res){
+    //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
+    if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){
+        res.render('centralafricanrepubliccontainer', {
+          title: 'Central African Republic Visualization'
+        });
+    } 
+    /*else {
+      //Public access to the Visualization page without being logged in on Threatwiki
+      res.render('centralafricanrepublicpublic', {
+          title: "Visualization of the Persecution of the Bahá'ís community in Iran - The Sentinel Project"
+      });
+
+    }*/
+  };
+
   exports.burmavisualization = function(req, res){
     //if we are logged in, we present the normal view, if we are not, we have a different view without the menu
     if((app.settings.env == 'development') ? (!authenticate(req, res)) : (authenticate(req, res))){

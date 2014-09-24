@@ -1,0 +1,19 @@
+extends layout
+block head
+    script(src="/lib/d3/js/d3.v3.min.js")
+    script(src="/lib/topojson/js/topojson.v1.min.js")
+    script(src="/lib/crossfilter/js/crossfilter.min.js")
+    script(src="/javascript/visualization.js")
+    script
+        generateVisualization("http://threatwiki.thesentinelproject.org/api/datapoint/soc/South%20Sudan?callback=?",7.9630921,30.158930300000065,"/mapfiles/southsudan.json",new Date(2014, 05,01),"South Sudan",5);
+    script(src="/javascript/moment.min.js")
+    script(src="/lib/mapbox/js/mapbox.js")
+    script(src="/lib/leaflet/js/leaflet.markercluster.js")
+    script(src="/lib/leaflet/js/L.Control.Zoomslider.js")
+    link(rel='stylesheet', href='/lib/mapbox/css/mapbox.css')
+    link(rel='stylesheet', href='/stylesheets/visualization.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/L.Control.Zoomslider.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/MarkerCluster.Default.css')
+    link(rel='stylesheet', href='/lib/leaflet/css/MarkerCluster.css')
+block pageContent
+    include visualization

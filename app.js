@@ -127,6 +127,10 @@ app.get('/tag/create', routes.tag.create);
 app.get('/tag/edit', routes.tag.edit);
 
 app.get('/iranvisualization',routes.iranvisualization);
+app.get('/nigeriavisualization',routes.nigeriavisualization);
+app.get('/southsudanvisualization',routes.southsudanvisualization);
+app.get('/centralafricanrepublicvisualization',routes.centralafricanrepublicvisualization);
+
 app.get('/burmavisualization',routes.burmavisualization);
 app.get('/kenyavisualization',routes.kenyavisualization);
 app.get('/archiveurl',routes.archiveurl);
