@@ -9,6 +9,8 @@ function load_archiveApi(app, websitemodel) {
   app.get('/api/archiveurl/:id', function (req, res) {
     return WebsiteModel.findById(req.params.id, function (err, archive) {
       if (!err && archive) {
+        //remove javascript tag, in case it was still in the data
+        archive.content=archive.content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,' ');
         return res.jsonp(archive);
       } else {
         console.log(err);
@@ -22,6 +24,8 @@ function load_archiveApi(app, websitemodel) {
     var url = 'http://'+req.params.url;
     return WebsiteModel.find({url: url}, function (err, archive) {
       if (!err && archive) {
+        //remove javascript tag, in case it was still in the data
+        archive.content=archive.content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,' ');
         return res.jsonp(archive);
       } else {
         console.log(err);

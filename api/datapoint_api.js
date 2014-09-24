@@ -53,7 +53,8 @@ function saveUrl(url,WebsiteModel,sourceId,callback){
         if (!error && typeof(response)!='undefined' && response.statusCode == 200){
           website = new WebsiteModel({
             url:  url,
-            content: body
+            //strip out javascript script loading from the data
+            content: body.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,' ')
           });
         } else {
           console.log("Can't save url:"+url+" error:"+error);
