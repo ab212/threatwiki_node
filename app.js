@@ -101,6 +101,10 @@ app.configure(function () {
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+
+  // catch 404 errors
+  app.use(routes.notFound);
+  app.use(routes.serverError);
 });
 
 app.configure('development', function(){
