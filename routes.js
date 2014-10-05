@@ -323,13 +323,13 @@ function load_routes(app) {
           title: 'Nigeria Visualization'
         });
     } 
-    /*else {
+    else {
       //Public access to the Visualization page without being logged in on Threatwiki
       res.render('nigeriapublic', {
-          title: "Visualization of the Persecution of the Bahá'ís community in Iran - The Sentinel Project"
+          title: "Atrocities and Intercommunal Violence in Nigeria - The Sentinel Project"
       });
 
-    }*/
+    }
   };
 
   exports.southsudanvisualization = function(req, res){
@@ -339,13 +339,13 @@ function load_routes(app) {
           title: 'South Sudan Visualization'
         });
     } 
-    /*else {
+    else {
       //Public access to the Visualization page without being logged in on Threatwiki
       res.render('southsudanpublic', {
-          title: "Visualization of the Persecution of the Bahá'ís community in Iran - The Sentinel Project"
+          title: "Atrocities and Intercommunal Violence in South Sudan - The Sentinel Project"
       });
 
-    }*/
+    }
   };
 
   exports.centralafricanrepublicvisualization = function(req, res){
@@ -355,13 +355,13 @@ function load_routes(app) {
           title: 'Central African Republic Visualization'
         });
     } 
-    /*else {
+    else {
       //Public access to the Visualization page without being logged in on Threatwiki
       res.render('centralafricanrepublicpublic', {
-          title: "Visualization of the Persecution of the Bahá'ís community in Iran - The Sentinel Project"
+          title: "Atrocities and Intercommunal Violence in Central African Republic - The Sentinel Project"
       });
 
-    }*/
+    }
   };
 
   exports.burmavisualization = function(req, res){
