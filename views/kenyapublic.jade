@@ -6,7 +6,7 @@ html(lang="en")
     meta(property="og:title",content=title)
     meta(property="og:type",content='website')
     meta(property="og:description",content="Data Visualization of Atrocities and Intercommunal Violence in Kenya, compiled by the Kenya research analysts from The Sentinel Project")
-    meta(property="og:url",content="http://threatwiki.thesentinelproject.org/kenyavisualization")
+    meta(property="og:url",content="http://vast-journey-7849.herokuapp.com/kenyavisualization")
     meta(property="og:image",content="http://thesentinelproject.org/wp-content/uploads/kenyavisualization.png")
     title #{title}
     link(rel='stylesheet', href='/stylesheets/reset.css')
@@ -18,7 +18,7 @@ html(lang="en")
     script(src="/lib/crossfilter/js/crossfilter.min.js")
     script(src="/javascript/visualization.js")
     script
-        generateVisualization("http://threatwiki.thesentinelproject.org/api/datapoint/soc/Kenya?callback=?",0,37,"/mapfiles/kenya.json",new Date(2012,05,01),"Kenya",6);
+        generateVisualization("http://vast-journey-7849.herokuapp.com/api/datapoint/soc/Kenya?callback=?",0,37,"/mapfiles/kenya.json",new Date(2012,05,01),"Kenya",6);
     script(src="/javascript/moment.min.js")
     script(src="/lib/mapbox/js/mapbox.js")
     script(src="/lib/leaflet/js/leaflet.markercluster.js")

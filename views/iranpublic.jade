@@ -6,7 +6,7 @@ html(lang="en")
     meta(property="og:title",content=title)
     meta(property="og:type",content='website')
     meta(property="og:description",content="Data Visualization of Baha'is persecution in Iran, compiled by the Iran research analysts from The Sentinel Project")
-    meta(property="og:url",content="http://threatwiki.thesentinelproject.org/iranvisualization")
+    meta(property="og:url",content="http://vast-journey-7849.herokuapp.com/iranvisualization")
     meta(property="og:image",content="http://thesentinelproject.org/wp-content/uploads/iranvisualization.png")
     title #{title}
     link(rel='stylesheet', href='/stylesheets/reset.css')
@@ -18,7 +18,7 @@ html(lang="en")
     script(src="/lib/crossfilter/js/crossfilter.min.js")
     script(src="/javascript/visualization.js")
     script
-        generateVisualization("http://threatwiki.thesentinelproject.org/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?",32,53,"/mapfiles/iran.json",new Date(2011, 10,06),"Iran",5);
+        generateVisualization("http://vast-journey-7849.herokuapp.com/api/datapoint/soc/Iran,%20Islamic%20Republic%20of?callback=?",32,53,"/mapfiles/iran.json",new Date(2011, 10,06),"Iran",5);
     script(src="/javascript/moment.min.js")
     script(src="/lib/mapbox/js/mapbox.js")
     script(src="/lib/leaflet/js/leaflet.markercluster.js")
