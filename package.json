@@ -5,7 +5,7 @@
   "dependencies": {
     "express": "3.x",
     "jade": "0.28.2",
-    "mongoose": ">= 3.5",
+    "mongoose": "4.1.9",
     "location": ">= 0.0.1",
     "everyauth": "git://github.com/bnoguchi/everyauth.git#e19b8273e2ca6e2bcd1f339bb154653e42b5d67d",
     "navigator": ">= 1.0.1",
